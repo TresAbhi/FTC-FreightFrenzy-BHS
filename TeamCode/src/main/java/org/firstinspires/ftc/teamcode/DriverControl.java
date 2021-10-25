@@ -38,13 +38,13 @@ public class DriverControl extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
-        while (opModeIsActive()){
-            double rotation = Math.hypot(gamepad1.left_stick_y, gamepad1.left_stick_x);
+        while (opModeIsActive()) {
+            double vectorNormal = Math.hypot(gamepad1.left_stick_y, gamepad1.left_stick_x);
             double robotAngle = Math.atan2(gamepad1.left_stick_y, - gamepad1.left_stick_x) - Math.PI / 4;
-            double v1 = rotation * Math.cos(robotAngle); // y part of the vector
-            double v2 = rotation * Math.sin(robotAngle); // x part of the vector
-            double v3 = rotation * Math.sin(robotAngle); // x part of the vector
-            double v4 = rotation * Math.cos(robotAngle); // y part of the vector
+            double v1 = vectorNormal * Math.cos(robotAngle);
+            double v2 = vectorNormal * Math.sin(robotAngle);
+            double v3 = vectorNormal * Math.sin(robotAngle);
+            double v4 = vectorNormal * Math.cos(robotAngle);
 
             double speedControl = gamepad1.left_bumper ? 2.5 : 1.5;
 
@@ -82,8 +82,8 @@ public class DriverControl extends LinearOpMode {
             telemetry.addData("Right Joystick X", gamepad1.right_stick_x);
             telemetry.addData("Right Joystick Y", gamepad1.right_stick_y);
 
-            telemetry.addData("converyor1", conveyor1.getPower());
-            telemetry.addData("converyor2", conveyor2.getPower());
+            telemetry.addData("Converyor 1", conveyor1.getPower());
+            telemetry.addData("Converyor 2", conveyor2.getPower());
 
             telemetry.update();
         }
