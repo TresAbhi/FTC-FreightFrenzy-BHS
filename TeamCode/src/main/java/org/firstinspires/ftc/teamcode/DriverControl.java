@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -19,6 +20,8 @@ public class DriverControl extends LinearOpMode {
     private DcMotor conveyor1 = null;
     private DcMotor conveyor2 = null;
     private DcMotor extender = null;
+    private Servo spinner = null;
+    private Servo claw = null;
 
     @Override
     public void runOpMode() {
@@ -32,7 +35,10 @@ public class DriverControl extends LinearOpMode {
         conveyor1  = hardwareMap.get(DcMotor.class, "conveyor_1");
         conveyor2  = hardwareMap.get(DcMotor.class, "conveyor_2");
         extender   = hardwareMap.get(DcMotor.class, "extender");
+        spinner    = hardwareMap.get(Servo.class, "spinner");
+        claw       = hardwareMap.get(Servo.class,"claw");
 
+        leftFront.setDirection(DcMotor.Direction.REVERSE);
         rightRear.setDirection(DcMotor.Direction.REVERSE);
 
         waitForStart();
@@ -60,6 +66,11 @@ public class DriverControl extends LinearOpMode {
 
             extender.setPower(gamepad2.right_trigger);
             extender.setPower(-gamepad2.left_trigger);
+
+            spinner.setPosition(gamepad1.right_bumper ? 1 : 0.49);
+
+            claw.setPosition(gamepad2.dpad_right ? 1 : 0);
+
 
             // conveyor1.setPower(gamepad2.right_stick_y);
             // conveyor2.setPower(-gamepad2.right_stick_y);
