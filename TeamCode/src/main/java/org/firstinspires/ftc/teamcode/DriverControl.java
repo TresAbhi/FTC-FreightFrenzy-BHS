@@ -1,27 +1,30 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+// import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
+// import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
+// import com.qualcomm.robotcore.util.Range;
 
 @TeleOp(name="DriverControl", group="Linear Opmode")
 //@Disabled
 public class DriverControl extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor leftFront = null;       //left front wheel
-    private DcMotor leftRear = null;        //left rear wheel
-    private DcMotor rightFront = null;      //right front wheel
-    private DcMotor rightRear = null;       //right rear wheel
+
+    private DcMotor leftFront = null;
+    private DcMotor leftRear = null;
+    private DcMotor rightFront = null;
+    private DcMotor rightRear = null;
+
     private DcMotor conveyor1 = null;
     private DcMotor conveyor2 = null;
     private DcMotor extender = null;
-    private Servo spinner = null;
     private Servo claw = null;
+
+    private Servo spinner = null;
 
     @Override
     public void runOpMode() {
@@ -32,11 +35,13 @@ public class DriverControl extends LinearOpMode {
         leftRear   = hardwareMap.get(DcMotor.class, "left_rear");
         rightFront = hardwareMap.get(DcMotor.class, "right_front");
         rightRear  = hardwareMap.get(DcMotor.class, "right_rear");
+
         conveyor1  = hardwareMap.get(DcMotor.class, "conveyor_1");
         conveyor2  = hardwareMap.get(DcMotor.class, "conveyor_2");
         extender   = hardwareMap.get(DcMotor.class, "extender");
-        spinner    = hardwareMap.get(Servo.class, "spinner");
         claw       = hardwareMap.get(Servo.class,"claw");
+
+        spinner    = hardwareMap.get(Servo.class, "spinner");
 
         leftFront.setDirection(DcMotor.Direction.REVERSE);
         rightRear.setDirection(DcMotor.Direction.REVERSE);
@@ -71,10 +76,8 @@ public class DriverControl extends LinearOpMode {
 
             claw.setPosition(gamepad2.dpad_right ? 1 : 0);
 
-
             // conveyor1.setPower(gamepad2.right_stick_y);
             // conveyor2.setPower(-gamepad2.right_stick_y);
-
             // conveyor1.setPower(-gamepad2.right_stick_y);
             // conveyor2.setPower(gamepad2.right_stick_y);
 
@@ -93,8 +96,8 @@ public class DriverControl extends LinearOpMode {
             telemetry.addData("Right Joystick X", gamepad1.right_stick_x);
             telemetry.addData("Right Joystick Y", gamepad1.right_stick_y);
 
-            telemetry.addData("Converyor 1", conveyor1.getPower());
-            telemetry.addData("Converyor 2", conveyor2.getPower());
+            telemetry.addData("Conveyor 1", conveyor1.getPower());
+            telemetry.addData("Conveyor 2", conveyor2.getPower());
 
             telemetry.update();
         }
