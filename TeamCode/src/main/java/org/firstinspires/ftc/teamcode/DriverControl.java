@@ -1,13 +1,13 @@
 package org.firstinspires.ftc.teamcode;
 
-// import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-// import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-// import com.qualcomm.robotcore.util.Range;
+import com.qualcomm.robotcore.util.Range;
 
 @TeleOp(name="DriverControl", group="Linear Opmode")
 //@Disabled
@@ -64,16 +64,16 @@ public class DriverControl extends LinearOpMode {
             rightFront.setPower((-v3 - gamepad1.right_stick_x) / speedControl);
             rightRear.setPower((-v4 - gamepad1.right_stick_x) / speedControl);
 
-            conveyor1.setPower(gamepad2.right_bumper ? 1 : 0);
-            conveyor2.setPower(gamepad2.right_bumper ? -1 : 0);
-            conveyor1.setPower(gamepad2.left_bumper ? -1 : 0);
-            conveyor2.setPower(gamepad2.left_bumper ? 1 : 0);
+            conveyor1.setPower(gamepad2.right_bumper ? 0.5 : 0);
+            conveyor2.setPower(gamepad2.right_bumper ? -0.5 : 0);
+            conveyor1.setPower(gamepad2.left_bumper ? -0.5 : 0);
+            conveyor2.setPower(gamepad2.left_bumper ? 0.5 : 0);
 
             extender.setPower(gamepad2.right_trigger);
             extender.setPower(-gamepad2.left_trigger);
 
             spinner.setPosition(gamepad1.right_bumper ? 1 : 0.49);
-
+            
             claw.setPosition(gamepad2.dpad_right ? 1 : 0);
 
             // conveyor1.setPower(gamepad2.right_stick_y);
@@ -96,8 +96,12 @@ public class DriverControl extends LinearOpMode {
             telemetry.addData("Right Joystick X", gamepad1.right_stick_x);
             telemetry.addData("Right Joystick Y", gamepad1.right_stick_y);
 
+            telemetry.addData("Right DPad", gamepad2.dpad_right);
+
             telemetry.addData("Conveyor 1", conveyor1.getPower());
             telemetry.addData("Conveyor 2", conveyor2.getPower());
+
+            telemetry.addData("Claw Value",claw.getPosition());
 
             telemetry.update();
         }
