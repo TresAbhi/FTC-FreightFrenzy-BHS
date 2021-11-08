@@ -48,7 +48,6 @@ public class MaxVelocityTuner extends LinearOpMode {
         telemetry.addLine("");
         telemetry.addLine("Press start when ready.");
         telemetry.update();
-
         waitForStart();
 
         telemetry.clearAll();

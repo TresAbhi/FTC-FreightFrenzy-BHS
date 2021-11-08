@@ -73,7 +73,7 @@ public class DriverControl extends LinearOpMode {
             extender.setPower(-gamepad2.left_trigger);
 
             spinner.setPosition(gamepad1.right_bumper ? 1 : 0.49);
-            
+
             claw.setPosition(gamepad2.dpad_right ? 1 : 0);
 
             // conveyor1.setPower(gamepad2.right_stick_y);
