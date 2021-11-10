@@ -19,12 +19,20 @@ public class AbhiFlavourDriverControl extends LinearOpMode {
     private DcMotor conveyor1 = null;
     private DcMotor conveyor2 = null;
     private DcMotor extender = null;
+
     private Servo claw = null;
 
     private Servo spinner = null;
 
     @Override
     public void runOpMode() {
+        double precision = 10;
+
+        double dampedLeftJoystickX = Math.pow(gamepad1.left_stick_x, precision);
+        double dampedLeftJoystickY = Math.pow(gamepad1.left_stick_y, precision);
+        double dampedRightJoystickX = Math.pow(gamepad1.right_stick_x, precision);
+        double dampedRightJoystickY = Math.pow(gamepad1.right_stick_y, precision);
+
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
