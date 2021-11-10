@@ -6,9 +6,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp(name="AbhiFlavourDriverControl", group="Linear Opmode")
+@TeleOp(name="BetterDriverControl", group="Linear Opmode")
 //@Disabled
-public class AbhiFlavourDriverControl extends LinearOpMode {
+public class BetterDriverControl extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
 
     private DcMotor leftFront = null;
