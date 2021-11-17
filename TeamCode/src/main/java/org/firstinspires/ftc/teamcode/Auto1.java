@@ -36,7 +36,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-
 /**
  * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
  * the autonomous or the teleop period of an FTC match. The names of OpModes appear on the menu
@@ -50,54 +49,50 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Auto1", group="Linear Opmode")
+@Autonomous(name = "Auto1", group = "Linear Opmode")
 //@Disabled
 public class Auto1 extends LinearOpMode {
 
-    // Declare OpMode members.
-    private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor leftFront = null;       //left front wheel
-    private DcMotor leftRear = null;        //left rear wheel
-    private DcMotor rightFront = null;      //right front wheel
-    private DcMotor rightRear = null;       //right rear wheel
+  // Declare OpMode members.
+  private ElapsedTime runtime = new ElapsedTime();
+  private DcMotor leftFront = null; //left front wheel
+  private DcMotor leftRear = null; //left rear wheel
+  private DcMotor rightFront = null; //right front wheel
+  private DcMotor rightRear = null; //right rear wheel
 
-    @Override
-    public void runOpMode() {
-        telemetry.addData("Status", "Initialized");
-        telemetry.update();
+  @Override
+  public void runOpMode() {
+    telemetry.addData("Status", "Initialized");
+    telemetry.update();
 
-        // Initialize the hardware variables. Note that the strings used here as parameters
-        // to 'get' must correspond to the names assigned during the robot configuration
-        // step (using the FTC Robot Controller app on the phone).
-        leftFront  = hardwareMap.get(DcMotor.class, "left_front");
-        leftRear   = hardwareMap.get(DcMotor.class, "left_rear");
-        rightFront = hardwareMap.get(DcMotor.class, "right_front");
-        rightRear  = hardwareMap.get(DcMotor.class, "right_rear");
+    // Initialize the hardware variables. Note that the strings used here as parameters
+    // to 'get' must correspond to the names assigned during the robot configuration
+    // step (using the FTC Robot Controller app on the phone).
+    leftFront = hardwareMap.get(DcMotor.class, "left_front");
+    leftRear = hardwareMap.get(DcMotor.class, "left_rear");
+    rightFront = hardwareMap.get(DcMotor.class, "right_front");
+    rightRear = hardwareMap.get(DcMotor.class, "right_rear");
 
+    // Most robots need the motor on one side to be reversed to drive forward
+    // Reverse the motor that runs backwards when connected directly to the battery
+    //leftFront.setDirection(DcMotor.Direction.REVERSE);          // Need to check for reverse
+    //leftRear.setDirection(DcMotor.Direction.REVERSE);
+    //rightFront.setDirection(DcMotor.Direction.REVERSE);
+    rightRear.setDirection(DcMotor.Direction.REVERSE);
 
-        // Most robots need the motor on one side to be reversed to drive forward
-        // Reverse the motor that runs backwards when connected directly to the battery
-        //leftFront.setDirection(DcMotor.Direction.REVERSE);          // Need to check for reverse
-        //leftRear.setDirection(DcMotor.Direction.REVERSE);
-        //rightFront.setDirection(DcMotor.Direction.REVERSE);
-        rightRear.setDirection(DcMotor.Direction.REVERSE);
+    // Wait for the game to start (driver presses PLAY)
+    waitForStart();
+    runtime.reset();
 
-        // Wait for the game to start (driver presses PLAY)
-        waitForStart();
-        runtime.reset();
-
-        // run until the end of the match (driver presses STOP)
-        while (opModeIsActive()) {
-
-
-
-            // Show the elapsed game time and wheel power.
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("LF Power", leftFront.getPower());
-            telemetry.addData("LR Power", leftRear.getPower());
-            telemetry.addData("RF Power", rightFront.getPower());
-            telemetry.addData("RR Power", rightRear.getPower());
-            telemetry.update();
-        }
+    // run until the end of the match (driver presses STOP)
+    while (opModeIsActive()) {
+      // Show the elapsed game time and wheel power.
+      telemetry.addData("Status", "Run Time: " + runtime.toString());
+      telemetry.addData("LF Power", leftFront.getPower());
+      telemetry.addData("LR Power", leftRear.getPower());
+      telemetry.addData("RF Power", rightFront.getPower());
+      telemetry.addData("RR Power", rightRear.getPower());
+      telemetry.update();
     }
+  }
 }
