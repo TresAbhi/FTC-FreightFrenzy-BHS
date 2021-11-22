@@ -28,9 +28,10 @@ public class BetterDriverControl extends LinearOpMode {
 
   @Override
   public void runOpMode() {
-    telemetry.addData("Status", "Initialized");
-    telemetry.update();
+    // Constants
+    double PRECISION = 2;
 
+    // Components
     leftFront = hardwareMap.get(DcMotor.class, "left_front");
     leftRear = hardwareMap.get(DcMotor.class, "left_rear");
     rightFront = hardwareMap.get(DcMotor.class, "right_front");
@@ -43,32 +44,52 @@ public class BetterDriverControl extends LinearOpMode {
 
     spinner = hardwareMap.get(Servo.class, "spinner");
 
+    // One time executions
     leftFront.setDirection(DcMotor.Direction.REVERSE);
     rightRear.setDirection(DcMotor.Direction.REVERSE);
+
+    telemetry.addData("Status", "Initialized");
+    telemetry.update();
 
     waitForStart();
     runtime.reset();
 
     while (opModeIsActive()) {
-      double precision = 10;
+      // Constants
 
-      double dampedLeftJoystickX = Math.pow(gamepad1.left_stick_x, precision);
-      double dampedLeftJoystickY = Math.pow(gamepad1.left_stick_y, precision);
-      double dampedRightJoystickX = Math.pow(gamepad1.right_stick_x, precision);
-      double dampedRightJoystickY = Math.pow(gamepad1.right_stick_y, precision);
+      /**
+       * dividing by 1.5 because it's too fast at 100% power
+       * don't know what "a ? b : c" does? google ternary operators
+       * 😘 Abhi
+       */
+      double SPEED_CONTROL = gamepad1.left_bumper ? 2.5 : 1.5;
 
+      // dampen to not make it 1:1, it's an exponential growth
+      double dampedLeftJoystickX =
+        Math.signum(gamepad1.left_stick_x) *
+        Math.pow(gamepad1.left_stick_x, PRECISION);
+      double dampedLeftJoystickY =
+        Math.signum(gamepad1.left_stick_y) *
+        Math.pow(gamepad1.left_stick_y, PRECISION);
+      double dampedRightJoystickX =
+        Math.signum(gamepad1.right_stick_x) *
+        Math.pow(gamepad1.right_stick_x, PRECISION);
+      double dampedRightJoystickY =
+        Math.signum(gamepad1.right_stick_y) *
+        Math.pow(gamepad1.right_stick_y, PRECISION);
+
+      // resultant vectors (google it if yoy don't know)
       double vectorNormal = Math.hypot(
         dampedLeftJoystickY,
         dampedLeftJoystickX
       );
       double robotAngle =
         Math.atan2(dampedLeftJoystickY, -dampedLeftJoystickX) - Math.PI / 4;
+      // trig to find out partial offsets in axes (plural of axis)
       double v1 = vectorNormal * Math.cos(robotAngle);
       double v2 = vectorNormal * Math.sin(robotAngle);
       double v3 = vectorNormal * Math.sin(robotAngle);
       double v4 = vectorNormal * Math.cos(robotAngle);
-
-      double speedControl = gamepad1.left_bumper ? 2.5 : 1.5;
 
       leftFront.setPower((-v1 + dampedRightJoystickX) / speedControl);
       leftRear.setPower((-v2 + dampedRightJoystickX) / speedControl);
