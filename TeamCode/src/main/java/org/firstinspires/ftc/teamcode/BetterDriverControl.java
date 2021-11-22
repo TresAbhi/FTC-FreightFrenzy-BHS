@@ -13,40 +13,43 @@ public class BetterDriverControl extends LinearOpMode {
 
   private ElapsedTime runtime = new ElapsedTime();
 
-  private DcMotor leftFront = null;
-  private DcMotor leftRear = null;
-  private DcMotor rightFront = null;
-  private DcMotor rightRear = null;
+  private DcMotor LEFT_FRONT = null;
+  private DcMotor LEFT_REAR = null;
+  private DcMotor RIGHT_FRONT = null;
+  private DcMotor RIGHT_REAR = null;
 
-  private DcMotor conveyor1 = null;
-  private DcMotor conveyor2 = null;
-  private DcMotor extender = null;
+  private DcMotor CONVEYOR_1 = null;
+  private DcMotor CONVEYOR_2 = null;
+  private DcMotor EXTENDER = null;
 
-  private Servo claw = null;
+  private Servo CLAW = null;
 
-  private Servo spinner = null;
+  private Servo SPINNER = null;
 
   @Override
   public void runOpMode() {
     // Constants
+    /**
+     * why is it all caps? it's a constant
+     */
     double PRECISION = 2;
 
     // Components
-    leftFront = hardwareMap.get(DcMotor.class, "left_front");
-    leftRear = hardwareMap.get(DcMotor.class, "left_rear");
-    rightFront = hardwareMap.get(DcMotor.class, "right_front");
-    rightRear = hardwareMap.get(DcMotor.class, "right_rear");
+    LEFT_FRONT = hardwareMap.get(DcMotor.class, "left_front");
+    LEFT_REAR = hardwareMap.get(DcMotor.class, "left_rear");
+    RIGHT_FRONT = hardwareMap.get(DcMotor.class, "right_front");
+    RIGHT_REAR = hardwareMap.get(DcMotor.class, "right_rear");
 
-    conveyor1 = hardwareMap.get(DcMotor.class, "conveyor_1");
-    conveyor2 = hardwareMap.get(DcMotor.class, "conveyor_2");
-    extender = hardwareMap.get(DcMotor.class, "extender");
-    claw = hardwareMap.get(Servo.class, "claw");
+    CONVEYOR_1 = hardwareMap.get(DcMotor.class, "conveyor_1");
+    CONVEYOR_2 = hardwareMap.get(DcMotor.class, "conveyor_2");
+    EXTENDER = hardwareMap.get(DcMotor.class, "extender");
+    CLAW = hardwareMap.get(Servo.class, "claw");
 
-    spinner = hardwareMap.get(Servo.class, "spinner");
+    SPINNER = hardwareMap.get(Servo.class, "spinner");
 
     // One time executions
-    leftFront.setDirection(DcMotor.Direction.REVERSE);
-    rightRear.setDirection(DcMotor.Direction.REVERSE);
+    LEFT_FRONT.setDirection(DcMotor.Direction.REVERSE);
+    RIGHT_REAR.setDirection(DcMotor.Direction.REVERSE);
 
     telemetry.addData("Status", "Initialized");
     telemetry.update();
@@ -59,10 +62,11 @@ public class BetterDriverControl extends LinearOpMode {
 
       /**
        * dividing by 1.5 because it's too fast at 100% power
+       *
        * don't know what "a ? b : c" does? google ternary operators
        * 😘 Abhi
        */
-      double SPEED_CONTROL = gamepad1.left_bumper ? 2.5 : 1.5;
+      double speedControl = gamepad1.left_bumper ? 2.5 : 1.5;
 
       // dampen to not make it 1:1, it's an exponential growth
       double dampedLeftJoystickX =
@@ -91,37 +95,32 @@ public class BetterDriverControl extends LinearOpMode {
       double v3 = vectorNormal * Math.sin(robotAngle);
       double v4 = vectorNormal * Math.cos(robotAngle);
 
-      leftFront.setPower((-v1 + dampedRightJoystickX) / SPEED_CONTROL);
-      leftRear.setPower((-v2 + dampedRightJoystickX) / SPEED_CONTROL);
-      rightFront.setPower((-v3 - dampedRightJoystickX) / SPEED_CONTROL);
-      rightRear.setPower((-v4 - dampedRightJoystickX) / SPEED_CONTROL);
+      LEFT_FRONT.setPower((-v1 + dampedRightJoystickX) / speedControl);
+      LEFT_REAR.setPower((-v2 + dampedRightJoystickX) / speedControl);
+      RIGHT_FRONT.setPower((-v3 - dampedRightJoystickX) / speedControl);
+      RIGHT_REAR.setPower((-v4 - dampedRightJoystickX) / speedControl);
 
-      conveyor1.setPower(gamepad2.right_bumper ? 0.5 : 0);
-      conveyor2.setPower(gamepad2.right_bumper ? -0.5 : 0);
-      conveyor1.setPower(gamepad2.left_bumper ? -0.5 : 0);
-      conveyor2.setPower(gamepad2.left_bumper ? 0.5 : 0);
+      CONVEYOR_1.setPower(gamepad2.right_bumper ? 0.5 : 0);
+      CONVEYOR_2.setPower(gamepad2.right_bumper ? -0.5 : 0);
+      CONVEYOR_1.setPower(gamepad2.left_bumper ? -0.5 : 0);
+      CONVEYOR_2.setPower(gamepad2.left_bumper ? 0.5 : 0);
 
-      extender.setPower(gamepad2.right_trigger);
-      extender.setPower(-gamepad2.left_trigger);
+      EXTENDER.setPower(gamepad2.right_trigger);
+      EXTENDER.setPower(-gamepad2.left_trigger);
 
-      spinner.setPosition(gamepad1.right_bumper ? 1 : 0.49);
+      SPINNER.setPosition(gamepad1.right_bumper ? 1 : 0.49);
 
-      claw.setPosition(gamepad2.dpad_right ? 1 : 0);
-
-      // conveyor1.setPower(gamepad2.right_stick_y);
-      // conveyor2.setPower(-gamepad2.right_stick_y);
-      // conveyor1.setPower(-gamepad2.right_stick_y);
-      // conveyor2.setPower(gamepad2.right_stick_y);
+      CLAW.setPosition(gamepad2.dpad_right ? 1 : 0);
 
       double drive = -dampedLeftJoystickY;
       double turn = dampedRightJoystickX;
 
       telemetry.addData("Status", "Run Time: " + runtime.toString());
 
-      telemetry.addData("LF Power", leftFront.getPower());
-      telemetry.addData("LR Power", leftRear.getPower());
-      telemetry.addData("RF Power", rightFront.getPower());
-      telemetry.addData("RR Power", rightRear.getPower());
+      telemetry.addData("LF Power", LEFT_FRONT.getPower());
+      telemetry.addData("LR Power", LEFT_REAR.getPower());
+      telemetry.addData("RF Power", RIGHT_FRONT.getPower());
+      telemetry.addData("RR Power", RIGHT_REAR.getPower());
 
       telemetry.addData("Left Joystick X", gamepad1.left_stick_x);
       telemetry.addData("Left Joystick Y", gamepad1.left_stick_y);
@@ -135,10 +134,10 @@ public class BetterDriverControl extends LinearOpMode {
 
       telemetry.addData("Right DPad", gamepad2.dpad_right);
 
-      telemetry.addData("Conveyor 1", conveyor1.getPower());
-      telemetry.addData("Conveyor 2", conveyor2.getPower());
+      telemetry.addData("Conveyor 1", CONVEYOR_1.getPower());
+      telemetry.addData("Conveyor 2", CONVEYOR_2.getPower());
 
-      telemetry.addData("Claw Value", claw.getPosition());
+      telemetry.addData("Claw Value", CLAW.getPosition());
 
       telemetry.update();
     }
