@@ -64,7 +64,7 @@ public class DriverControl extends LinearOpMode {
        * dividing by 1.5 because it's too fast at 100% power
        *
        * don't know what "a ? b : c" does? google ternary operators
-       * 😘 Abhi
+       * ~ 😘 Abhi
        */
       double speedControl = gamepad1.left_bumper ? 2.5 : 1.5;
 
