@@ -91,10 +91,10 @@ public class BetterDriverControl extends LinearOpMode {
       double v3 = vectorNormal * Math.sin(robotAngle);
       double v4 = vectorNormal * Math.cos(robotAngle);
 
-      leftFront.setPower((-v1 + dampedRightJoystickX) / speedControl);
-      leftRear.setPower((-v2 + dampedRightJoystickX) / speedControl);
-      rightFront.setPower((-v3 - dampedRightJoystickX) / speedControl);
-      rightRear.setPower((-v4 - dampedRightJoystickX) / speedControl);
+      leftFront.setPower((-v1 + dampedRightJoystickX) / SPEED_CONTROL);
+      leftRear.setPower((-v2 + dampedRightJoystickX) / SPEED_CONTROL);
+      rightFront.setPower((-v3 - dampedRightJoystickX) / SPEED_CONTROL);
+      rightRear.setPower((-v4 - dampedRightJoystickX) / SPEED_CONTROL);
 
       conveyor1.setPower(gamepad2.right_bumper ? 0.5 : 0);
       conveyor2.setPower(gamepad2.right_bumper ? -0.5 : 0);
