@@ -18,21 +18,23 @@ public class DriverControl extends LinearOpMode {
   private DcMotor RIGHT_FRONT = null;
   private DcMotor RIGHT_REAR = null;
 
-  private DcMotor CONVEYOR_1 = null;
-  private DcMotor CONVEYOR_2 = null;
+  private DcMotor ARM_JOINT_LEFT = null;
+  private DcMotor ARM_JOINT_RIGHT = null;
   private DcMotor EXTENDER = null;
 
   private Servo CLAW = null;
+  private Servo WRIST = null;
 
   private Servo SPINNER = null;
 
   @Override
   public void runOpMode() {
     // Constants
-    /**
-     * why is it all caps? it's a constant
-     */
-    double PRECISION = 2;
+    double MOVEMENT_PRECISION = 2;
+    double ARM_CATCH_UP_POWER_REDUCTION = 80;
+    double ARM_CATCH_UP_SPEED = 1;
+
+    double armTargetPosition = 0.0;
 
     // Components
     LEFT_FRONT = hardwareMap.get(DcMotor.class, "left_front");
@@ -40,10 +42,11 @@ public class DriverControl extends LinearOpMode {
     RIGHT_FRONT = hardwareMap.get(DcMotor.class, "right_front");
     RIGHT_REAR = hardwareMap.get(DcMotor.class, "right_rear");
 
-    CONVEYOR_1 = hardwareMap.get(DcMotor.class, "conveyor_1");
-    CONVEYOR_2 = hardwareMap.get(DcMotor.class, "conveyor_2");
+    ARM_JOINT_LEFT = hardwareMap.get(DcMotor.class, "conveyor_left");
+    ARM_JOINT_RIGHT = hardwareMap.get(DcMotor.class, "conveyor_right");
     EXTENDER = hardwareMap.get(DcMotor.class, "extender");
     CLAW = hardwareMap.get(Servo.class, "claw");
+    WRIST = hardwareMap.get(Servo.class, "wrist");
 
     SPINNER = hardwareMap.get(Servo.class, "spinner");
 
@@ -59,7 +62,6 @@ public class DriverControl extends LinearOpMode {
 
     while (opModeIsActive()) {
       // Constants
-
       /**
        * dividing by 1.5 because it's too fast at 100% power
        *
@@ -67,22 +69,24 @@ public class DriverControl extends LinearOpMode {
        * ~ 😘 Abhi
        */
       double speedControl = gamepad1.left_bumper ? 2.5 : 1.5;
+      double deltaArmPosition =
+        armTargetPosition - ARM_JOINT_LEFT.getCurrentPosition();
 
       // dampen to not make it 1:1, it's an exponential growth
       double dampedLeftJoystickX =
         Math.signum(gamepad1.left_stick_x) *
-        Math.pow(gamepad1.left_stick_x, PRECISION);
+        Math.pow(gamepad1.left_stick_x, MOVEMENT_PRECISION);
       double dampedLeftJoystickY =
         Math.signum(gamepad1.left_stick_y) *
-        Math.pow(gamepad1.left_stick_y, PRECISION);
+        Math.pow(gamepad1.left_stick_y, MOVEMENT_PRECISION);
       double dampedRightJoystickX =
         Math.signum(gamepad1.right_stick_x) *
-        Math.pow(gamepad1.right_stick_x, PRECISION);
+        Math.pow(gamepad1.right_stick_x, MOVEMENT_PRECISION);
       double dampedRightJoystickY =
         Math.signum(gamepad1.right_stick_y) *
-        Math.pow(gamepad1.right_stick_y, PRECISION);
+        Math.pow(gamepad1.right_stick_y, MOVEMENT_PRECISION);
 
-      // resultant vectors (google it if yoy don't know)
+      // resultant vectors
       double vectorNormal = Math.hypot(
         dampedLeftJoystickY,
         dampedLeftJoystickX
@@ -100,10 +104,18 @@ public class DriverControl extends LinearOpMode {
       RIGHT_FRONT.setPower((-v3 - dampedRightJoystickX) / speedControl);
       RIGHT_REAR.setPower((-v4 - dampedRightJoystickX) / speedControl);
 
-      CONVEYOR_1.setPower(gamepad2.right_bumper ? 0.5 : 0);
-      CONVEYOR_2.setPower(gamepad2.right_bumper ? -0.5 : 0);
-      CONVEYOR_1.setPower(gamepad2.left_bumper ? -0.5 : 0);
-      CONVEYOR_2.setPower(gamepad2.left_bumper ? 0.5 : 0);
+      // ARM_JOINT_LEFT.setPower(gamepad2.right_bumper ? 0.5 : 0);
+      // ARM_JOINT_RIGHT.setPower(gamepad2.right_bumper ? -0.5 : 0);
+      // ARM_JOINT_LEFT.setPower(gamepad2.left_bumper ? -0.5 : 0);
+      // ARM_JOINT_RIGHT.setPower(gamepad2.left_bumper ? 0.5 : 0);
+
+      if (gamepad2.right_bumper) armTargetPosition += ARM_CATCH_UP_SPEED;
+      if (gamepad2.left_bumper) armTargetPosition -= ARM_CATCH_UP_SPEED;
+
+      ARM_JOINT_LEFT.setPower(deltaArmPosition / ARM_CATCH_UP_POWER_REDUCTION);
+      ARM_JOINT_RIGHT.setPower(
+        -deltaArmPosition / ARM_CATCH_UP_POWER_REDUCTION
+      );
 
       EXTENDER.setPower(gamepad2.right_trigger);
       EXTENDER.setPower(-gamepad2.left_trigger);
@@ -111,6 +123,8 @@ public class DriverControl extends LinearOpMode {
       SPINNER.setPosition(gamepad1.right_bumper ? 1 : 0.49);
 
       CLAW.setPosition(gamepad2.dpad_right ? 1 : 0);
+      WRIST.setPosition(gamepad2.dpad_up ? 1 : 0);
+      /** If we have time, make it parallel to the ground auto*/
 
       double drive = -dampedLeftJoystickY;
       double turn = dampedRightJoystickX;
@@ -134,8 +148,8 @@ public class DriverControl extends LinearOpMode {
 
       telemetry.addData("Right DPad", gamepad2.dpad_right);
 
-      telemetry.addData("Conveyor 1", CONVEYOR_1.getPower());
-      telemetry.addData("Conveyor 2", CONVEYOR_2.getPower());
+      telemetry.addData("Conveyor 1", ARM_JOINT_LEFT.getPower());
+      telemetry.addData("Conveyor 2", ARM_JOINT_RIGHT.getPower());
 
       telemetry.addData("Claw Value", CLAW.getPosition());
 
