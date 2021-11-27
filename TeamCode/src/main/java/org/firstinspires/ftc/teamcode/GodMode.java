@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp(name = "DriverControl", group = "Linear Opmode")
+@TeleOp(name = "GodMode", group = "Linear Opmode")
 // @Disabled
 public class GodMode extends LinearOpMode {
 
@@ -34,7 +34,7 @@ public class GodMode extends LinearOpMode {
     double ARM_CATCH_UP_MAX_POWER = 0.5; // when the arm is at ARM_CATCHUP_ACCPECTANCE_RANGE diffrence, it will approach this power value [-1.0, +1]
     double ARM_CATCHUP_ACCPECTANCE_RANGE = 25;
     int ARM_CATCH_UP_INPUT_SPEED = 3;
-    int ARM_POS_MIN = 70;
+    int ARM_POS_MIN = 50;
     int ARM_POS_MAX = 470;
 
     int armTargetPosition = ARM_POS_MIN;
@@ -114,18 +114,18 @@ public class GodMode extends LinearOpMode {
       RIGHT_FRONT.setPower((-v3 - dampedRightJoystickX) / speedControl);
       RIGHT_REAR.setPower((-v4 - dampedRightJoystickX) / speedControl);
 
-      if (gamepad2.right_bumper) armTargetPosition =
+      if (gamepad1.right_bumper) armTargetPosition =
         Math.min(armTargetPosition + ARM_CATCH_UP_INPUT_SPEED, ARM_POS_MAX);
-      if (gamepad2.left_bumper) armTargetPosition =
+      if (gamepad1.left_bumper) armTargetPosition =
         Math.max(armTargetPosition - ARM_CATCH_UP_INPUT_SPEED, ARM_POS_MIN);
 
       ARM_JOINT_LEFT.setPower(armPosDiffCoefficient * ARM_CATCH_UP_MAX_POWER);
       ARM_JOINT_RIGHT.setPower(armPosDiffCoefficient * ARM_CATCH_UP_MAX_POWER);
 
-      EXTENDER.setPower(gamepad2.right_trigger);
-      EXTENDER.setPower(-gamepad2.left_trigger);
+      EXTENDER.setPower(gamepad1.right_trigger);
+      EXTENDER.setPower(-gamepad1.left_trigger);
 
-      SPINNER.setPosition(gamepad1.right_bumper ? 1 : 0.49);
+      SPINNER.setPosition(gamepad2.right_bumper ? 1 : 0.49);
 
       CLAW.setPosition(gamepad2.dpad_right ? 1 : 0);
       WRIST.setPosition(gamepad2.dpad_up ? 1 : 0);

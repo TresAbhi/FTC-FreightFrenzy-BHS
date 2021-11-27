@@ -36,7 +36,7 @@ public class DriverControl extends LinearOpMode {
     double ARM_CATCH_UP_MAX_POWER = 0.5; // when the arm is at ARM_CATCHUP_ACCPECTANCE_RANGE diffrence, it will approach this power value [-1.0, +1]
     double ARM_CATCHUP_ACCPECTANCE_RANGE = 25;
     int ARM_CATCH_UP_INPUT_SPEED = 3;
-    int ARM_POS_MIN = 70;
+    int ARM_POS_MIN = 50;
     int ARM_POS_MAX = 470;
 
     int armTargetPosition = ARM_POS_MIN;
