@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -31,10 +32,14 @@ public class DriverControl extends LinearOpMode {
   public void runOpMode() {
     // Constants
     double MOVEMENT_PRECISION = 2;
-    double ARM_CATCH_UP_POWER_REDUCTION = 80;
-    double ARM_CATCH_UP_SPEED = 1;
 
-    double armTargetPosition = 0.0;
+    double ARM_CATCH_UP_MAX_POWER = 0.2; // when the arm is at ARM_CATCH_UP_REACH_MAX_POWER_AT_DIFF diffrence, it will approach this power value [-1.0, +1]
+    double ARM_CATCH_UP_REACH_MAX_POWER_AT_DIFF = 25;
+    int ARM_CATCH_UP_INPUT_SPEED = 3;
+    int ARM_POS_MIN = 65;
+    int ARM_POS_MAX = 500;
+
+    int armTargetPosition = ARM_POS_MIN;
 
     // Components
     LEFT_FRONT = hardwareMap.get(DcMotor.class, "left_front");
@@ -54,6 +59,9 @@ public class DriverControl extends LinearOpMode {
     LEFT_FRONT.setDirection(DcMotor.Direction.REVERSE);
     RIGHT_REAR.setDirection(DcMotor.Direction.REVERSE);
 
+    ARM_JOINT_LEFT.setDirection(DcMotor.Direction.FORWARD);
+    ARM_JOINT_RIGHT.setDirection(DcMotor.Direction.REVERSE);
+
     telemetry.addData("Status", "Initialized");
     telemetry.update();
 
@@ -69,8 +77,13 @@ public class DriverControl extends LinearOpMode {
        * ~ 😘 Abhi
        */
       double speedControl = gamepad1.left_bumper ? 2.5 : 1.5;
-      double deltaArmPosition =
-        armTargetPosition - ARM_JOINT_LEFT.getCurrentPosition();
+      double currentPosition = ARM_JOINT_LEFT.getCurrentPosition();
+      double armPosDiffRaw = armTargetPosition - currentPosition;
+      double armPosDiffPartial =
+        armPosDiffRaw / ARM_CATCH_UP_REACH_MAX_POWER_AT_DIFF;
+      double armPosDiffCoefficient =
+        Math.signum(armPosDiffPartial) *
+        Math.min(Math.abs(armPosDiffPartial), 1);
 
       // dampen to not make it 1:1, it's an exponential growth
       double dampedLeftJoystickX =
@@ -104,18 +117,13 @@ public class DriverControl extends LinearOpMode {
       RIGHT_FRONT.setPower((-v3 - dampedRightJoystickX) / speedControl);
       RIGHT_REAR.setPower((-v4 - dampedRightJoystickX) / speedControl);
 
-      // ARM_JOINT_LEFT.setPower(gamepad2.right_bumper ? 0.5 : 0);
-      // ARM_JOINT_RIGHT.setPower(gamepad2.right_bumper ? -0.5 : 0);
-      // ARM_JOINT_LEFT.setPower(gamepad2.left_bumper ? -0.5 : 0);
-      // ARM_JOINT_RIGHT.setPower(gamepad2.left_bumper ? 0.5 : 0);
+      if (gamepad2.right_bumper) armTargetPosition =
+        Math.min(armTargetPosition + ARM_CATCH_UP_INPUT_SPEED, ARM_POS_MAX);
+      if (gamepad2.left_bumper) armTargetPosition =
+        Math.max(armTargetPosition - ARM_CATCH_UP_INPUT_SPEED, ARM_POS_MIN);
 
-      if (gamepad2.right_bumper) armTargetPosition += ARM_CATCH_UP_SPEED;
-      if (gamepad2.left_bumper) armTargetPosition -= ARM_CATCH_UP_SPEED;
-
-      ARM_JOINT_LEFT.setPower(deltaArmPosition / ARM_CATCH_UP_POWER_REDUCTION);
-      ARM_JOINT_RIGHT.setPower(
-        -deltaArmPosition / ARM_CATCH_UP_POWER_REDUCTION
-      );
+      ARM_JOINT_LEFT.setPower(armPosDiffCoefficient * ARM_CATCH_UP_MAX_POWER);
+      ARM_JOINT_RIGHT.setPower(armPosDiffCoefficient * ARM_CATCH_UP_MAX_POWER);
 
       EXTENDER.setPower(gamepad2.right_trigger);
       EXTENDER.setPower(-gamepad2.left_trigger);
@@ -131,27 +139,17 @@ public class DriverControl extends LinearOpMode {
 
       telemetry.addData("Status", "Run Time: " + runtime.toString());
 
-      telemetry.addData("LF Power", LEFT_FRONT.getPower());
-      telemetry.addData("LR Power", LEFT_REAR.getPower());
-      telemetry.addData("RF Power", RIGHT_FRONT.getPower());
-      telemetry.addData("RR Power", RIGHT_REAR.getPower());
-
-      telemetry.addData("Left Joystick X", gamepad1.left_stick_x);
-      telemetry.addData("Left Joystick Y", gamepad1.left_stick_y);
-      telemetry.addData("Right Joystick X", gamepad1.right_stick_x);
-      telemetry.addData("Right Joystick Y", gamepad1.right_stick_y);
-
-      telemetry.addData("Dampened Left Joystick X", dampedLeftJoystickX);
-      telemetry.addData("Dampened Left Joystick Y", dampedLeftJoystickY);
-      telemetry.addData("Dampened Right Joystick X", dampedRightJoystickX);
-      telemetry.addData("Dampened Right Joystick Y", dampedRightJoystickY);
-
-      telemetry.addData("Right DPad", gamepad2.dpad_right);
-
-      telemetry.addData("Conveyor 1", ARM_JOINT_LEFT.getPower());
-      telemetry.addData("Conveyor 2", ARM_JOINT_RIGHT.getPower());
-
       telemetry.addData("Claw Value", CLAW.getPosition());
+
+      telemetry.addData("armTargetPosition", armTargetPosition);
+      telemetry.addData("currentPosition", currentPosition);
+      telemetry.addData("armPosDiffRaw", armPosDiffRaw);
+      telemetry.addData("armPosDiffPartial", armPosDiffPartial);
+      telemetry.addData("armPosDiffCoefficient", armPosDiffCoefficient);
+      telemetry.addData(
+        "applied power",
+        armPosDiffCoefficient * ARM_CATCH_UP_MAX_POWER
+      );
 
       telemetry.update();
     }
