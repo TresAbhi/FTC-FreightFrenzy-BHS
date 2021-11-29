@@ -31,16 +31,21 @@ public class DriverControl extends LinearOpMode {
   private Gamepad g1 = gamepad1;
   private Gamepad g2 = gamepad2;
 
+  float lerp(float a, float b, float f) {
+    return a + f * (b - a);
+  }
+
   @Override
   public void runOpMode() {
     // Constants
     double MOVEMENT_PRECISION = 2;
 
-    double ARM_CATCH_UP_MAX_POWER = 0.5; // when the arm is at ARM_CATCHUP_ACCEPTANCE_RANGE diffrence, it will approach this power value [-1.0, +1]
-    double ARM_CATCHUP_ACCEPTANCE_RANGE = 20;
+    float ARM_CATCH_UP_MAX_POWER = 0.5f; // when the arm is at ARM_CATCHUP_ACCEPTANCE_RANGE diffrence, it will approach this power value [-1.0, +1]
+    float ARM_CATCH_UP_MIN_POWER = 0.1f; //make zero if it shake
+    float ARM_CATCHUP_ACCEPTANCE_RANGE = 45;
     int ARM_CATCH_UP_INPUT_SPEED = 3;
     int ARM_POS_MIN = 10;
-    int ARM_POS_MAX = ARM_POS_MIN + 405;
+    int ARM_POS_MAX = ARM_POS_MIN + 455;
 
     double EXTENDER_CATCH_UP_MAX_POWER = 0.5;
     double EXTENDER_CATCHUP_ACCEPTANCE_RANGE = 20;
@@ -108,10 +113,10 @@ public class DriverControl extends LinearOpMode {
        */
       double speedControl = g1.left_bumper ? 2.5 : 1.5;
 
-      double armCurrentPosition = ARM_JOINT_LEFT.getCurrentPosition();
-      double armPosDiffRaw = armTargetPosition - armCurrentPosition;
-      double armPosDiffPartial = armPosDiffRaw / ARM_CATCHUP_ACCEPTANCE_RANGE;
-      double armPosDiffCoefficient =
+      float armCurrentPosition = ARM_JOINT_LEFT.getCurrentPosition();
+      float armPosDiffRaw = armTargetPosition - armCurrentPosition;
+      float armPosDiffPartial = armPosDiffRaw / ARM_CATCHUP_ACCEPTANCE_RANGE;
+      float armPosDiffCoefficient =
         Math.signum(armPosDiffPartial) *
         Math.min(Math.abs(armPosDiffPartial), 1);
 
@@ -161,8 +166,22 @@ public class DriverControl extends LinearOpMode {
       if (g2.left_bumper) armTargetPosition =
         Math.max(armTargetPosition - ARM_CATCH_UP_INPUT_SPEED, ARM_POS_MIN);
 
-      ARM_JOINT_LEFT.setPower(armPosDiffCoefficient * ARM_CATCH_UP_MAX_POWER);
-      ARM_JOINT_RIGHT.setPower(armPosDiffCoefficient * ARM_CATCH_UP_MAX_POWER);
+      ARM_JOINT_LEFT.setPower(
+        Math.signum(armPosDiffCoefficient) *
+        lerp(
+          ARM_CATCH_UP_MIN_POWER,
+          ARM_CATCH_UP_MAX_POWER,
+          Math.abs(armPosDiffCoefficient)
+        )
+      );
+      ARM_JOINT_RIGHT.setPower(
+        Math.signum(armPosDiffCoefficient) *
+        lerp(
+          ARM_CATCH_UP_MIN_POWER,
+          ARM_CATCH_UP_MAX_POWER,
+          Math.abs(armPosDiffCoefficient)
+        )
+      );
 
       extenderTargetPosition =
         Math.min(
@@ -188,8 +207,15 @@ public class DriverControl extends LinearOpMode {
 
       CLAW.setPosition(g2.dpad_right ? 1 : 0);
 
-      WRIST.setPosition(g2.dpad_up ? 1 : 0);
-      /** If we have time, make it parallel to the ground auto*/
+      if (g2.x) {
+        WRIST.setPosition(0);
+        armTargetPosition = ARM_POS_MAX;
+        extenderTargetPosition = EXTENDER_POS_MIN;
+      } else if (g2.a) {
+        WRIST.setPosition(0.5);
+        armTargetPosition = (ARM_POS_MIN + ARM_POS_MAX) / 2;
+        extenderTargetPosition = (EXTENDER_POS_MIN + EXTENDER_POS_MIN) / 2;
+      }
 
       double drive = -dampedLeftJoystickY;
       double turn = dampedRightJoystickX;
@@ -203,6 +229,8 @@ public class DriverControl extends LinearOpMode {
       telemetry.addData("Arm position", ARM_JOINT_LEFT.getCurrentPosition());
       telemetry.addData("Arm target position", armTargetPosition);
 
+      telemetry.addData("left", ARM_JOINT_LEFT.getPower());
+      telemetry.addData("right", ARM_JOINT_RIGHT.getPower());
       telemetry.update();
     }
   }
