@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -27,6 +28,9 @@ public class DriverControl extends LinearOpMode {
 
   private Servo SPINNER = null;
 
+  private Gamepad g1 = gamepad1;
+  private Gamepad g2 = gamepad2;
+
   @Override
   public void runOpMode() {
     // Constants
@@ -38,7 +42,11 @@ public class DriverControl extends LinearOpMode {
     int ARM_POS_MIN = -422;
     int ARM_POS_MAX = ARM_POS_MIN + 405;
 
+    // Mutables
     int armTargetPosition = ARM_POS_MIN;
+
+    String driveMode = "normal";
+    boolean isModeSwitched = false;
 
     // Components
     LEFT_FRONT = hardwareMap.get(DcMotor.class, "left_front");
@@ -68,6 +76,22 @@ public class DriverControl extends LinearOpMode {
     runtime.reset();
 
     while (opModeIsActive()) {
+      if (driveMode == "normal") {
+        g1 = gamepad1;
+        g2 = gamepad2;
+      } else if (driveMode == "god") {
+        g1 = gamepad1;
+        g2 = gamepad1;
+      }
+
+      if (g1.y && !isModeSwitched) {
+        driveMode = driveMode == "normal" ? "god" : "normal";
+        isModeSwitched = true;
+      }
+      if (!g1.y) {
+        isModeSwitched = false;
+      }
+
       // Constants
       /**
        * dividing by 1.5 because it's too fast at 100% power
@@ -75,33 +99,34 @@ public class DriverControl extends LinearOpMode {
        * don't know what "a ? b : c" does? google ternary operators
        * ~ 😘 Abhi
        */
-      double speedControl = gamepad1.left_bumper ? 2.5 : 1.5;
+      double speedControl = g1.left_bumper ? 2.5 : 1.5;
+
       double currentPosition = ARM_JOINT_LEFT.getCurrentPosition();
       double armPosDiffRaw = armTargetPosition - currentPosition;
       double armPosDiffPartial = armPosDiffRaw / ARM_CATCHUP_ACCPECTANCE_RANGE;
       double armPosDiffCoefficient =
         Math.signum(armPosDiffPartial) *
         Math.min(Math.abs(armPosDiffPartial), 1);
-
       // dampen to not make it 1:1, it's an exponential growth
       double dampedLeftJoystickX =
-        Math.signum(gamepad1.left_stick_x) *
-        Math.pow(gamepad1.left_stick_x, MOVEMENT_PRECISION);
-      double dampedLeftJoystickY =
-        Math.signum(gamepad1.left_stick_y) *
-        Math.pow(gamepad1.left_stick_y, MOVEMENT_PRECISION);
-      double dampedRightJoystickX =
-        Math.signum(gamepad1.right_stick_x) *
-        Math.pow(gamepad1.right_stick_x, MOVEMENT_PRECISION);
-      double dampedRightJoystickY =
-        Math.signum(gamepad1.right_stick_y) *
-        Math.pow(gamepad1.right_stick_y, MOVEMENT_PRECISION);
+        Math.signum(g1.left_stick_x) *
+        Math.pow(g1.left_stick_x, MOVEMENT_PRECISION);
 
+      double dampedLeftJoystickY =
+        Math.signum(g1.left_stick_y) *
+        Math.pow(g1.left_stick_y, MOVEMENT_PRECISION);
+      double dampedRightJoystickX =
+        Math.signum(g1.right_stick_x) *
+        Math.pow(g1.right_stick_x, MOVEMENT_PRECISION);
+      double dampedRightJoystickY =
+        Math.signum(g1.right_stick_y) *
+        Math.pow(g1.right_stick_y, MOVEMENT_PRECISION);
       // resultant vectors
       double vectorNormal = Math.hypot(
         dampedLeftJoystickY,
         dampedLeftJoystickX
       );
+
       double robotAngle =
         Math.atan2(dampedLeftJoystickY, -dampedLeftJoystickX) - Math.PI / 4;
       // trig to find out partial offsets in axes (plural of axis)
@@ -109,45 +134,34 @@ public class DriverControl extends LinearOpMode {
       double v2 = vectorNormal * Math.sin(robotAngle);
       double v3 = vectorNormal * Math.sin(robotAngle);
       double v4 = vectorNormal * Math.cos(robotAngle);
-
       LEFT_FRONT.setPower((-v1 + dampedRightJoystickX) / speedControl);
+
       LEFT_REAR.setPower((-v2 + dampedRightJoystickX) / speedControl);
       RIGHT_FRONT.setPower((-v3 - dampedRightJoystickX) / speedControl);
       RIGHT_REAR.setPower((-v4 - dampedRightJoystickX) / speedControl);
-
-      if (gamepad2.right_bumper) armTargetPosition =
+      if (g2.right_bumper) armTargetPosition =
         Math.min(armTargetPosition + ARM_CATCH_UP_INPUT_SPEED, ARM_POS_MAX);
-      if (gamepad2.left_bumper) armTargetPosition =
+
+      if (g2.left_bumper) armTargetPosition =
         Math.max(armTargetPosition - ARM_CATCH_UP_INPUT_SPEED, ARM_POS_MIN);
-
       ARM_JOINT_LEFT.setPower(armPosDiffCoefficient * ARM_CATCH_UP_MAX_POWER);
+
       ARM_JOINT_RIGHT.setPower(armPosDiffCoefficient * ARM_CATCH_UP_MAX_POWER);
+      EXTENDER.setPower(g2.right_trigger);
 
-      EXTENDER.setPower(gamepad2.right_trigger);
-      EXTENDER.setPower(-gamepad2.left_trigger);
+      EXTENDER.setPower(-g2.left_trigger);
+      SPINNER.setPosition(g1.right_bumper ? 1 : 0.49);
 
-      SPINNER.setPosition(gamepad1.right_bumper ? 1 : 0.49);
+      CLAW.setPosition(g2.dpad_right ? 1 : 0);
 
-      CLAW.setPosition(gamepad2.dpad_right ? 1 : 0);
-      WRIST.setPosition(gamepad2.dpad_up ? 1 : 0);
+      WRIST.setPosition(g2.dpad_up ? 1 : 0);
       /** If we have time, make it parallel to the ground auto*/
 
       double drive = -dampedLeftJoystickY;
       double turn = dampedRightJoystickX;
 
       telemetry.addData("Status", "Run Time: " + runtime.toString());
-
-      telemetry.addData("Claw Value", CLAW.getPosition());
-
-      telemetry.addData("armTargetPosition", armTargetPosition);
-      telemetry.addData("currentPosition", currentPosition);
-      telemetry.addData("armPosDiffRaw", armPosDiffRaw);
-      telemetry.addData("armPosDiffPartial", armPosDiffPartial);
-      telemetry.addData("armPosDiffCoefficient", armPosDiffCoefficient);
-      telemetry.addData(
-        "applied power",
-        armPosDiffCoefficient * ARM_CATCH_UP_MAX_POWER
-      );
+      telemetry.addData("Drive mode", driveMode);
 
       telemetry.update();
     }
