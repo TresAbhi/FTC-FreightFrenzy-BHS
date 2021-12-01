@@ -34,12 +34,13 @@ public class DriverControl extends LinearOpMode {
   // Constants
   double MOVEMENT_PRECISION = 2;
 
-  double ARM_CATCH_UP_MAX_POWER = 0.5; // when the arm is at ARM_CATCHUP_ACCEPTANCE_RANGE diffrence, it will approach this power value [-1.0, +1]
-  int ARM_JOINT_INPUT_SPEED = 3;
   int ARM_POS_MIN = 40;
   int ARM_POS_MAX = ARM_POS_MIN + 415;
   double ARM_CATCHUP_ACCEPTANCE_RANGE = 20;
   double ARM_TWEEN_ACCEPTANCE_RANGE = 5;
+  double ARM_CATCH_UP_MAX_POWER = 0.5; // when the arm is at ARM_CATCHUP_ACCEPTANCE_RANGE diffrence, it will approach this power value [-1.0, +1]
+  int ARM_JOINT_INPUT_SPEED = 3;
+  int ARM_JOINT_PRECISION = 4;
 
   double EXTENDER_CATCH_UP_MAX_POWER = 0.5;
   double EXTENDER_CATCHUP_ACCEPTANCE_RANGE = 20;
@@ -55,9 +56,6 @@ public class DriverControl extends LinearOpMode {
   boolean isModeSwitched = false;
 
   boolean isArmJointTweening = false;
-
-  // Debugging
-  boolean working = false;
 
   // Methods
   void tweenArmJointAsync(double target) {
@@ -135,7 +133,7 @@ public class DriverControl extends LinearOpMode {
       double armPosDiffPartial = armPosDiffRaw / ARM_CATCHUP_ACCEPTANCE_RANGE;
       double armPosDiffCoefficient =
         Math.signum(armPosDiffPartial) *
-        Math.min(Math.abs(armPosDiffPartial), 1);
+        Math.pow(Math.min(Math.abs(armPosDiffPartial), 1), ARM_JOINT_PRECISION);
 
       double extenderCurrentPosition = EXTENDER.getCurrentPosition();
       double extenderPosDiffRaw =
@@ -208,14 +206,12 @@ public class DriverControl extends LinearOpMode {
       WRIST.setPosition(g2.dpad_up ? 1 : 0);
 
       if (!isArmJointTweening && g2.x) {
-        Thread armThread = new Thread(
-          () -> {
-            working = true;
-            tweenArmJointAsync(ARM_POS_MAX);
-            working = false;
-          }
-        );
-        armThread.start();
+        // Thread armThread = new Thread(
+        //   () -> {
+        tweenArmJointAsync(ARM_POS_MAX);
+        // }
+        // );
+        // armThread.start();
       }
 
       double drive = -dampedLeftJoystickY;
@@ -230,7 +226,7 @@ public class DriverControl extends LinearOpMode {
       telemetry.addData("Arm position", ARM_JOINT_LEFT.getCurrentPosition());
       telemetry.addData("Arm target position", armJoinTargetPosition);
 
-      telemetry.addData("working", working);
+      telemetry.addData("isTweening", isArmJointTweening);
 
       telemetry.update();
     }
