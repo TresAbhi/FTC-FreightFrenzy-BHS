@@ -35,12 +35,13 @@ public class DriverControl extends LinearOpMode {
   public void runOpMode() {
     // Constants
     double MOVEMENT_PRECISION = 2;
+    double ARM_JOINT_PRECISION = 10;
 
     double ARM_CATCH_UP_MAX_POWER = 0.5; // when the arm is at ARM_CATCHUP_ACCEPTANCE_RANGE diffrence, it will approach this power value [-1.0, +1]
     double ARM_CATCHUP_ACCEPTANCE_RANGE = 20;
     int ARM_CATCH_UP_INPUT_SPEED = 3;
-    int ARM_POS_MIN = 10;
-    int ARM_POS_MAX = ARM_POS_MIN + 405;
+    int ARM_POS_MIN = 40;
+    int ARM_POS_MAX = ARM_POS_MIN + 415;
 
     double EXTENDER_CATCH_UP_MAX_POWER = 0.5;
     double EXTENDER_CATCHUP_ACCEPTANCE_RANGE = 20;
@@ -122,7 +123,10 @@ public class DriverControl extends LinearOpMode {
         extenderPosDiffRaw / EXTENDER_CATCHUP_ACCEPTANCE_RANGE;
       double extenderPosDiffCoefficient =
         Math.signum(extenderPosDiffPartial) *
-        Math.min(Math.abs(extenderPosDiffPartial), 1);
+        Math.pow(
+          Math.min(Math.abs(extenderPosDiffPartial), 1),
+          ARM_JOINT_PRECISION
+        );
 
       // dampen to not make it 1:1, it's an exponential growth
       double dampedLeftJoystickX =
