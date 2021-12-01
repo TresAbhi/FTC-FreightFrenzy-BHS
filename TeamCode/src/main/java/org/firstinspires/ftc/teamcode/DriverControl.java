@@ -31,31 +31,54 @@ public class DriverControl extends LinearOpMode {
   private Gamepad g1 = gamepad1;
   private Gamepad g2 = gamepad2;
 
+  // Constants
+  double MOVEMENT_PRECISION = 2;
+
+  double ARM_CATCH_UP_MAX_POWER = 0.5; // when the arm is at ARM_CATCHUP_ACCEPTANCE_RANGE diffrence, it will approach this power value [-1.0, +1]
+  int ARM_JOINT_INPUT_SPEED = 3;
+  int ARM_POS_MIN = 40;
+  int ARM_POS_MAX = ARM_POS_MIN + 415;
+  double ARM_CATCHUP_ACCEPTANCE_RANGE = 20;
+  double ARM_TWEEN_ACCEPTANCE_RANGE = 5;
+
+  double EXTENDER_CATCH_UP_MAX_POWER = 0.5;
+  double EXTENDER_CATCHUP_ACCEPTANCE_RANGE = 20;
+  float EXTENDER_CATCH_UP_INPUT_SPEED = 15;
+  float EXTENDER_POS_MIN = -10;
+  float EXTENDER_POS_MAX = EXTENDER_POS_MIN + 1575;
+
+  // Mutables
+  double armJoinTargetPosition = ARM_POS_MIN;
+  float extenderTargetPosition = EXTENDER_POS_MIN;
+
+  String driveMode = "normal";
+  boolean isModeSwitched = false;
+
+  boolean isArmJointTweening = false;
+
+  // Debugging
+  boolean working = false;
+
+  // Methods
+  void tweenArmJointAsync(double target) {
+    isArmJointTweening = true;
+    while (
+      Math.abs(target - armJoinTargetPosition) < ARM_TWEEN_ACCEPTANCE_RANGE
+    ) {
+      armJoinTargetPosition =
+        Math.min(
+          Math.max(
+            Math.signum(target - armJoinTargetPosition) * ARM_JOINT_INPUT_SPEED,
+            ARM_POS_MIN
+          ),
+          ARM_POS_MAX
+        );
+    }
+    isArmJointTweening = false;
+  }
+
   @Override
   public void runOpMode() {
-    // Constants
-    double MOVEMENT_PRECISION = 2;
-    double ARM_JOINT_PRECISION = 10;
-
-    double ARM_CATCH_UP_MAX_POWER = 0.5; // when the arm is at ARM_CATCHUP_ACCEPTANCE_RANGE diffrence, it will approach this power value [-1.0, +1]
-    double ARM_CATCHUP_ACCEPTANCE_RANGE = 20;
-    int ARM_CATCH_UP_INPUT_SPEED = 3;
-    int ARM_POS_MIN = 40;
-    int ARM_POS_MAX = ARM_POS_MIN + 415;
-
-    double EXTENDER_CATCH_UP_MAX_POWER = 0.5;
-    double EXTENDER_CATCHUP_ACCEPTANCE_RANGE = 20;
-    float EXTENDER_CATCH_UP_INPUT_SPEED = 15;
-    float EXTENDER_POS_MIN = -10;
-    float EXTENDER_POS_MAX = EXTENDER_POS_MIN + 1575;
-
-    // Mutables
-    int armTargetPosition = ARM_POS_MIN;
-    float extenderTargetPosition = EXTENDER_POS_MIN;
-
-    String driveMode = "normal";
-    boolean isModeSwitched = false;
-
     // Components
     LEFT_FRONT = hardwareMap.get(DcMotor.class, "left_front");
     LEFT_REAR = hardwareMap.get(DcMotor.class, "left_rear");
@@ -96,9 +119,7 @@ public class DriverControl extends LinearOpMode {
         driveMode = driveMode == "normal" ? "god" : "normal";
         isModeSwitched = true;
       }
-      if (!g1.y) {
-        isModeSwitched = false;
-      }
+      if (!g1.y) isModeSwitched = false;
 
       // Constants
       /**
@@ -110,7 +131,7 @@ public class DriverControl extends LinearOpMode {
       double speedControl = g1.left_bumper ? 2.5 : 1.5;
 
       double armCurrentPosition = ARM_JOINT_LEFT.getCurrentPosition();
-      double armPosDiffRaw = armTargetPosition - armCurrentPosition;
+      double armPosDiffRaw = armJoinTargetPosition - armCurrentPosition;
       double armPosDiffPartial = armPosDiffRaw / ARM_CATCHUP_ACCEPTANCE_RANGE;
       double armPosDiffCoefficient =
         Math.signum(armPosDiffPartial) *
@@ -123,10 +144,7 @@ public class DriverControl extends LinearOpMode {
         extenderPosDiffRaw / EXTENDER_CATCHUP_ACCEPTANCE_RANGE;
       double extenderPosDiffCoefficient =
         Math.signum(extenderPosDiffPartial) *
-        Math.pow(
-          Math.min(Math.abs(extenderPosDiffPartial), 1),
-          ARM_JOINT_PRECISION
-        );
+        Math.min(Math.abs(extenderPosDiffPartial), 1);
 
       // dampen to not make it 1:1, it's an exponential growth
       double dampedLeftJoystickX =
@@ -160,10 +178,10 @@ public class DriverControl extends LinearOpMode {
       RIGHT_FRONT.setPower((-v3 - dampedRightJoystickX) / speedControl);
       RIGHT_REAR.setPower((-v4 - dampedRightJoystickX) / speedControl);
 
-      if (g2.right_bumper) armTargetPosition =
-        Math.min(armTargetPosition + ARM_CATCH_UP_INPUT_SPEED, ARM_POS_MAX);
-      if (g2.left_bumper) armTargetPosition =
-        Math.max(armTargetPosition - ARM_CATCH_UP_INPUT_SPEED, ARM_POS_MIN);
+      if (g2.right_bumper) armJoinTargetPosition =
+        Math.min(armJoinTargetPosition + ARM_JOINT_INPUT_SPEED, ARM_POS_MAX);
+      if (g2.left_bumper) armJoinTargetPosition =
+        Math.max(armJoinTargetPosition - ARM_JOINT_INPUT_SPEED, ARM_POS_MIN);
 
       ARM_JOINT_LEFT.setPower(armPosDiffCoefficient * ARM_CATCH_UP_MAX_POWER);
       ARM_JOINT_RIGHT.setPower(armPosDiffCoefficient * ARM_CATCH_UP_MAX_POWER);
@@ -185,15 +203,20 @@ public class DriverControl extends LinearOpMode {
         extenderPosDiffCoefficient * EXTENDER_CATCH_UP_MAX_POWER
       );
 
-      // EXTENDER.setPower(g2.right_trigger);
-      // EXTENDER.setPower(-g2.left_trigger);
-
       SPINNER.setPosition(g1.right_bumper ? 1 : 0.49);
-
       CLAW.setPosition(g2.dpad_right ? 1 : 0);
-
       WRIST.setPosition(g2.dpad_up ? 1 : 0);
-      /** If we have time, make it parallel to the ground auto*/
+
+      if (!isArmJointTweening && g2.x) {
+        Thread armThread = new Thread(
+          () -> {
+            working = true;
+            tweenArmJointAsync(ARM_POS_MAX);
+            working = false;
+          }
+        );
+        armThread.start();
+      }
 
       double drive = -dampedLeftJoystickY;
       double turn = dampedRightJoystickX;
@@ -205,7 +228,9 @@ public class DriverControl extends LinearOpMode {
       telemetry.addData("Extender target position", extenderTargetPosition);
 
       telemetry.addData("Arm position", ARM_JOINT_LEFT.getCurrentPosition());
-      telemetry.addData("Arm target position", armTargetPosition);
+      telemetry.addData("Arm target position", armJoinTargetPosition);
+
+      telemetry.addData("working", working);
 
       telemetry.update();
     }
