@@ -32,7 +32,7 @@ public class DriverControl extends LinearOpMode {
   private Gamepad player2 = gamepad2;
 
   // Constants
-  double MOVEMENT_PRECISION = 2;
+  float MOVEMENT_PRECISION = 2f;
 
   int ARM_JOINT_MIN_ANGLE = 40;
   int ARM_JOINT_MAX_ANGLE = ARM_JOINT_MIN_ANGLE + 415;
@@ -42,10 +42,27 @@ public class DriverControl extends LinearOpMode {
   int EXTENDER_MIN_POS = 40;
   int EXTENDER_MAX_POS = EXTENDER_MIN_POS + 1490;
   float EXTENDER_POWER = 0.2f;
-  int EXTENDER_INPUT_SPEED = 4;
+  int EXTENDER_INPUT_SPEED = 24;
 
   float SPEED_LOW_POWER = 0.4f;
   float SPEED_HIGH_POWER = 0.8f;
+
+  // Preset states
+  int ARM_LOW_JOINT_ANGLE;
+  int ARM_LOW_EXTENDER_POS;
+  int ARM_LOW_WRIST_ANGLE;
+
+  int ARM_MIDDLE_JOINT_ANGLE;
+  int ARM_MIDDLE_EXTENDER_POS;
+  int ARM_MIDDLE_WRIST_ANGLE;
+
+  int ARM_HIGH_JOINT_ANGLE;
+  int ARM_HIGH_EXTENDER_POS;
+  int ARM_HIGH_WRIST_ANGLE;
+
+  int ARM_GROUND_JOINT_ANGLE;
+  int ARM_GROUND_EXTENDER_POS;
+  int ARM_GROUND_WRIST_ANGLE;
 
   // Mutables
   int armJointTargetPosition = ARM_JOINT_MIN_ANGLE;
@@ -110,11 +127,11 @@ public class DriverControl extends LinearOpMode {
         ? SPEED_LOW_POWER
         : SPEED_HIGH_POWER;
 
-      if (player1.y && !isModeSwitched) {
+      if ((player1.back || player1.back) && !isModeSwitched) {
         driveMode = driveMode == "normal" ? "god" : "normal";
         isModeSwitched = true;
       }
-      if (!player1.y) isModeSwitched = false;
+      if (!(player1.back || player1.back)) isModeSwitched = false;
 
       double dampedLeftJoystickX =
         Math.signum(player1.left_stick_x) *
@@ -129,18 +146,17 @@ public class DriverControl extends LinearOpMode {
         Math.signum(player1.right_stick_y) *
         Math.pow(player1.right_stick_y, MOVEMENT_PRECISION);
 
-      // resultant vectors
+      /**
+       * Trig to find out partial offsets in axes (plural of axis)
+       *
+       * Don't mess with this unless you know what you're doing!!!
+       */
       double vectorNormal = Math.hypot(
         dampedLeftJoystickY,
         dampedLeftJoystickX
       );
       double robotAngle =
         Math.atan2(dampedLeftJoystickY, -dampedLeftJoystickX) - Math.PI / 4;
-      /**
-       * Trig to find out partial offsets in axes (plural of axis)
-       *
-       * Don't mess with this unless you know what you're doing!!!
-       */
       double vector1 = vectorNormal * Math.cos(robotAngle);
       double vector2 = vectorNormal * Math.sin(robotAngle);
       double vector3 = vectorNormal * Math.sin(robotAngle);
