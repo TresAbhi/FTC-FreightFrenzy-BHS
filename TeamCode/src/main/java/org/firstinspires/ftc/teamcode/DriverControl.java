@@ -34,46 +34,25 @@ public class DriverControl extends LinearOpMode {
   // Constants
   double MOVEMENT_PRECISION = 2;
 
-  int ARM_POS_MIN = 40;
-  int ARM_POS_MAX = ARM_POS_MIN + 415;
-  double ARM_CATCHUP_ACCEPTANCE_RANGE = 20;
-  double ARM_TWEEN_ACCEPTANCE_RANGE = 5;
-  double ARM_CATCH_UP_MAX_POWER = 0.5; // when the arm is at ARM_CATCHUP_ACCEPTANCE_RANGE diffrence, it will approach this power value [-1.0, +1]
-  int ARM_JOINT_INPUT_SPEED = 3;
-  int ARM_JOINT_PRECISION = 4;
+  int ARM_JOINT_MIN_ANGLE = 40;
+  int ARM_JOINT_MAX_ANGLE = ARM_JOINT_MIN_ANGLE + 415;
+  float ARM_JOINT_POWER = 0.5f;
+  int ARM_JOINT_INPUT_SPEED = 4;
 
-  double EXTENDER_CATCH_UP_MAX_POWER = 0.5;
-  double EXTENDER_CATCHUP_ACCEPTANCE_RANGE = 20;
-  float EXTENDER_CATCH_UP_INPUT_SPEED = 15;
-  float EXTENDER_POS_MIN = -10;
-  float EXTENDER_POS_MAX = EXTENDER_POS_MIN + 1575;
+  int EXTENDER_MIN_POS = 40;
+  int EXTENDER_MAX_POS = EXTENDER_MIN_POS + 415;
+  float EXTENDER_POWER = 0.5f;
+  int EXTENDER_INPUT_SPEED = 4;
+
+  float SPEED_LOW_POWER = 0.4f;
+  float SPEED_HIGH_POWER = 0.8f;
 
   // Mutables
-  double armJoinTargetPosition = ARM_POS_MIN;
-  float extenderTargetPosition = EXTENDER_POS_MIN;
+  int armJointTargetPosition = ARM_JOINT_MIN_ANGLE;
+  int extenderTargetPosition = EXTENDER_MIN_POS;
 
   String driveMode = "normal";
   boolean isModeSwitched = false;
-
-  boolean isArmJointTweening = false;
-
-  // Methods
-  void tweenArmJointAsync(double target) {
-    isArmJointTweening = true;
-    while (
-      Math.abs(target - armJoinTargetPosition) < ARM_TWEEN_ACCEPTANCE_RANGE
-    ) {
-      armJoinTargetPosition =
-        Math.min(
-          Math.max(
-            Math.signum(target - armJoinTargetPosition) * ARM_JOINT_INPUT_SPEED,
-            ARM_POS_MIN
-          ),
-          ARM_POS_MAX
-        );
-    }
-    isArmJointTweening = false;
-  }
 
   @Override
   public void runOpMode() {
@@ -113,38 +92,14 @@ public class DriverControl extends LinearOpMode {
         g2 = gamepad1;
       }
 
+      float powerMode = g1.left_bumper ? SPEED_LOW_POWER : SPEED_HIGH_POWER;
+
       if (g1.y && !isModeSwitched) {
         driveMode = driveMode == "normal" ? "god" : "normal";
         isModeSwitched = true;
       }
       if (!g1.y) isModeSwitched = false;
 
-      // Constants
-      /**
-       * dividing by 1.5 because it's too fast at 100% power
-       *
-       * don't know what "a ? b : c" does? google ternary operators
-       * ~ 😘 Abhi
-       */
-      double speedControl = g1.left_bumper ? 2.5 : 1.5;
-
-      double armCurrentPosition = ARM_JOINT_LEFT.getCurrentPosition();
-      double armPosDiffRaw = armJoinTargetPosition - armCurrentPosition;
-      double armPosDiffPartial = armPosDiffRaw / ARM_CATCHUP_ACCEPTANCE_RANGE;
-      double armPosDiffCoefficient =
-        Math.signum(armPosDiffPartial) *
-        Math.pow(Math.min(Math.abs(armPosDiffPartial), 1), ARM_JOINT_PRECISION);
-
-      double extenderCurrentPosition = EXTENDER.getCurrentPosition();
-      double extenderPosDiffRaw =
-        extenderTargetPosition - extenderCurrentPosition;
-      double extenderPosDiffPartial =
-        extenderPosDiffRaw / EXTENDER_CATCHUP_ACCEPTANCE_RANGE;
-      double extenderPosDiffCoefficient =
-        Math.signum(extenderPosDiffPartial) *
-        Math.min(Math.abs(extenderPosDiffPartial), 1);
-
-      // dampen to not make it 1:1, it's an exponential growth
       double dampedLeftJoystickX =
         Math.signum(g1.left_stick_x) *
         Math.pow(g1.left_stick_x, MOVEMENT_PRECISION);
@@ -157,65 +112,65 @@ public class DriverControl extends LinearOpMode {
       double dampedRightJoystickY =
         Math.signum(g1.right_stick_y) *
         Math.pow(g1.right_stick_y, MOVEMENT_PRECISION);
+
       // resultant vectors
       double vectorNormal = Math.hypot(
         dampedLeftJoystickY,
         dampedLeftJoystickX
       );
-
       double robotAngle =
         Math.atan2(dampedLeftJoystickY, -dampedLeftJoystickX) - Math.PI / 4;
-      // trig to find out partial offsets in axes (plural of axis)
-      double v1 = vectorNormal * Math.cos(robotAngle);
-      double v2 = vectorNormal * Math.sin(robotAngle);
-      double v3 = vectorNormal * Math.sin(robotAngle);
-      double v4 = vectorNormal * Math.cos(robotAngle);
-      LEFT_FRONT.setPower((-v1 + dampedRightJoystickX) / speedControl);
+      /**
+       * Trig to find out partial offsets in axes (plural of axis)
+       *
+       * Don't mess with this unless you know what you're doing!!!
+       */
+      double vector1 = vectorNormal * Math.cos(robotAngle);
+      double vector2 = vectorNormal * Math.sin(robotAngle);
+      double vector3 = vectorNormal * Math.sin(robotAngle);
+      double vector4 = vectorNormal * Math.cos(robotAngle);
 
-      LEFT_REAR.setPower((-v2 + dampedRightJoystickX) / speedControl);
-      RIGHT_FRONT.setPower((-v3 - dampedRightJoystickX) / speedControl);
-      RIGHT_REAR.setPower((-v4 - dampedRightJoystickX) / speedControl);
+      LEFT_FRONT.setPower((-vector1 + dampedRightJoystickX) * powerMode);
+      LEFT_REAR.setPower((-vector2 + dampedRightJoystickX) * powerMode);
+      RIGHT_FRONT.setPower((-vector3 - dampedRightJoystickX) * powerMode);
+      RIGHT_REAR.setPower((-vector4 - dampedRightJoystickX) * powerMode);
 
-      if (g2.right_bumper) armJoinTargetPosition =
-        Math.min(armJoinTargetPosition + ARM_JOINT_INPUT_SPEED, ARM_POS_MAX);
-      if (g2.left_bumper) armJoinTargetPosition =
-        Math.max(armJoinTargetPosition - ARM_JOINT_INPUT_SPEED, ARM_POS_MIN);
-
-      ARM_JOINT_LEFT.setPower(armPosDiffCoefficient * ARM_CATCH_UP_MAX_POWER);
-      ARM_JOINT_RIGHT.setPower(armPosDiffCoefficient * ARM_CATCH_UP_MAX_POWER);
+      if (g2.right_bumper) {
+        armJointTargetPosition =
+          Math.min(
+            armJointTargetPosition + ARM_JOINT_INPUT_SPEED,
+            ARM_JOINT_MAX_ANGLE
+          );
+      }
+      if (g2.left_bumper) {
+        armJointTargetPosition =
+          Math.max(
+            armJointTargetPosition - ARM_JOINT_INPUT_SPEED,
+            ARM_JOINT_MIN_ANGLE
+          );
+      }
 
       extenderTargetPosition =
         Math.min(
           extenderTargetPosition +
-          (EXTENDER_CATCH_UP_INPUT_SPEED * g2.right_trigger),
-          EXTENDER_POS_MAX
+          Math.round((EXTENDER_INPUT_SPEED * g2.right_trigger)),
+          EXTENDER_MAX_POS
         );
       extenderTargetPosition =
         Math.max(
           extenderTargetPosition -
-          (EXTENDER_CATCH_UP_INPUT_SPEED * g2.left_trigger),
-          EXTENDER_POS_MIN
+          Math.round((EXTENDER_INPUT_SPEED * g2.left_trigger)),
+          EXTENDER_MIN_POS
         );
 
-      EXTENDER.setPower(
-        extenderPosDiffCoefficient * EXTENDER_CATCH_UP_MAX_POWER
-      );
+      // Temporary
+      // EXTENDER.setPosition(
+      //   extenderPosDiffCoefficient * EXTENDER_CATCH_UP_MAX_POWER
+      // );
 
       SPINNER.setPosition(g1.right_bumper ? 1 : 0.49);
       CLAW.setPosition(g2.dpad_right ? 1 : 0);
       WRIST.setPosition(g2.dpad_up ? 1 : 0);
-
-      if (!isArmJointTweening && g2.x) {
-        // Thread armThread = new Thread(
-        //   () -> {
-        tweenArmJointAsync(ARM_POS_MAX);
-        // }
-        // );
-        // armThread.start();
-      }
-
-      double drive = -dampedLeftJoystickY;
-      double turn = dampedRightJoystickX;
 
       telemetry.addData("Status", "Run Time: " + runtime.toString());
       telemetry.addData("Drive mode", driveMode);
@@ -224,9 +179,10 @@ public class DriverControl extends LinearOpMode {
       telemetry.addData("Extender target position", extenderTargetPosition);
 
       telemetry.addData("Arm position", ARM_JOINT_LEFT.getCurrentPosition());
-      telemetry.addData("Arm target position", armJoinTargetPosition);
+      telemetry.addData("Arm target position", armJointTargetPosition);
 
-      telemetry.addData("isTweening", isArmJointTweening);
+      telemetry.addData("left joint", ARM_JOINT_LEFT.getCurrentPosition());
+      telemetry.addData("right joint", ARM_JOINT_RIGHT.getCurrentPosition());
 
       telemetry.update();
     }
