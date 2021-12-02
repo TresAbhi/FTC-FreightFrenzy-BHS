@@ -36,12 +36,12 @@ public class DriverControl extends LinearOpMode {
 
   int ARM_JOINT_MIN_ANGLE = 40;
   int ARM_JOINT_MAX_ANGLE = ARM_JOINT_MIN_ANGLE + 415;
-  float ARM_JOINT_POWER = 0.2f;
+  float ARM_JOINT_POWER = 0.4f;
   int ARM_JOINT_INPUT_SPEED = 4;
 
   int EXTENDER_MIN_POS = 40;
   int EXTENDER_MAX_POS = EXTENDER_MIN_POS + 1490;
-  float EXTENDER_POWER = 0.2f;
+  float EXTENDER_POWER = 0.4f;
   int EXTENDER_INPUT_SPEED = 24;
 
   float SPEED_LOW_POWER = 0.4f;
