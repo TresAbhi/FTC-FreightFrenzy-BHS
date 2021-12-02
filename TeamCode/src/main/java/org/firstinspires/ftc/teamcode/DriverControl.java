@@ -28,8 +28,8 @@ public class DriverControl extends LinearOpMode {
 
   private Servo SPINNER = null;
 
-  private Gamepad g1 = gamepad1;
-  private Gamepad g2 = gamepad2;
+  private Gamepad player1 = gamepad1;
+  private Gamepad player2 = gamepad2;
 
   // Constants
   double MOVEMENT_PRECISION = 2;
@@ -40,7 +40,7 @@ public class DriverControl extends LinearOpMode {
   int ARM_JOINT_INPUT_SPEED = 4;
 
   int EXTENDER_MIN_POS = 40;
-  int EXTENDER_MAX_POS = EXTENDER_MIN_POS + 415;
+  int EXTENDER_MAX_POS = EXTENDER_MIN_POS + 1490;
   float EXTENDER_POWER = 0.2f;
   int EXTENDER_INPUT_SPEED = 4;
 
@@ -78,10 +78,16 @@ public class DriverControl extends LinearOpMode {
     ARM_JOINT_RIGHT.setDirection(DcMotor.Direction.REVERSE);
     ARM_JOINT_LEFT.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     ARM_JOINT_RIGHT.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    ARM_JOINT_LEFT.setTargetPosition(ARM_JOINT_MIN_ANGLE);
+    ARM_JOINT_RIGHT.setTargetPosition(ARM_JOINT_MIN_ANGLE);
+    ARM_JOINT_LEFT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    ARM_JOINT_RIGHT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     ARM_JOINT_LEFT.setPower(ARM_JOINT_POWER);
     ARM_JOINT_RIGHT.setPower(ARM_JOINT_POWER);
 
     EXTENDER.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    EXTENDER.setTargetPosition(EXTENDER_MIN_POS);
+    EXTENDER.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     EXTENDER.setPower(EXTENDER_POWER);
 
     telemetry.addData("Status", "Initialized");
@@ -93,33 +99,35 @@ public class DriverControl extends LinearOpMode {
 
     while (opModeIsActive()) {
       if (driveMode == "normal") {
-        g1 = gamepad1;
-        g2 = gamepad2;
+        player1 = gamepad1;
+        player2 = gamepad2;
       } else if (driveMode == "god") {
-        g1 = gamepad1;
-        g2 = gamepad1;
+        player1 = gamepad1;
+        player2 = gamepad1;
       }
 
-      float powerMode = g1.left_bumper ? SPEED_LOW_POWER : SPEED_HIGH_POWER;
+      float powerMode = player1.left_bumper
+        ? SPEED_LOW_POWER
+        : SPEED_HIGH_POWER;
 
-      if (g1.y && !isModeSwitched) {
+      if (player1.y && !isModeSwitched) {
         driveMode = driveMode == "normal" ? "god" : "normal";
         isModeSwitched = true;
       }
-      if (!g1.y) isModeSwitched = false;
+      if (!player1.y) isModeSwitched = false;
 
       double dampedLeftJoystickX =
-        Math.signum(g1.left_stick_x) *
-        Math.pow(g1.left_stick_x, MOVEMENT_PRECISION);
+        Math.signum(player1.left_stick_x) *
+        Math.pow(player1.left_stick_x, MOVEMENT_PRECISION);
       double dampedLeftJoystickY =
-        Math.signum(g1.left_stick_y) *
-        Math.pow(g1.left_stick_y, MOVEMENT_PRECISION);
+        Math.signum(player1.left_stick_y) *
+        Math.pow(player1.left_stick_y, MOVEMENT_PRECISION);
       double dampedRightJoystickX =
-        Math.signum(g1.right_stick_x) *
-        Math.pow(g1.right_stick_x, MOVEMENT_PRECISION);
+        Math.signum(player1.right_stick_x) *
+        Math.pow(player1.right_stick_x, MOVEMENT_PRECISION);
       double dampedRightJoystickY =
-        Math.signum(g1.right_stick_y) *
-        Math.pow(g1.right_stick_y, MOVEMENT_PRECISION);
+        Math.signum(player1.right_stick_y) *
+        Math.pow(player1.right_stick_y, MOVEMENT_PRECISION);
 
       // resultant vectors
       double vectorNormal = Math.hypot(
@@ -143,14 +151,14 @@ public class DriverControl extends LinearOpMode {
       RIGHT_FRONT.setPower((-vector3 - dampedRightJoystickX) * powerMode);
       RIGHT_REAR.setPower((-vector4 - dampedRightJoystickX) * powerMode);
 
-      if (g2.right_bumper) {
+      if (player2.right_bumper) {
         armJointTargetPosition =
           Math.min(
             armJointTargetPosition + ARM_JOINT_INPUT_SPEED,
             ARM_JOINT_MAX_ANGLE
           );
       }
-      if (g2.left_bumper) {
+      if (player2.left_bumper) {
         armJointTargetPosition =
           Math.max(
             armJointTargetPosition - ARM_JOINT_INPUT_SPEED,
@@ -160,28 +168,25 @@ public class DriverControl extends LinearOpMode {
 
       ARM_JOINT_LEFT.setTargetPosition(armJointTargetPosition);
       ARM_JOINT_RIGHT.setTargetPosition(armJointTargetPosition);
-      ARM_JOINT_LEFT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-      ARM_JOINT_RIGHT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
       extenderTargetPosition =
         Math.min(
           extenderTargetPosition +
-          Math.round((EXTENDER_INPUT_SPEED * g2.right_trigger)),
+          Math.round((EXTENDER_INPUT_SPEED * player2.right_trigger)),
           EXTENDER_MAX_POS
         );
       extenderTargetPosition =
         Math.max(
           extenderTargetPosition -
-          Math.round((EXTENDER_INPUT_SPEED * g2.left_trigger)),
+          Math.round((EXTENDER_INPUT_SPEED * player2.left_trigger)),
           EXTENDER_MIN_POS
         );
 
       EXTENDER.setTargetPosition(extenderTargetPosition);
-      EXTENDER.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-      SPINNER.setPosition(g1.right_bumper ? 1 : 0.49);
-      CLAW.setPosition(g2.dpad_right ? 1 : 0);
-      WRIST.setPosition(g2.dpad_up ? 1 : 0);
+      SPINNER.setPosition(player1.right_bumper ? 1 : 0.49);
+      CLAW.setPosition(player2.dpad_right ? 1 : 0);
+      WRIST.setPosition(player2.dpad_up ? 1 : 0);
 
       telemetry.addData("Status", "Run Time: " + runtime.toString());
       telemetry.addData("Drive mode", driveMode);
