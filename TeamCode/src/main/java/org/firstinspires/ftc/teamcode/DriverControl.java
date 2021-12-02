@@ -36,12 +36,12 @@ public class DriverControl extends LinearOpMode {
 
   int ARM_JOINT_MIN_ANGLE = 40;
   int ARM_JOINT_MAX_ANGLE = ARM_JOINT_MIN_ANGLE + 415;
-  float ARM_JOINT_POWER = 0.5f;
+  float ARM_JOINT_POWER = 0.2f;
   int ARM_JOINT_INPUT_SPEED = 4;
 
   int EXTENDER_MIN_POS = 40;
   int EXTENDER_MAX_POS = EXTENDER_MIN_POS + 415;
-  float EXTENDER_POWER = 0.5f;
+  float EXTENDER_POWER = 0.2f;
   int EXTENDER_INPUT_SPEED = 4;
 
   float SPEED_LOW_POWER = 0.4f;
@@ -76,11 +76,19 @@ public class DriverControl extends LinearOpMode {
 
     ARM_JOINT_LEFT.setDirection(DcMotor.Direction.FORWARD);
     ARM_JOINT_RIGHT.setDirection(DcMotor.Direction.REVERSE);
+    ARM_JOINT_LEFT.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    ARM_JOINT_RIGHT.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    ARM_JOINT_LEFT.setPower(ARM_JOINT_POWER);
+    ARM_JOINT_RIGHT.setPower(ARM_JOINT_POWER);
+
+    EXTENDER.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    EXTENDER.setPower(EXTENDER_POWER);
 
     telemetry.addData("Status", "Initialized");
     telemetry.update();
 
     waitForStart();
+
     runtime.reset();
 
     while (opModeIsActive()) {
@@ -150,6 +158,11 @@ public class DriverControl extends LinearOpMode {
           );
       }
 
+      ARM_JOINT_LEFT.setTargetPosition(armJointTargetPosition);
+      ARM_JOINT_RIGHT.setTargetPosition(armJointTargetPosition);
+      ARM_JOINT_LEFT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+      ARM_JOINT_RIGHT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
       extenderTargetPosition =
         Math.min(
           extenderTargetPosition +
@@ -163,10 +176,8 @@ public class DriverControl extends LinearOpMode {
           EXTENDER_MIN_POS
         );
 
-      // Temporary
-      // EXTENDER.setPosition(
-      //   extenderPosDiffCoefficient * EXTENDER_CATCH_UP_MAX_POWER
-      // );
+      EXTENDER.setTargetPosition(extenderTargetPosition);
+      EXTENDER.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
       SPINNER.setPosition(g1.right_bumper ? 1 : 0.49);
       CLAW.setPosition(g2.dpad_right ? 1 : 0);
