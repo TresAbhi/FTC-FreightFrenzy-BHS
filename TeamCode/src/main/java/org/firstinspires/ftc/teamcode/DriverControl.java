@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -19,8 +20,9 @@ public class DriverControl extends LinearOpMode {
   private DcMotor RIGHT_FRONT = null;
   private DcMotor RIGHT_REAR = null;
 
-  private DcMotor ARM_JOINT_LEFT = null;
-  private DcMotor ARM_JOINT_RIGHT = null;
+  private DcMotorEx ARM_JOINT_LEFT = null;
+  private DcMotorEx ARM_JOINT_RIGHT = null;
+
   private DcMotor EXTENDER = null;
 
   private Servo CLAW = null;
@@ -36,12 +38,13 @@ public class DriverControl extends LinearOpMode {
 
   int ARM_JOINT_MIN_ANGLE = 55;
   int ARM_JOINT_MAX_ANGLE = ARM_JOINT_MIN_ANGLE + 430;
-  float ARM_JOINT_POWER = 0.4f;
+  float ARM_JOINT_POWER = 0.2f;
   int ARM_JOINT_INPUT_SPEED = 4;
 
   int EXTENDER_MIN_POS = 40;
   int EXTENDER_MAX_POS = EXTENDER_MIN_POS + 1490;
   float EXTENDER_POWER = 0.4f;
+  float ARM_JOINT_MAX_VELOCITY = 1;
   int EXTENDER_INPUT_SPEED = 24;
 
   float WRIST_INPUT_SPEED = 0.03f;
@@ -52,24 +55,24 @@ public class DriverControl extends LinearOpMode {
   // Preset states
 
   // b: lower tower layer
-  int ARM_JOINT_LOW_ANGLE;
-  int EXTENDER_LOW_POS;
-  int WRIST_LOW_ANGLE;
+  int ARM_JOINT_LOW_ANGLE = ARM_JOINT_MIN_ANGLE + 310;
+  int EXTENDER_LOW_POS = EXTENDER_MIN_POS;
+  float WRIST_LOW_ANGLE = 0.8f;
 
   // x: middle tower layer
-  int ARM_JOINT_MIDDLE_ANGLE;
-  int EXTENDER_MIDDLE_POS;
-  int WRIST_MIDDLE_ANGLE;
+  int ARM_JOINT_MIDDLE_ANGLE = ARM_JOINT_MIN_ANGLE + 245;
+  int EXTENDER_MIDDLE_POS = EXTENDER_MIN_POS + 110;
+  float WRIST_MIDDLE_ANGLE = 0.75f;
 
   // y: top tower layer
-  int ARM_JOINT_HIGH_ANGLE;
-  int EXTENDER_HIGH_POS;
-  int WRIST_HIGH_ANGLE;
+  int ARM_JOINT_HIGH_ANGLE = ARM_JOINT_MIN_ANGLE + 190;
+  int EXTENDER_HIGH_POS = EXTENDER_MIN_POS + 630;
+  float WRIST_HIGH_ANGLE = 0.65f;
 
   // x: ground
-  int ARM_JOINT_GROUND_ANGLE;
-  int EXTENDER_GROUND_POS;
-  int WRIST_GROUND_ANGLE;
+  int ARM_JOINT_GROUND_ANGLE = ARM_JOINT_MIN_ANGLE + 430;
+  int EXTENDER_GROUND_POS = EXTENDER_MIN_POS;
+  float WRIST_GROUND_ANGLE = 1f;
 
   // Mutables
   int armJointTargetAngle = ARM_JOINT_MIN_ANGLE;
@@ -87,8 +90,8 @@ public class DriverControl extends LinearOpMode {
     RIGHT_FRONT = hardwareMap.get(DcMotor.class, "right_front");
     RIGHT_REAR = hardwareMap.get(DcMotor.class, "right_rear");
 
-    ARM_JOINT_LEFT = hardwareMap.get(DcMotor.class, "conveyor_left");
-    ARM_JOINT_RIGHT = hardwareMap.get(DcMotor.class, "conveyor_right");
+    ARM_JOINT_LEFT = hardwareMap.get(DcMotorEx.class, "conveyor_left");
+    ARM_JOINT_RIGHT = hardwareMap.get(DcMotorEx.class, "conveyor_right");
     EXTENDER = hardwareMap.get(DcMotor.class, "extender");
     CLAW = hardwareMap.get(Servo.class, "claw");
     WRIST = hardwareMap.get(Servo.class, "wrist");
@@ -216,23 +219,31 @@ public class DriverControl extends LinearOpMode {
         Math.max(wristTargetAngle - WRIST_INPUT_SPEED, 0);
 
       // Apply states
-      if (player1.b) {
+      if (player2.b) {
         armJointTargetAngle = ARM_JOINT_LOW_ANGLE;
         extenderTargetPos = EXTENDER_LOW_POS;
         wristTargetAngle = WRIST_LOW_ANGLE;
-      } else if (player1.x) {
+      } else if (player2.x) {
         armJointTargetAngle = ARM_JOINT_MIDDLE_ANGLE;
         extenderTargetPos = EXTENDER_MIDDLE_POS;
-        wristTargetAngle = WRIST_HIGH_ANGLE;
-      } else if (player1.y) {
+        wristTargetAngle = WRIST_MIDDLE_ANGLE;
+      } else if (player2.y) {
         armJointTargetAngle = ARM_JOINT_HIGH_ANGLE;
         extenderTargetPos = EXTENDER_HIGH_POS;
         wristTargetAngle = WRIST_HIGH_ANGLE;
-      } else if (player1.a) {
+      } else if (player2.a) {
         armJointTargetAngle = ARM_JOINT_GROUND_ANGLE;
         extenderTargetPos = EXTENDER_GROUND_POS;
         wristTargetAngle = WRIST_GROUND_ANGLE;
       }
+
+      // Tweak powers based on velocities
+      double armJointPowerCoefficient = Math.min(
+        Math.abs(ARM_JOINT_LEFT.getVelocity()) / ARM_JOINT_MAX_VELOCITY,
+        1
+      );
+      ARM_JOINT_LEFT.setPower(armJointPowerCoefficient * ARM_JOINT_POWER);
+      ARM_JOINT_RIGHT.setPower(armJointPowerCoefficient * ARM_JOINT_POWER);
 
       // Apply all targets
       ARM_JOINT_LEFT.setTargetPosition(armJointTargetAngle);
@@ -250,14 +261,7 @@ public class DriverControl extends LinearOpMode {
       telemetry.addData("Status", "Run Time: " + runtime.toString());
       telemetry.addData("Drive mode", driveMode);
 
-      telemetry.addData("Extender position", EXTENDER.getCurrentPosition());
-      telemetry.addData("Extender target position", extenderTargetPos);
-
-      telemetry.addData("Arm position", ARM_JOINT_LEFT.getCurrentPosition());
-      telemetry.addData("Arm target position", armJointTargetAngle);
-
-      telemetry.addData("left joint", ARM_JOINT_LEFT.getCurrentPosition());
-      telemetry.addData("right joint", ARM_JOINT_RIGHT.getCurrentPosition());
+      telemetry.addData("Arm joint velocity", ARM_JOINT_LEFT.getVelocity());
 
       telemetry.update();
     }
