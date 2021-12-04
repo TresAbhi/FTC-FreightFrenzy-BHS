@@ -72,9 +72,9 @@ public class DriverControl extends LinearOpMode {
   int WRIST_GROUND_ANGLE;
 
   // Mutables
-  int armJointTargetPosition = ARM_JOINT_MIN_ANGLE;
-  int extenderTargetPosition = EXTENDER_MIN_POS;
-  float wristTargetPosition = 0f;
+  int armJointTargetAngle = ARM_JOINT_MIN_ANGLE;
+  int extenderTargetPos = EXTENDER_MIN_POS;
+  float wristTargetAngle = 0f;
 
   String driveMode = "normal";
   boolean isModeSwitched = false;
@@ -181,51 +181,66 @@ public class DriverControl extends LinearOpMode {
 
       // Tweak arm joint target
       if (player2.right_bumper) {
-        armJointTargetPosition =
+        armJointTargetAngle =
           Math.min(
-            armJointTargetPosition + ARM_JOINT_INPUT_SPEED,
+            armJointTargetAngle + ARM_JOINT_INPUT_SPEED,
             ARM_JOINT_MAX_ANGLE
           );
       }
       if (player2.left_bumper) {
-        armJointTargetPosition =
+        armJointTargetAngle =
           Math.max(
-            armJointTargetPosition - ARM_JOINT_INPUT_SPEED,
+            armJointTargetAngle - ARM_JOINT_INPUT_SPEED,
             ARM_JOINT_MIN_ANGLE
           );
       }
 
       // Tweak extender joint target
-      extenderTargetPosition =
+      extenderTargetPos =
         Math.min(
-          extenderTargetPosition +
+          extenderTargetPos +
           Math.round((EXTENDER_INPUT_SPEED * player2.right_trigger)),
           EXTENDER_MAX_POS
         );
-      extenderTargetPosition =
+      extenderTargetPos =
         Math.max(
-          extenderTargetPosition -
+          extenderTargetPos -
           Math.round((EXTENDER_INPUT_SPEED * player2.left_trigger)),
           EXTENDER_MIN_POS
         );
 
       // Tweak wrist joint target
-      if (player2.dpad_up) wristTargetPosition =
-        Math.min(wristTargetPosition + WRIST_INPUT_SPEED, 1);
-      if (player2.dpad_down) wristTargetPosition =
-        Math.max(wristTargetPosition - WRIST_INPUT_SPEED, 0);
+      if (player2.dpad_up) wristTargetAngle =
+        Math.min(wristTargetAngle + WRIST_INPUT_SPEED, 1);
+      if (player2.dpad_down) wristTargetAngle =
+        Math.max(wristTargetAngle - WRIST_INPUT_SPEED, 0);
 
+      // Apply states
       if (player1.b) {
-        armJointTargetPosition = ARM_JOINT_LOW_ANGLE;
+        armJointTargetAngle = ARM_JOINT_LOW_ANGLE;
+        extenderTargetPos = EXTENDER_LOW_POS;
+        wristTargetAngle = WRIST_LOW_ANGLE;
+      } else if (player1.x) {
+        armJointTargetAngle = ARM_JOINT_MIDDLE_ANGLE;
+        extenderTargetPos = EXTENDER_MIDDLE_POS;
+        wristTargetAngle = WRIST_HIGH_ANGLE;
+      } else if (player1.y) {
+        armJointTargetAngle = ARM_JOINT_HIGH_ANGLE;
+        extenderTargetPos = EXTENDER_HIGH_POS;
+        wristTargetAngle = WRIST_HIGH_ANGLE;
+      } else if (player1.a) {
+        armJointTargetAngle = ARM_JOINT_GROUND_ANGLE;
+        extenderTargetPos = EXTENDER_GROUND_POS;
+        wristTargetAngle = WRIST_GROUND_ANGLE;
       }
 
       // Apply all targets
-      ARM_JOINT_LEFT.setTargetPosition(armJointTargetPosition);
-      ARM_JOINT_RIGHT.setTargetPosition(armJointTargetPosition);
+      ARM_JOINT_LEFT.setTargetPosition(armJointTargetAngle);
+      ARM_JOINT_RIGHT.setTargetPosition(armJointTargetAngle);
 
-      EXTENDER.setTargetPosition(extenderTargetPosition);
+      EXTENDER.setTargetPosition(extenderTargetPos);
 
-      WRIST.setPosition(wristTargetPosition);
+      WRIST.setPosition(wristTargetAngle);
 
       CLAW.setPosition(player2.dpad_right ? 0 : 1);
 
@@ -236,10 +251,10 @@ public class DriverControl extends LinearOpMode {
       telemetry.addData("Drive mode", driveMode);
 
       telemetry.addData("Extender position", EXTENDER.getCurrentPosition());
-      telemetry.addData("Extender target position", extenderTargetPosition);
+      telemetry.addData("Extender target position", extenderTargetPos);
 
       telemetry.addData("Arm position", ARM_JOINT_LEFT.getCurrentPosition());
-      telemetry.addData("Arm target position", armJointTargetPosition);
+      telemetry.addData("Arm target position", armJointTargetAngle);
 
       telemetry.addData("left joint", ARM_JOINT_LEFT.getCurrentPosition());
       telemetry.addData("right joint", ARM_JOINT_RIGHT.getCurrentPosition());
