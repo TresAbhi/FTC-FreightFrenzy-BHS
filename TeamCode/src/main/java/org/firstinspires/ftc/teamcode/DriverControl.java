@@ -44,7 +44,8 @@ public class DriverControl extends LinearOpMode {
   int EXTENDER_MIN_POS = 40;
   int EXTENDER_MAX_POS = EXTENDER_MIN_POS + 1490;
   float EXTENDER_POWER = 0.4f;
-  float ARM_JOINT_MAX_VELOCITY = 1;
+  float ARM_JOINT_MAX_VELOCITY = 320;
+  float ARM_JOINT_VELOCITY_DAMPING = 4;
   int EXTENDER_INPUT_SPEED = 24;
 
   float WRIST_INPUT_SPEED = 0.03f;
@@ -238,10 +239,15 @@ public class DriverControl extends LinearOpMode {
       }
 
       // Tweak powers based on velocities
-      double armJointPowerCoefficient = Math.min(
-        Math.abs(ARM_JOINT_LEFT.getVelocity()) / ARM_JOINT_MAX_VELOCITY,
-        1
-      );
+      double armJointPowerCoefficient =
+        1 -
+        Math.pow(
+          Math.min(
+            Math.abs(ARM_JOINT_LEFT.getVelocity()) / ARM_JOINT_MAX_VELOCITY,
+            1
+          ),
+          ARM_JOINT_VELOCITY_DAMPING
+        );
       ARM_JOINT_LEFT.setPower(armJointPowerCoefficient * ARM_JOINT_POWER);
       ARM_JOINT_RIGHT.setPower(armJointPowerCoefficient * ARM_JOINT_POWER);
 
