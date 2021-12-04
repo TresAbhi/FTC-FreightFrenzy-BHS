@@ -35,7 +35,7 @@ public class DriverControl extends LinearOpMode {
   float MOVEMENT_PRECISION = 2f;
 
   int ARM_JOINT_MIN_ANGLE = 40;
-  int ARM_JOINT_MAX_ANGLE = ARM_JOINT_MIN_ANGLE + 415;
+  int ARM_JOINT_MAX_ANGLE = ARM_JOINT_MIN_ANGLE + 425;
   float ARM_JOINT_POWER = 0.4f;
   int ARM_JOINT_INPUT_SPEED = 4;
 
@@ -43,6 +43,8 @@ public class DriverControl extends LinearOpMode {
   int EXTENDER_MAX_POS = EXTENDER_MIN_POS + 1490;
   float EXTENDER_POWER = 0.4f;
   int EXTENDER_INPUT_SPEED = 24;
+
+  float WRIST_INPUT_SPEED = 0.03f;
 
   float SPEED_LOW_POWER = 0.4f;
   float SPEED_HIGH_POWER = 0.8f;
@@ -67,6 +69,7 @@ public class DriverControl extends LinearOpMode {
   // Mutables
   int armJointTargetPosition = ARM_JOINT_MIN_ANGLE;
   int extenderTargetPosition = EXTENDER_MIN_POS;
+  float wristTargetPosition = 0f;
 
   String driveMode = "normal";
   boolean isModeSwitched = false;
@@ -106,6 +109,8 @@ public class DriverControl extends LinearOpMode {
     EXTENDER.setTargetPosition(EXTENDER_MIN_POS);
     EXTENDER.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     EXTENDER.setPower(EXTENDER_POWER);
+
+    WRIST.setPosition(0);
 
     telemetry.addData("Status", "Initialized");
     telemetry.update();
@@ -182,9 +187,6 @@ public class DriverControl extends LinearOpMode {
           );
       }
 
-      ARM_JOINT_LEFT.setTargetPosition(armJointTargetPosition);
-      ARM_JOINT_RIGHT.setTargetPosition(armJointTargetPosition);
-
       extenderTargetPosition =
         Math.min(
           extenderTargetPosition +
@@ -198,11 +200,21 @@ public class DriverControl extends LinearOpMode {
           EXTENDER_MIN_POS
         );
 
+      if (player2.dpad_up) wristTargetPosition =
+        Math.min(wristTargetPosition + WRIST_INPUT_SPEED, 1);
+      if (player2.dpad_down) wristTargetPosition =
+        Math.max(wristTargetPosition - WRIST_INPUT_SPEED, 0);
+
+      ARM_JOINT_LEFT.setTargetPosition(armJointTargetPosition);
+      ARM_JOINT_RIGHT.setTargetPosition(armJointTargetPosition);
+
       EXTENDER.setTargetPosition(extenderTargetPosition);
 
+      WRIST.setPosition(wristTargetPosition);
+
+      CLAW.setPosition(player2.dpad_right ? 0 : 1);
+
       SPINNER.setPosition(player1.right_bumper ? 1 : 0.49);
-      CLAW.setPosition(player2.dpad_right ? 1 : 0);
-      WRIST.setPosition(player2.dpad_up ? 1 : 0);
 
       telemetry.addData("Status", "Run Time: " + runtime.toString());
       telemetry.addData("Drive mode", driveMode);
