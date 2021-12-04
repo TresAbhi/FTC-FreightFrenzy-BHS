@@ -52,24 +52,24 @@ public class DriverControl extends LinearOpMode {
   // Preset states
 
   // b: lower tower layer
-  int ARM_LOW_JOINT_ANGLE;
-  int ARM_LOW_EXTENDER_POS;
-  int ARM_LOW_WRIST_ANGLE;
+  int ARM_JOINT_LOW_ANGLE;
+  int EXTENDER_LOW_POS;
+  int WRIST_LOW_ANGLE;
 
   // x: middle tower layer
-  int ARM_MIDDLE_JOINT_ANGLE;
-  int ARM_MIDDLE_EXTENDER_POS;
-  int ARM_MIDDLE_WRIST_ANGLE;
+  int ARM_JOINT_MIDDLE_ANGLE;
+  int EXTENDER_MIDDLE_POS;
+  int WRIST_MIDDLE_ANGLE;
 
   // y: top tower layer
-  int ARM_HIGH_JOINT_ANGLE;
-  int ARM_HIGH_EXTENDER_POS;
-  int ARM_HIGH_WRIST_ANGLE;
+  int ARM_JOINT_HIGH_ANGLE;
+  int EXTENDER_HIGH_POS;
+  int WRIST_HIGH_ANGLE;
 
   // x: ground
-  int ARM_GROUND_JOINT_ANGLE;
-  int ARM_GROUND_EXTENDER_POS;
-  int ARM_GROUND_WRIST_ANGLE;
+  int ARM_JOINT_GROUND_ANGLE;
+  int EXTENDER_GROUND_POS;
+  int WRIST_GROUND_ANGLE;
 
   // Mutables
   int armJointTargetPosition = ARM_JOINT_MIN_ANGLE;
@@ -214,6 +214,10 @@ public class DriverControl extends LinearOpMode {
         Math.min(wristTargetPosition + WRIST_INPUT_SPEED, 1);
       if (player2.dpad_down) wristTargetPosition =
         Math.max(wristTargetPosition - WRIST_INPUT_SPEED, 0);
+
+      if (player1.b) {
+        armJointTargetPosition = ARM_JOINT_LOW_ANGLE;
+      }
 
       // Apply all targets
       ARM_JOINT_LEFT.setTargetPosition(armJointTargetPosition);
