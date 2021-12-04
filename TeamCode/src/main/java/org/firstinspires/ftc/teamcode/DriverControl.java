@@ -125,6 +125,7 @@ public class DriverControl extends LinearOpMode {
     runtime.reset();
 
     while (opModeIsActive()) {
+      // Switch between modes
       if (driveMode == "normal") {
         player1 = gamepad1;
         player2 = gamepad2;
@@ -133,16 +134,19 @@ public class DriverControl extends LinearOpMode {
         player2 = gamepad1;
       }
 
+      // Power modes for slow and fast robot speeds
       float powerMode = player1.left_bumper
         ? SPEED_LOW_POWER
         : SPEED_HIGH_POWER;
 
+      // God mode toggler
       if ((player1.back || player1.back) && !isModeSwitched) {
         driveMode = driveMode == "normal" ? "god" : "normal";
         isModeSwitched = true;
       }
       if (!(player1.back || player1.back)) isModeSwitched = false;
 
+      // Dampen controls to give more precision at lower power levels
       double dampedLeftJoystickX =
         Math.signum(player1.left_stick_x) *
         Math.pow(player1.left_stick_x, MOVEMENT_PRECISION);
@@ -156,11 +160,8 @@ public class DriverControl extends LinearOpMode {
         Math.signum(player1.right_stick_y) *
         Math.pow(player1.right_stick_y, MOVEMENT_PRECISION);
 
-      /**
-       * Trig to find out partial offsets in axes (plural of axis)
-       *
-       * Don't mess with this unless you know what you're doing!!!
-       */
+      // Trig to find out partial offsets in axes (plural of axis)
+      // Don't mess with this unless you know what you're doing!!!
       double vectorNormal = Math.hypot(
         dampedLeftJoystickY,
         dampedLeftJoystickX
@@ -172,11 +173,13 @@ public class DriverControl extends LinearOpMode {
       double vector3 = vectorNormal * Math.sin(robotAngle);
       double vector4 = vectorNormal * Math.cos(robotAngle);
 
+      // Apply wheel motor powers
       LEFT_FRONT.setPower((-vector1 + dampedRightJoystickX) * powerMode);
       LEFT_REAR.setPower((-vector2 + dampedRightJoystickX) * powerMode);
       RIGHT_FRONT.setPower((-vector3 - dampedRightJoystickX) * powerMode);
       RIGHT_REAR.setPower((-vector4 - dampedRightJoystickX) * powerMode);
 
+      // Tweak arm joint target
       if (player2.right_bumper) {
         armJointTargetPosition =
           Math.min(
@@ -192,6 +195,7 @@ public class DriverControl extends LinearOpMode {
           );
       }
 
+      // Tweak extender joint target
       extenderTargetPosition =
         Math.min(
           extenderTargetPosition +
@@ -205,11 +209,13 @@ public class DriverControl extends LinearOpMode {
           EXTENDER_MIN_POS
         );
 
+      // Tweak wrist joint target
       if (player2.dpad_up) wristTargetPosition =
         Math.min(wristTargetPosition + WRIST_INPUT_SPEED, 1);
       if (player2.dpad_down) wristTargetPosition =
         Math.max(wristTargetPosition - WRIST_INPUT_SPEED, 0);
 
+      // Apply all targets
       ARM_JOINT_LEFT.setTargetPosition(armJointTargetPosition);
       ARM_JOINT_RIGHT.setTargetPosition(armJointTargetPosition);
 
@@ -219,6 +225,7 @@ public class DriverControl extends LinearOpMode {
 
       CLAW.setPosition(player2.dpad_right ? 0 : 1);
 
+      // Misc.
       SPINNER.setPosition(player1.right_bumper ? 1 : 0.49);
 
       telemetry.addData("Status", "Run Time: " + runtime.toString());
