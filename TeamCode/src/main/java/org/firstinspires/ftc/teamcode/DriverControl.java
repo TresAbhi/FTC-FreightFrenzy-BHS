@@ -34,8 +34,8 @@ public class DriverControl extends LinearOpMode {
   // Constants
   float MOVEMENT_PRECISION = 2f;
 
-  int ARM_JOINT_MIN_ANGLE = 40;
-  int ARM_JOINT_MAX_ANGLE = ARM_JOINT_MIN_ANGLE + 425;
+  int ARM_JOINT_MIN_ANGLE = 55;
+  int ARM_JOINT_MAX_ANGLE = ARM_JOINT_MIN_ANGLE + 430;
   float ARM_JOINT_POWER = 0.4f;
   int ARM_JOINT_INPUT_SPEED = 4;
 
@@ -50,18 +50,23 @@ public class DriverControl extends LinearOpMode {
   float SPEED_HIGH_POWER = 0.8f;
 
   // Preset states
+
+  // b: lower tower layer
   int ARM_LOW_JOINT_ANGLE;
   int ARM_LOW_EXTENDER_POS;
   int ARM_LOW_WRIST_ANGLE;
 
+  // x: middle tower layer
   int ARM_MIDDLE_JOINT_ANGLE;
   int ARM_MIDDLE_EXTENDER_POS;
   int ARM_MIDDLE_WRIST_ANGLE;
 
+  // y: top tower layer
   int ARM_HIGH_JOINT_ANGLE;
   int ARM_HIGH_EXTENDER_POS;
   int ARM_HIGH_WRIST_ANGLE;
 
+  // x: ground
   int ARM_GROUND_JOINT_ANGLE;
   int ARM_GROUND_EXTENDER_POS;
   int ARM_GROUND_WRIST_ANGLE;
