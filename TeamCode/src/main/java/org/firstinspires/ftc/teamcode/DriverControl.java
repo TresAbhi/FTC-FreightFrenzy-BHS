@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -34,56 +35,56 @@ public class DriverControl extends LinearOpMode {
   private Gamepad player2 = gamepad2;
 
   // Constants
-  float MOVEMENT_PRECISION = 2f;
+  public float MOVEMENT_PRECISION = 2f;
 
-  int ARM_JOINT_MIN_ANGLE = 55;
-  int ARM_JOINT_MAX_ANGLE = ARM_JOINT_MIN_ANGLE + 430;
-  float ARM_JOINT_POWER = 0.2f;
-  int ARM_JOINT_INPUT_SPEED = 4;
+  public int ARM_JOINT_MIN_ANGLE = 55;
+  public int ARM_JOINT_MAX_ANGLE = ARM_JOINT_MIN_ANGLE + 430;
+  public float ARM_JOINT_POWER = 0.2f;
+  public int ARM_JOINT_INPUT_SPEED = 4;
 
-  int EXTENDER_MIN_POS = 40;
-  int EXTENDER_MAX_POS = EXTENDER_MIN_POS + 1490;
-  float EXTENDER_POWER = 0.4f;
-  float ARM_JOINT_MAX_VELOCITY = 320;
-  float ARM_JOINT_VELOCITY_DAMPING = 4;
-  int EXTENDER_INPUT_SPEED = 24;
+  public int EXTENDER_MIN_POS = 40;
+  public int EXTENDER_MAX_POS = EXTENDER_MIN_POS + 1490;
+  public float EXTENDER_POWER = 0.4f;
+  public float ARM_JOINT_MAX_VELOCITY = 320;
+  public float ARM_JOINT_VELOCITY_DAMPING = 4;
+  public int EXTENDER_INPUT_SPEED = 24;
 
-  float WRIST_INPUT_SPEED = 0.03f;
+  public float WRIST_INPUT_SPEED = 0.03f;
 
-  float SPEED_LOW_POWER = 0.4f;
-  float SPEED_HIGH_POWER = 0.8f;
+  public float SPEED_LOW_POWER = 0.4f;
+  public float SPEED_HIGH_POWER = 0.8f;
 
   // Preset states
 
   // b: lower tower layer
-  int ARM_JOINT_LOW_ANGLE = ARM_JOINT_MIN_ANGLE + 310;
-  int EXTENDER_LOW_POS = EXTENDER_MIN_POS;
-  float WRIST_LOW_ANGLE = 0.8f;
+  public int ARM_JOINT_LOW_ANGLE = ARM_JOINT_MIN_ANGLE + 310;
+  public int EXTENDER_LOW_POS = EXTENDER_MIN_POS;
+  public float WRIST_LOW_ANGLE = 0.8f;
 
   // x: middle tower layer
-  int ARM_JOINT_MIDDLE_ANGLE = ARM_JOINT_MIN_ANGLE + 245;
-  int EXTENDER_MIDDLE_POS = EXTENDER_MIN_POS + 110;
-  float WRIST_MIDDLE_ANGLE = 0.75f;
+  public int ARM_JOINT_MIDDLE_ANGLE = ARM_JOINT_MIN_ANGLE + 245;
+  public int EXTENDER_MIDDLE_POS = EXTENDER_MIN_POS + 110;
+  public float WRIST_MIDDLE_ANGLE = 0.75f;
 
   // y: top tower layer
-  int ARM_JOINT_HIGH_ANGLE = ARM_JOINT_MIN_ANGLE + 190;
-  int EXTENDER_HIGH_POS = EXTENDER_MIN_POS + 630;
-  float WRIST_HIGH_ANGLE = 0.65f;
+  public int ARM_JOINT_HIGH_ANGLE = ARM_JOINT_MIN_ANGLE + 190;
+  public int EXTENDER_HIGH_POS = EXTENDER_MIN_POS + 630;
+  public float WRIST_HIGH_ANGLE = 0.65f;
 
   // x: ground
-  int ARM_JOINT_GROUND_ANGLE = ARM_JOINT_MIN_ANGLE + 430;
-  int EXTENDER_GROUND_POS = EXTENDER_MIN_POS;
-  float WRIST_GROUND_ANGLE = 1f;
+  public int ARM_JOINT_GROUND_ANGLE = ARM_JOINT_MIN_ANGLE + 430;
+  public int EXTENDER_GROUND_POS = EXTENDER_MIN_POS;
+  public float WRIST_GROUND_ANGLE = 1f;
 
   // Mutables
-  int armJointTargetAngle = ARM_JOINT_MIN_ANGLE;
-  int extenderTargetPos = EXTENDER_MIN_POS;
-  float wristTargetAngle = 0f;
+  public int armJointTargetAngle = ARM_JOINT_MIN_ANGLE;
+  public int extenderTargetPos = EXTENDER_MIN_POS;
+  public float wristTargetAngle = 0f;
 
   String driveMode = "normal";
   boolean isModeSwitched = false;
 
-  @Override
+  // @Override
   public void runOpMode() {
     // Components
     LEFT_FRONT = hardwareMap.get(DcMotor.class, "left_front");
