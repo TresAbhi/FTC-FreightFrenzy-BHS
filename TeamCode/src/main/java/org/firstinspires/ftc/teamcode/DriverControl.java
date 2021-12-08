@@ -260,7 +260,7 @@ public class DriverControl extends LinearOpMode {
 
       WRIST.setPosition(wristTargetAngle);
 
-      CLAW.setPosition(player2.dpad_right ? 0 : 1);
+      CLAW.setPosition(player2.dpad_left ? 0 : 1);
 
       // Misc.
       SPINNER.setPosition(player1.right_bumper ? 1 : 0.49);
