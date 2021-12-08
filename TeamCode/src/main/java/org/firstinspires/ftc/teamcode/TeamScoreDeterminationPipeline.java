@@ -50,8 +50,8 @@ public class TeamScoreDeterminationPipeline extends OpenCvPipeline {
    * The core values which define the location and size of the sample regions
    */
   static final Point MIDDLE_REGION_TOP_LEFT_ANCHOR_POINT = new Point(110, 50);
-  static final Point LEFT_REGION_TOP_LEFT_ANCHOR_POINT = new Point(30, 50);
-  static final Point RIGHT_REGION_TOP_LEFT_ANCHOR_POINT = new Point(190, 50);
+  static final Point LEFT_REGION_TOP_LEFT_ANCHOR_POINT = new Point(10, 50);
+  static final Point RIGHT_REGION_TOP_LEFT_ANCHOR_POINT = new Point(220, 50);
 
   static final int REGION_WIDTH = 60;
   static final int REGION_HEIGHT = 80;
@@ -89,12 +89,18 @@ public class TeamScoreDeterminationPipeline extends OpenCvPipeline {
   /*
    * Working variables
    */
+
   Mat region_middle_Cb;
   Mat region_left_Cb;
   Mat region_right_Cb;
   Mat YCrCb = new Mat();
   Mat Cb = new Mat();
-  int avg1;
+
+  String targetRegion = "none";
+
+  int region_middle_avg_color;
+  int region_left_avg_color;
+  int region_right_avg_color;
 
   // Volatile since accessed by OpMode thread w/o synchronization
   private volatile TeamScorePosition position = TeamScorePosition.FOUR;
@@ -126,7 +132,9 @@ public class TeamScoreDeterminationPipeline extends OpenCvPipeline {
   public Mat processFrame(Mat input) {
     inputToCb(input);
 
-    avg1 = (int) Core.mean(region_middle_Cb).val[0];
+    region_middle_avg_color = (int) Core.mean(region_middle_Cb).val[0];
+    region_left_avg_color = (int) Core.mean(region_left_Cb).val[0];
+    region_right_avg_color = (int) Core.mean(region_right_Cb).val[0];
 
     Imgproc.rectangle(
       input, // Buffer to draw on
@@ -146,13 +154,17 @@ public class TeamScoreDeterminationPipeline extends OpenCvPipeline {
       2
     );
 
-    position = TeamScorePosition.FOUR; // Record our analysis
-    if (avg1 > FOUR_RING_THRESHOLD) {
-      position = TeamScorePosition.FOUR;
-    } else if (avg1 > ONE_RING_THRESHOLD) {
-      position = TeamScorePosition.ONE;
-    } else {
-      position = TeamScorePosition.NONE;
+    int max_color = Math.max(
+      Math.max(region_middle_avg_color, region_left_avg_color),
+      region_right_avg_color
+    );
+
+    if (max_color == region_middle_avg_color) {
+      targetRegion = "middle";
+    } else if (max_color == region_left_avg_color) {
+      targetRegion = "left";
+    } else if (max_color == region_right_avg_color) {
+      targetRegion = "right";
     }
 
     Imgproc.rectangle(
@@ -182,11 +194,7 @@ public class TeamScoreDeterminationPipeline extends OpenCvPipeline {
     return input;
   }
 
-  public int getAnalysis() {
-    return avg1;
-  }
-
-  public TeamScorePosition getPosition() {
-    return position;
+  public int[] getAnalysis() {
+    return new int[]{region_middle_avg_color, region_left_avg_color, region_right_avg_color};
   }
 }

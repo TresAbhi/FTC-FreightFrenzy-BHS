@@ -166,6 +166,9 @@ public class Autonomous1 extends LinearOpMode {
 
     while (opModeIsActive()) {
       telemetry.addData("Status", "Run Time: " + runtime.toString());
+      telemetry.addData("Middle", pipeline.getAnalysis()[0]);
+      telemetry.addData("Left", pipeline.getAnalysis()[1]);
+      telemetry.addData("Right", pipeline.getAnalysis()[2]);
 
       telemetry.update();
     }
