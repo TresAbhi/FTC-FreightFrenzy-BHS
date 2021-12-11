@@ -15,9 +15,9 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
-@Autonomous(name = "Autonomous1", group = "A")
+@Autonomous(name = "AutoBlueRightDuck", group = "A")
 // @Disabled
-public class Autonomous1 extends LinearOpMode {
+public class AutoBlueRightDuck extends LinearOpMode {
 
   private ElapsedTime runtime = new ElapsedTime();
 
@@ -91,47 +91,10 @@ public class Autonomous1 extends LinearOpMode {
 
   OpenCvWebcam webcam;
   TeamScoreDetector pipeline = new TeamScoreDetector(telemetry);
+//  DriverControl driverControl = new DriverControl(hardwareMap);
 
   // @Override
   public void runOpMode() {
-    // Components
-    LEFT_FRONT = hardwareMap.get(DcMotor.class, "left_front");
-    LEFT_REAR = hardwareMap.get(DcMotor.class, "left_rear");
-    RIGHT_FRONT = hardwareMap.get(DcMotor.class, "right_front");
-    RIGHT_REAR = hardwareMap.get(DcMotor.class, "right_rear");
-
-    ARM_JOINT_LEFT = hardwareMap.get(DcMotorEx.class, "conveyor_left");
-    ARM_JOINT_RIGHT = hardwareMap.get(DcMotorEx.class, "conveyor_right");
-    EXTENDER = hardwareMap.get(DcMotor.class, "extender");
-    CLAW = hardwareMap.get(Servo.class, "claw");
-    WRIST = hardwareMap.get(Servo.class, "wrist");
-
-    SPINNER = hardwareMap.get(Servo.class, "spinner");
-
-    // One time executions
-    LEFT_FRONT.setDirection(DcMotor.Direction.REVERSE);
-    RIGHT_REAR.setDirection(DcMotor.Direction.REVERSE);
-
-    // TEMPORARY
-    // ARM_JOINT_LEFT.setDirection(DcMotor.Direction.FORWARD);
-    // ARM_JOINT_RIGHT.setDirection(DcMotor.Direction.REVERSE);
-    // ARM_JOINT_LEFT.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-    // ARM_JOINT_RIGHT.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-    // ARM_JOINT_LEFT.setTargetPosition(ARM_JOINT_MIN_ANGLE);
-    // ARM_JOINT_RIGHT.setTargetPosition(ARM_JOINT_MIN_ANGLE);
-    // ARM_JOINT_LEFT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    // ARM_JOINT_RIGHT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    // ARM_JOINT_LEFT.setPower(ARM_JOINT_POWER);
-    // ARM_JOINT_RIGHT.setPower(ARM_JOINT_POWER);
-
-    // EXTENDER.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-    // EXTENDER.setTargetPosition(EXTENDER_MIN_POS);
-    // EXTENDER.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    // EXTENDER.setPower(EXTENDER_POWER);
-
-    // WRIST.setPosition(0);
-
-    // One time compute
     telemetry.addData("Status", "Initialized");
     telemetry.update();
 
@@ -154,10 +117,9 @@ public class Autonomous1 extends LinearOpMode {
     webcam.setPipeline(pipeline);
     webcam.startStreaming(432, 240, OpenCvCameraRotation.UPRIGHT);
 
-//    telemetry.addData("Analysis", pipeline.getAnalysis());
     telemetry.update();
 
-    // Don't burn CPU cycles busy-looping in this sample
+    // don't burn CPU cycles busy-looping in this sample
     sleep(50);
 
     waitForStart();
@@ -168,7 +130,6 @@ public class Autonomous1 extends LinearOpMode {
       telemetry.addData("Status", "Run Time: " + runtime.toString());
       telemetry.addData("Location", TeamScoreDetector.location);
       telemetry.update();
-
     }
   }
 }
