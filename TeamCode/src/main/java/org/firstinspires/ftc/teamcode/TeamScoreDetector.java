@@ -32,7 +32,7 @@ public class TeamScoreDetector extends OpenCvPipeline {
   }
 
   // the value that stores either LEFT, MIDDLE, RIGHT, or NONE
-  private LOCATION location;
+  public static LOCATION location;
 
   static final Rect LEFT_ROI = new Rect( // Left region of intrest
     new Point(0, 50),
