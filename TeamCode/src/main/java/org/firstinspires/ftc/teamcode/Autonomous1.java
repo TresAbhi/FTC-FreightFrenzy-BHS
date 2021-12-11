@@ -168,6 +168,7 @@ public class Autonomous1 extends LinearOpMode {
       telemetry.addData("Status", "Run Time: " + runtime.toString());
       telemetry.addData("Location", TeamScoreDetector.location);
       telemetry.update();
+      
     }
   }
 }
