@@ -9,7 +9,7 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 
-public class TeamScoreDetermination extends OpenCvPipeline {
+public class TeamScoreDetector extends OpenCvPipeline {
 
   static final int ROI_WIDTH = 60;
   static final int ROI_HEIGHT = 80;
@@ -21,11 +21,12 @@ public class TeamScoreDetermination extends OpenCvPipeline {
   Scalar NO_TEAM_SCORE_VISUAL_COLOR = new Scalar(255, 0, 0); // in RGB
 
   public enum LOCATION {
-      LEFT,
-      MIDDLE,
-      RIGHT,
-      NONE
+    LEFT,
+    MIDDLE,
+    RIGHT,
+    NONE,
   }
+
   private LOCATION location;
 
   static final Rect LEFT_ROI = new Rect(
@@ -46,8 +47,8 @@ public class TeamScoreDetermination extends OpenCvPipeline {
   Telemetry telemetry;
   Mat mat = new Mat();
 
-  public void TeamScoreDetector(Telemetry tele) {
-    telemetry = tele;
+  public TeamScoreDetector(Telemetry t) {
+    telemetry = t;
   }
 
   @Override
@@ -104,9 +105,27 @@ public class TeamScoreDetermination extends OpenCvPipeline {
 
     Imgproc.cvtColor(mat, mat, Imgproc.COLOR_GRAY2RGB);
 
-    Imgproc.rectangle(mat, LEFT_ROI, location == LOCATION.LEFT ? TEAM_SCORE_VISUAL_COLOR : NO_TEAM_SCORE_VISUAL_COLOR);
-    Imgproc.rectangle(mat, MIDDLE_ROI, location == LOCATION.MIDDLE ? TEAM_SCORE_VISUAL_COLOR : NO_TEAM_SCORE_VISUAL_COLOR);
-    Imgproc.rectangle(mat, RIGHT_ROI, location == LOCATION.RIGHT ? TEAM_SCORE_VISUAL_COLOR : NO_TEAM_SCORE_VISUAL_COLOR);
+    Imgproc.rectangle(
+      mat,
+      LEFT_ROI,
+      location == LOCATION.LEFT
+        ? TEAM_SCORE_VISUAL_COLOR
+        : NO_TEAM_SCORE_VISUAL_COLOR
+    );
+    Imgproc.rectangle(
+      mat,
+      MIDDLE_ROI,
+      location == LOCATION.MIDDLE
+        ? TEAM_SCORE_VISUAL_COLOR
+        : NO_TEAM_SCORE_VISUAL_COLOR
+    );
+    Imgproc.rectangle(
+      mat,
+      RIGHT_ROI,
+      location == LOCATION.RIGHT
+        ? TEAM_SCORE_VISUAL_COLOR
+        : NO_TEAM_SCORE_VISUAL_COLOR
+    );
 
     return mat;
   }

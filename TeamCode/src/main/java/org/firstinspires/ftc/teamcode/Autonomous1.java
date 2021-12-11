@@ -90,7 +90,7 @@ public class Autonomous1 extends LinearOpMode {
   boolean isModeSwitched = false;
 
   OpenCvWebcam webcam;
-  TeamScoreDetermination pipeline = new TeamScoreDetermination();
+  TeamScoreDetector pipeline = new TeamScoreDetector(telemetry);
 
   // @Override
   public void runOpMode() {
