@@ -104,6 +104,10 @@ public class TeamScoreDetermination extends OpenCvPipeline {
 
     Imgproc.cvtColor(mat, mat, Imgproc.COLOR_GRAY2RGB);
 
-    return input;
+    Imgproc.rectangle(mat, LEFT_ROI, location == LOCATION.LEFT ? TEAM_SCORE_VISUAL_COLOR : NO_TEAM_SCORE_VISUAL_COLOR);
+    Imgproc.rectangle(mat, MIDDLE_ROI, location == LOCATION.MIDDLE ? TEAM_SCORE_VISUAL_COLOR : NO_TEAM_SCORE_VISUAL_COLOR);
+    Imgproc.rectangle(mat, RIGHT_ROI, location == LOCATION.RIGHT ? TEAM_SCORE_VISUAL_COLOR : NO_TEAM_SCORE_VISUAL_COLOR);
+
+    return mat;
   }
 }
