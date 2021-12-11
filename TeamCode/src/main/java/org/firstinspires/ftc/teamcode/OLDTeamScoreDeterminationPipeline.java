@@ -29,7 +29,7 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 
-public class TeamScoreDeterminationPipeline extends OpenCvPipeline {
+public class OLDTeamScoreDeterminationPipeline extends OpenCvPipeline {
 
   /*
    * An enum to define the ring position
@@ -195,6 +195,10 @@ public class TeamScoreDeterminationPipeline extends OpenCvPipeline {
   }
 
   public int[] getAnalysis() {
-    return new int[]{region_middle_avg_color, region_left_avg_color, region_right_avg_color};
+    return new int[] {
+      region_middle_avg_color,
+      region_left_avg_color,
+      region_right_avg_color,
+    };
   }
 }

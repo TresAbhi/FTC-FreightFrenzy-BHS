@@ -90,7 +90,7 @@ public class Autonomous1 extends LinearOpMode {
   boolean isModeSwitched = false;
 
   OpenCvWebcam webcam;
-  TeamScoreDeterminationPipeline pipeline = new TeamScoreDeterminationPipeline();
+  TeamScoreDetermination pipeline = new TeamScoreDetermination();
 
   // @Override
   public void runOpMode() {
@@ -154,7 +154,7 @@ public class Autonomous1 extends LinearOpMode {
     webcam.setPipeline(pipeline);
     webcam.startStreaming(432, 240, OpenCvCameraRotation.UPRIGHT);
 
-    telemetry.addData("Analysis", pipeline.getAnalysis());
+//    telemetry.addData("Analysis", pipeline.getAnalysis());
     telemetry.update();
 
     // Don't burn CPU cycles busy-looping in this sample
@@ -166,9 +166,6 @@ public class Autonomous1 extends LinearOpMode {
 
     while (opModeIsActive()) {
       telemetry.addData("Status", "Run Time: " + runtime.toString());
-      telemetry.addData("Middle", pipeline.getAnalysis()[0]);
-      telemetry.addData("Left", pipeline.getAnalysis()[1]);
-      telemetry.addData("Right", pipeline.getAnalysis()[2]);
 
       telemetry.update();
     }
