@@ -44,7 +44,7 @@ public class OLDTeamScoreDeterminationPipeline extends OpenCvPipeline {
    * Some color constants
    */
   static final Scalar BLUE = new Scalar(0, 0, 255);
-  static final Scalar GREEN = new Scalar(0, 255, 0);
+  static final Scalar GREEN = new Scalar(50, 255, 50);
 
   /*
    * The core values which define the location and size of the sample regions

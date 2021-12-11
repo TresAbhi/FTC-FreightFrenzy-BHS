@@ -14,8 +14,8 @@ public class TeamScoreDetector extends OpenCvPipeline {
   static final int ROI_WIDTH = 60;
   static final int ROI_HEIGHT = 80;
 
-  Scalar LOW_ACCEPTANCE_COLOR = new Scalar(120, 100, 100); // in HSV
-  Scalar HIGH_ACCEPTANCE_COLOR = new Scalar(120, 100, 50); // in HSV
+  Scalar LOW_ACCEPTANCE_COLOR = new Scalar(23, 50, 70); // in HSV
+  Scalar HIGH_ACCEPTANCE_COLOR = new Scalar(32, 255, 255); // in HSV
 
   Scalar TEAM_SCORE_VISUAL_COLOR = new Scalar(0, 255, 0); // in RGB
   Scalar NO_TEAM_SCORE_VISUAL_COLOR = new Scalar(255, 0, 0); // in RGB
