@@ -55,7 +55,7 @@ public class DriverControlAPI {
     hardwareMap = h;
   }
 
-  public void init() {
+  public void init(HardwareMap hardwareMap) {
     // Components
     LEFT_FRONT = hardwareMap.get(DcMotor.class, "left_front");
     LEFT_REAR = hardwareMap.get(DcMotor.class, "left_rear");
