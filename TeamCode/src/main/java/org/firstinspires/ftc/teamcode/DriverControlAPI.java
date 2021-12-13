@@ -42,7 +42,7 @@ public class DriverControlAPI {
   public int extenderTargetPos = EXTENDER_MIN_POS;
   public float wristTargetAngle = 0f;
   public float clawTargetState = 0;
-  public float spinnerSpeed = 0.49f;
+  public float spinnerSpeed = 0.5f;
 
   public double moveX = 0;
   public double moveY = 0;
@@ -93,7 +93,7 @@ public class DriverControlAPI {
     WRIST.setPosition(0);
   }
 
-  public void iterate() {
+  public void apply() {
     // Trig to find out partial offsets in axes (plural of axis)
     // Don't mess with this unless you know what you're doing!!!
     double vectorNormal = Math.hypot(moveX, moveY);

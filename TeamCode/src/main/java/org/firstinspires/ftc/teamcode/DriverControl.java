@@ -1,13 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp(name = "DriverControl", group = "Linear Opmode")
@@ -171,9 +166,9 @@ public class DriverControl extends LinearOpMode {
       }
 
       driverControlAPI.clawTargetState = player2.dpad_left ? 0 : 1;
-      driverControlAPI.spinnerSpeed = player1.right_bumper ? 1f : 0.49f;
+      driverControlAPI.spinnerSpeed = player1.right_bumper ? 1f : 0.5f;
 
-      driverControlAPI.iterate();
+      driverControlAPI.apply();
 
       telemetry.addData("Status", "Run Time: " + runtime.toString());
       telemetry.addData("Drive mode", driveMode);
