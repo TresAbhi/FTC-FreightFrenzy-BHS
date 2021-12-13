@@ -157,7 +157,7 @@ public class TeamScoreDetector extends OpenCvPipeline {
     return mat;
   }
 
-  public LOCATION getAnalysis () {
+  public LOCATION getAnalysis() {
     return location;
   }
 }

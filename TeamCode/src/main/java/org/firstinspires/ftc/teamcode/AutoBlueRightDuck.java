@@ -104,7 +104,8 @@ public class AutoBlueRightDuck extends LinearOpMode {
       sleep(750);
     } else if (camResult == TeamScoreDetector.LOCATION.MIDDLE) {
       sleep(0);
-    } else if (camResult == TeamScoreDetector.LOCATION.RIGHT) {
+    } else {
+      // right or none... hope it's right it if doesn't figure it out
       sleep(0);
     }
 

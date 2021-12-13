@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.Hardware;
 
 public class DriverControlAPI {
 
@@ -38,6 +37,14 @@ public class DriverControlAPI {
   public int EXTENDER_MIN_POS;
 
   // Preset states
+
+  public enum STATE {
+    LOW,
+    MIDDLE,
+    HIGH,
+    GROUND,
+  }
+
   // b: lower tower layer
   public int ARM_JOINT_LOW_ANGLE = ARM_JOINT_MIN_ANGLE + 310;
   public int EXTENDER_LOW_POS = EXTENDER_MIN_POS;
@@ -116,6 +123,30 @@ public class DriverControlAPI {
     EXTENDER.setPower(EXTENDER_POWER);
 
     WRIST.setPosition(0);
+  }
+
+  public void setState(STATE state) {
+    if (state == STATE.LOW) {
+      armJointTargetAngle = ARM_JOINT_LOW_ANGLE;
+      extenderTargetPos = EXTENDER_LOW_POS;
+      wristTargetAngle = WRIST_LOW_ANGLE;
+      apply();
+    } else if (state == STATE.MIDDLE) {
+      armJointTargetAngle = ARM_JOINT_MIDDLE_ANGLE;
+      extenderTargetPos = EXTENDER_MIDDLE_POS;
+      wristTargetAngle = WRIST_MIDDLE_ANGLE;
+      apply();
+    } else if (state == STATE.HIGH) {
+      armJointTargetAngle = ARM_JOINT_HIGH_ANGLE;
+      extenderTargetPos = EXTENDER_HIGH_POS;
+      wristTargetAngle = WRIST_HIGH_ANGLE;
+      apply();
+    } else if (state == STATE.GROUND) {
+      armJointTargetAngle = ARM_JOINT_GROUND_ANGLE;
+      extenderTargetPos = EXTENDER_GROUND_POS;
+      wristTargetAngle = WRIST_GROUND_ANGLE;
+      apply();
+    }
   }
 
   public void apply() {

@@ -127,21 +127,13 @@ public class DriverControl extends LinearOpMode {
 
       // Apply states
       if (player2.b) {
-        driverControlAPI.armJointTargetAngle = driverControlAPI.ARM_JOINT_LOW_ANGLE;
-        driverControlAPI.extenderTargetPos = driverControlAPI.EXTENDER_LOW_POS;
-        driverControlAPI.wristTargetAngle = driverControlAPI.WRIST_LOW_ANGLE;
+        driverControlAPI.setState(DriverControlAPI.STATE.LOW);
       } else if (player2.x) {
-        driverControlAPI.armJointTargetAngle = driverControlAPI.ARM_JOINT_MIDDLE_ANGLE;
-        driverControlAPI.extenderTargetPos = driverControlAPI.EXTENDER_MIDDLE_POS;
-        driverControlAPI.wristTargetAngle = driverControlAPI.WRIST_MIDDLE_ANGLE;
+        driverControlAPI.setState(DriverControlAPI.STATE.MIDDLE);
       } else if (player2.y) {
-        driverControlAPI.armJointTargetAngle = driverControlAPI.ARM_JOINT_HIGH_ANGLE;
-        driverControlAPI.extenderTargetPos = driverControlAPI.EXTENDER_HIGH_POS;
-        driverControlAPI.wristTargetAngle = driverControlAPI.WRIST_HIGH_ANGLE;
+        driverControlAPI.setState(DriverControlAPI.STATE.HIGH);
       } else if (player2.a) {
-        driverControlAPI.armJointTargetAngle = driverControlAPI.ARM_JOINT_GROUND_ANGLE;
-        driverControlAPI.extenderTargetPos = driverControlAPI.EXTENDER_GROUND_POS;
-        driverControlAPI.wristTargetAngle = driverControlAPI.WRIST_GROUND_ANGLE;
+        driverControlAPI.setState(DriverControlAPI.STATE.GROUND);
       }
 
       driverControlAPI.clawTargetState = player2.dpad_left ? 0 : 1;
