@@ -71,6 +71,10 @@ public class DriverControlAPI {
     SPINNER = hardwareMap.get(Servo.class, "spinner");
 
     // One time executions
+    LEFT_FRONT.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    LEFT_REAR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    RIGHT_FRONT.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    RIGHT_REAR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     LEFT_FRONT.setDirection(DcMotor.Direction.REVERSE);
     RIGHT_REAR.setDirection(DcMotor.Direction.REVERSE);
 
