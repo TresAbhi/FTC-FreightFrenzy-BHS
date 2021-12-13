@@ -55,6 +55,9 @@ public class AutoBlueRightDuck extends LinearOpMode {
 
     TeamScoreDetector.LOCATION camResult = teamScoreDetector.getAnalysis();
 
+    telemetry.addData("Location", camResult);
+    telemetry.update();
+
     // Move to carousel
     driverControlAPI.moveX = 1;
     driverControlAPI.apply();
@@ -78,11 +81,11 @@ public class AutoBlueRightDuck extends LinearOpMode {
 
     sleep(120);
 
-    driverControlAPI.moveX = 0.2;
+    driverControlAPI.moveX = 0.25;
     driverControlAPI.moveY = 0;
     driverControlAPI.apply();
 
-    sleep(100);
+    sleep(120);
 
     driverControlAPI.moveX = 0;
     driverControlAPI.apply();
@@ -93,7 +96,7 @@ public class AutoBlueRightDuck extends LinearOpMode {
 
     // Move back left
     driverControlAPI.moveX = -1;
-    driverControlAPI.apply();
+    driverControlAPI.setState(DriverControlAPI.STATE.HIGH);
 
     /**
      * left = low
@@ -106,16 +109,12 @@ public class AutoBlueRightDuck extends LinearOpMode {
       sleep(0);
     } else {
       // right or none... hope it's right it if doesn't figure it out
-      sleep(0);
+      sleep(1250);
     }
-
-    driverControlAPI.armJointTargetAngle =
-      driverControlAPI.ARM_JOINT_GROUND_ANGLE;
-    driverControlAPI.extenderTargetPos = driverControlAPI.EXTENDER_GROUND_POS;
-    driverControlAPI.wristTargetAngle = driverControlAPI.WRIST_GROUND_ANGLE;
-    driverControlAPI.apply();
 
     driverControlAPI.moveX = 0;
     driverControlAPI.apply();
+
+    sleep(10000);
   }
 }
