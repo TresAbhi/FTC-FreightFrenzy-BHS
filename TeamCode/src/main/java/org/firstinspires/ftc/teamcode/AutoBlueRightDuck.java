@@ -53,6 +53,8 @@ public class AutoBlueRightDuck extends LinearOpMode {
 
     runtime.reset();
 
+    TeamScoreDetector.LOCATION camResult = teamScoreDetector.getAnalysis();
+
     // Move to carousel
     driverControlAPI.moveX = 1;
     driverControlAPI.apply();
@@ -76,7 +78,7 @@ public class AutoBlueRightDuck extends LinearOpMode {
 
     sleep(120);
 
-    driverControlAPI.moveX = -0.05;
+    driverControlAPI.moveX = 0.2;
     driverControlAPI.moveY = 0;
     driverControlAPI.apply();
 
@@ -93,25 +95,26 @@ public class AutoBlueRightDuck extends LinearOpMode {
     driverControlAPI.moveX = -1;
     driverControlAPI.apply();
 
-    sleep(800);
-
-    driverControlAPI.moveX = 0;
-    driverControlAPI.apply();
-
-    TeamScoreDetector.LOCATION camResult = teamScoreDetector.getAnalysis();
-
     /**
      * left = low
      * middle = middle
      * right = high
      */
     if (camResult == TeamScoreDetector.LOCATION.LEFT) {
-      // bottom
+      sleep(750);
+    } else if (camResult == TeamScoreDetector.LOCATION.MIDDLE) {
+      sleep(0);
+    } else if (camResult == TeamScoreDetector.LOCATION.RIGHT) {
+      sleep(0);
     }
-    // while (opModeIsActive()) {
-    //   telemetry.addData("Status", "Run Time: " + runtime.toString());
-    //   telemetry.addData("Location", TeamScoreDetector.location);
-    //   telemetry.update();
-    // }
+
+    driverControlAPI.armJointTargetAngle =
+      driverControlAPI.ARM_JOINT_GROUND_ANGLE;
+    driverControlAPI.extenderTargetPos = driverControlAPI.EXTENDER_GROUND_POS;
+    driverControlAPI.wristTargetAngle = driverControlAPI.WRIST_GROUND_ANGLE;
+    driverControlAPI.apply();
+
+    driverControlAPI.moveX = 0;
+    driverControlAPI.apply();
   }
 }

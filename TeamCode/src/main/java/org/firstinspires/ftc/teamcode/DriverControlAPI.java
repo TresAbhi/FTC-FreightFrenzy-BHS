@@ -37,11 +37,32 @@ public class DriverControlAPI {
   public int ARM_JOINT_MIN_ANGLE;
   public int EXTENDER_MIN_POS;
 
+  // Preset states
+  // b: lower tower layer
+  public int ARM_JOINT_LOW_ANGLE = ARM_JOINT_MIN_ANGLE + 310;
+  public int EXTENDER_LOW_POS = EXTENDER_MIN_POS;
+  public float WRIST_LOW_ANGLE = 0.8f;
+
+  // x: middle tower layer
+  public int ARM_JOINT_MIDDLE_ANGLE = ARM_JOINT_MIN_ANGLE + 245;
+  public int EXTENDER_MIDDLE_POS = EXTENDER_MIN_POS + 110;
+  public float WRIST_MIDDLE_ANGLE = 0.75f;
+
+  // y: top tower layer
+  public int ARM_JOINT_HIGH_ANGLE = ARM_JOINT_MIN_ANGLE + 190;
+  public int EXTENDER_HIGH_POS = EXTENDER_MIN_POS + 630;
+  public float WRIST_HIGH_ANGLE = 0.65f;
+
+  // x: ground
+  public int ARM_JOINT_GROUND_ANGLE = ARM_JOINT_MIN_ANGLE + 430;
+  public int EXTENDER_GROUND_POS = EXTENDER_MIN_POS;
+  public float WRIST_GROUND_ANGLE = 1f;
+
   // Mutables
   public int armJointTargetAngle = ARM_JOINT_MIN_ANGLE;
   public int extenderTargetPos = EXTENDER_MIN_POS;
   public float wristTargetAngle = 0f;
-  public float clawTargetState = 0;
+  public float clawTargetState = 1;
   public float spinnerSpeed = 0.5f;
 
   public double moveX = 0;

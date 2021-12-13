@@ -32,27 +32,6 @@ public class DriverControl extends LinearOpMode {
   public float SPEED_LOW_POWER = 0.4f;
   public float SPEED_HIGH_POWER = 0.8f;
 
-  // Preset states
-  // b: lower tower layer
-  public int ARM_JOINT_LOW_ANGLE = ARM_JOINT_MIN_ANGLE + 310;
-  public int EXTENDER_LOW_POS = EXTENDER_MIN_POS;
-  public float WRIST_LOW_ANGLE = 0.8f;
-
-  // x: middle tower layer
-  public int ARM_JOINT_MIDDLE_ANGLE = ARM_JOINT_MIN_ANGLE + 245;
-  public int EXTENDER_MIDDLE_POS = EXTENDER_MIN_POS + 110;
-  public float WRIST_MIDDLE_ANGLE = 0.75f;
-
-  // y: top tower layer
-  public int ARM_JOINT_HIGH_ANGLE = ARM_JOINT_MIN_ANGLE + 190;
-  public int EXTENDER_HIGH_POS = EXTENDER_MIN_POS + 630;
-  public float WRIST_HIGH_ANGLE = 0.65f;
-
-  // x: ground
-  public int ARM_JOINT_GROUND_ANGLE = ARM_JOINT_MIN_ANGLE + 430;
-  public int EXTENDER_GROUND_POS = EXTENDER_MIN_POS;
-  public float WRIST_GROUND_ANGLE = 1f;
-
   // mutables
   String driveMode = "normal";
   boolean isModeSwitched = false;
@@ -148,21 +127,21 @@ public class DriverControl extends LinearOpMode {
 
       // Apply states
       if (player2.b) {
-        driverControlAPI.armJointTargetAngle = ARM_JOINT_LOW_ANGLE;
-        driverControlAPI.extenderTargetPos = EXTENDER_LOW_POS;
-        driverControlAPI.wristTargetAngle = WRIST_LOW_ANGLE;
+        driverControlAPI.armJointTargetAngle = driverControlAPI.ARM_JOINT_LOW_ANGLE;
+        driverControlAPI.extenderTargetPos = driverControlAPI.EXTENDER_LOW_POS;
+        driverControlAPI.wristTargetAngle = driverControlAPI.WRIST_LOW_ANGLE;
       } else if (player2.x) {
-        driverControlAPI.armJointTargetAngle = ARM_JOINT_MIDDLE_ANGLE;
-        driverControlAPI.extenderTargetPos = EXTENDER_MIDDLE_POS;
-        driverControlAPI.wristTargetAngle = WRIST_MIDDLE_ANGLE;
+        driverControlAPI.armJointTargetAngle = driverControlAPI.ARM_JOINT_MIDDLE_ANGLE;
+        driverControlAPI.extenderTargetPos = driverControlAPI.EXTENDER_MIDDLE_POS;
+        driverControlAPI.wristTargetAngle = driverControlAPI.WRIST_MIDDLE_ANGLE;
       } else if (player2.y) {
-        driverControlAPI.armJointTargetAngle = ARM_JOINT_HIGH_ANGLE;
-        driverControlAPI.extenderTargetPos = EXTENDER_HIGH_POS;
-        driverControlAPI.wristTargetAngle = WRIST_HIGH_ANGLE;
+        driverControlAPI.armJointTargetAngle = driverControlAPI.ARM_JOINT_HIGH_ANGLE;
+        driverControlAPI.extenderTargetPos = driverControlAPI.EXTENDER_HIGH_POS;
+        driverControlAPI.wristTargetAngle = driverControlAPI.WRIST_HIGH_ANGLE;
       } else if (player2.a) {
-        driverControlAPI.armJointTargetAngle = ARM_JOINT_GROUND_ANGLE;
-        driverControlAPI.extenderTargetPos = EXTENDER_GROUND_POS;
-        driverControlAPI.wristTargetAngle = WRIST_GROUND_ANGLE;
+        driverControlAPI.armJointTargetAngle = driverControlAPI.ARM_JOINT_GROUND_ANGLE;
+        driverControlAPI.extenderTargetPos = driverControlAPI.EXTENDER_GROUND_POS;
+        driverControlAPI.wristTargetAngle = driverControlAPI.WRIST_GROUND_ANGLE;
       }
 
       driverControlAPI.clawTargetState = player2.dpad_left ? 0 : 1;
