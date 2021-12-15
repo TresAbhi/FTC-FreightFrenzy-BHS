@@ -27,7 +27,7 @@ public class DriverControlAPI {
 
   // Constants
 
-  public float ARM_JOINT_POWER = 0.2f;
+  public float ARM_JOINT_POWER = 1;
 
   public float EXTENDER_POWER = 0.4f;
   public float ARM_JOINT_MAX_VELOCITY = 320;
@@ -43,15 +43,16 @@ public class DriverControlAPI {
     MIDDLE,
     HIGH,
     GROUND,
+    BACK,
   }
 
   // b: lower tower layer
-  public int ARM_JOINT_LOW_ANGLE = ARM_JOINT_MIN_ANGLE + 310;
+  public int ARM_JOINT_LOW_ANGLE = ARM_JOINT_MIN_ANGLE + 360;
   public int EXTENDER_LOW_POS = EXTENDER_MIN_POS;
   public float WRIST_LOW_ANGLE = 0.8f;
 
   // x: middle tower layer
-  public int ARM_JOINT_MIDDLE_ANGLE = ARM_JOINT_MIN_ANGLE + 245;
+  public int ARM_JOINT_MIDDLE_ANGLE = ARM_JOINT_MIN_ANGLE + 290;
   public int EXTENDER_MIDDLE_POS = EXTENDER_MIN_POS + 110;
   public float WRIST_MIDDLE_ANGLE = 0.75f;
 
@@ -60,10 +61,15 @@ public class DriverControlAPI {
   public int EXTENDER_HIGH_POS = EXTENDER_MIN_POS + 630;
   public float WRIST_HIGH_ANGLE = 0.65f;
 
-  // x: ground
+  // a: ground
   public int ARM_JOINT_GROUND_ANGLE = ARM_JOINT_MIN_ANGLE + 430;
   public int EXTENDER_GROUND_POS = EXTENDER_MIN_POS;
-  public float WRIST_GROUND_ANGLE = 1f;
+  public float WRIST_GROUND_ANGLE = 1;
+
+  // NONE: back
+  public int ARM_JOINT_BACK_ANGLE = ARM_JOINT_MIN_ANGLE;
+  public int EXTENDER_BACK_POS = EXTENDER_MIN_POS;
+  public float WRIST_BACK_ANGLE = 0;
 
   // Mutables
   public int armJointTargetAngle = ARM_JOINT_MIN_ANGLE;
@@ -72,7 +78,7 @@ public class DriverControlAPI {
   public float wristTargetAngle = 0f;
   public float clawTargetState = 1;
 
-  public float spinnerSpeed = 0.5f;
+  public float spinnerSpeed = 0.49f;
   public float spinnerJointSpeed = 0.5f;
 
   public double moveX = 0;
@@ -149,6 +155,11 @@ public class DriverControlAPI {
       armJointTargetAngle = ARM_JOINT_GROUND_ANGLE;
       extenderTargetPos = EXTENDER_GROUND_POS;
       wristTargetAngle = WRIST_GROUND_ANGLE;
+      apply();
+    } else if (state == STATE.BACK) {
+      armJointTargetAngle = ARM_JOINT_BACK_ANGLE;
+      extenderTargetPos = EXTENDER_BACK_POS;
+      wristTargetAngle = WRIST_BACK_ANGLE;
       apply();
     }
   }

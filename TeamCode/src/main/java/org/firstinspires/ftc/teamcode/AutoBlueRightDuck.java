@@ -61,23 +61,26 @@ public class AutoBlueRightDuck extends LinearOpMode {
     driverControlAPI.moveX = 1;
     driverControlAPI.moveY = -0.2;
     driverControlAPI.apply();
-    sleep(700);
+    sleep(550);
 
     // stop moving
     driverControlAPI.moveX = 0;
     driverControlAPI.moveY = 0;
+    driverControlAPI.spinnerJointSpeed = 0.8f;
     driverControlAPI.apply();
-    sleep(8500);
+    sleep(9500);
 
     // wait for ducks to fall off and go back to original position
     driverControlAPI.spinnerSpeed = 0.49f;
+    driverControlAPI.spinnerJointSpeed = 0.4f;
     driverControlAPI.moveX = -1;
     driverControlAPI.moveY = 0;
     driverControlAPI.apply();
-    sleep(1300);
+    sleep(950);
 
-    // stop moving to the left
+    // stop moving to the left and bring it back in
     driverControlAPI.moveX = 0;
+    driverControlAPI.spinnerJointSpeed = 0.5f;
     driverControlAPI.apply();
 
     /**
@@ -87,34 +90,49 @@ public class AutoBlueRightDuck extends LinearOpMode {
      * middle = middle
      * right = high
      */
-    if (camResult == TeamScoreDetector.LOCATION.LEFT) {
-      driverControlAPI.setState(DriverControlAPI.STATE.LOW);
+    if (camResult == TeamScoreDetector.LOCATION.RIGHT) {
+      driverControlAPI.setState(DriverControlAPI.STATE.HIGH);
     } else if (camResult == TeamScoreDetector.LOCATION.MIDDLE) {
       driverControlAPI.setState(DriverControlAPI.STATE.MIDDLE);
     } else {
-      // right or none... hope it's right it if doesn't figure it out
-      driverControlAPI.setState(DriverControlAPI.STATE.HIGH);
+      driverControlAPI.setState(DriverControlAPI.STATE.LOW);
     }
     sleep(2000);
 
     // move forward
-    driverControlAPI.moveY = -0.2;
+    driverControlAPI.moveY = -0.4;
+    driverControlAPI.apply();
+    sleep(1100);
+
+    // stop moving
+    driverControlAPI.moveY = 0;
+    driverControlAPI.apply();
+    sleep(200);
+
+    // let go of the block
+    driverControlAPI.clawTargetState = 0;
     driverControlAPI.apply();
     sleep(500);
 
-    // stop moving and let go of the block
-    driverControlAPI.moveY = 0;
-    driverControlAPI.clawTargetState = 0;
+    // move back
+    driverControlAPI.moveY = 0.4;
     driverControlAPI.apply();
+    sleep(600);
 
-    /*
+    // move right again
+    driverControlAPI.moveX = 1;
+    driverControlAPI.moveY = 0;
+    driverControlAPI.setState(DriverControlAPI.STATE.BACK);
+    sleep(1300);
 
+    // move forward
     driverControlAPI.moveX = 0;
-    driverControlAPI.moveY = 0;
-    driverControlAPI.clawTargetState = 0;
+    driverControlAPI.moveY = -1;
     driverControlAPI.apply();
-    */
+    sleep(350);
 
-    sleep(1000000);
+    driverControlAPI.moveY = 0;
+    driverControlAPI.apply();
+    sleep(520);
   }
 }
