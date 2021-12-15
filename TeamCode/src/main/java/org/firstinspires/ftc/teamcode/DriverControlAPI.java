@@ -19,11 +19,11 @@ public class DriverControlAPI {
   private DcMotorEx ARM_JOINT_RIGHT;
 
   private DcMotor EXTENDER;
-
-  private Servo CLAW;
   private Servo WRIST;
+  private Servo CLAW;
 
   private Servo SPINNER;
+  private Servo SPINNER_JOINT;
 
   // Constants
 
@@ -68,9 +68,12 @@ public class DriverControlAPI {
   // Mutables
   public int armJointTargetAngle = ARM_JOINT_MIN_ANGLE;
   public int extenderTargetPos = EXTENDER_MIN_POS;
+
   public float wristTargetAngle = 0f;
   public float clawTargetState = 1;
+
   public float spinnerSpeed = 0.49f;
+  public float spinnerJointTargetAngle = 0;
 
   public double moveX = 0;
   public double moveY = 0;
@@ -90,13 +93,14 @@ public class DriverControlAPI {
     RIGHT_FRONT = hardwareMap.get(DcMotor.class, "right_front");
     RIGHT_REAR = hardwareMap.get(DcMotor.class, "right_rear");
 
-    ARM_JOINT_LEFT = hardwareMap.get(DcMotorEx.class, "conveyor_left");
-    ARM_JOINT_RIGHT = hardwareMap.get(DcMotorEx.class, "conveyor_right");
+    ARM_JOINT_LEFT = hardwareMap.get(DcMotorEx.class, "arm_joint_left");
+    ARM_JOINT_RIGHT = hardwareMap.get(DcMotorEx.class, "arm_joint_right");
     EXTENDER = hardwareMap.get(DcMotor.class, "extender");
     CLAW = hardwareMap.get(Servo.class, "claw");
     WRIST = hardwareMap.get(Servo.class, "wrist");
 
     SPINNER = hardwareMap.get(Servo.class, "spinner");
+    SPINNER_JOINT = hardwareMap.get(Servo.class, "spinner_joint");
 
     // One time executions
     LEFT_FRONT.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
