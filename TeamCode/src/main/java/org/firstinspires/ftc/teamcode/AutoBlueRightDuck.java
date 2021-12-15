@@ -20,9 +20,6 @@ public class AutoBlueRightDuck extends LinearOpMode {
 
   // @Override
   public void runOpMode() {
-    telemetry.addData("Status", "Initialized");
-    telemetry.update();
-
     int cameraMonitorViewId = hardwareMap.appContext
       .getResources()
       .getIdentifier(
@@ -47,74 +44,77 @@ public class AutoBlueRightDuck extends LinearOpMode {
     telemetry.update();
 
     // don't burn CPU cycles busy-looping in this sample
-    sleep(50);
+    sleep(200);
+
+    TeamScoreDetector.LOCATION camResult = teamScoreDetector.getAnalysis();
+
+    telemetry.addData("Status", "Initialized");
+    telemetry.addData("Location", camResult);
+    telemetry.update();
 
     waitForStart();
 
     runtime.reset();
 
-    TeamScoreDetector.LOCATION camResult = teamScoreDetector.getAnalysis();
-
-    telemetry.addData("Location", camResult);
-    telemetry.update();
-
-    // Move to carousel
-    driverControlAPI.moveX = 1;
-    driverControlAPI.apply();
-
-    sleep(500);
-
-    driverControlAPI.moveX = 0.2;
-    driverControlAPI.moveY = -0.1;
-    driverControlAPI.apply();
-
-    sleep(1000);
-
-    // Start spinning
+    // Move right and a bit up
     driverControlAPI.spinnerSpeed = 1;
+    driverControlAPI.moveX = 1;
+    driverControlAPI.moveY = -0.2;
     driverControlAPI.apply();
+    sleep(810);
 
-    sleep(500);
-
+    // stop moving
+    driverControlAPI.moveX = 0;
     driverControlAPI.moveY = 0;
     driverControlAPI.apply();
+    sleep(8500);
 
-    sleep(120);
-
-    driverControlAPI.moveX = 0.25;
+    // wait for ducks to fall off and go back to original position
+    driverControlAPI.spinnerSpeed = 0.49f;
+    driverControlAPI.moveX = -1;
     driverControlAPI.moveY = 0;
     driverControlAPI.apply();
+    sleep(1300);
 
-    sleep(120);
-
+    // stop moving to the left
     driverControlAPI.moveX = 0;
     driverControlAPI.apply();
 
-    sleep(8000);
-
-    driverControlAPI.spinnerSpeed = 0.5f;
-
-    // Move back left
-    driverControlAPI.moveX = -1;
-    driverControlAPI.setState(DriverControlAPI.STATE.HIGH);
-
     /**
+     * move the arm to the level
+     *
      * left = low
      * middle = middle
      * right = high
      */
     if (camResult == TeamScoreDetector.LOCATION.LEFT) {
-      sleep(750);
+      driverControlAPI.setState(DriverControlAPI.STATE.LOW);
     } else if (camResult == TeamScoreDetector.LOCATION.MIDDLE) {
-      sleep(0);
+      driverControlAPI.setState(DriverControlAPI.STATE.MIDDLE);
     } else {
       // right or none... hope it's right it if doesn't figure it out
-      sleep(1250);
+      driverControlAPI.setState(DriverControlAPI.STATE.HIGH);
     }
+    sleep(2000);
 
-    driverControlAPI.moveX = 0;
+    // move forward
+    driverControlAPI.moveY = -0.2;
+    driverControlAPI.apply();
+    sleep(500);
+
+    // stop moving and let go of the block
+    driverControlAPI.moveY = 0;
+    driverControlAPI.clawTargetState = 0;
     driverControlAPI.apply();
 
-    sleep(10000);
+    /*
+
+    driverControlAPI.moveX = 0;
+    driverControlAPI.moveY = 0;
+    driverControlAPI.clawTargetState = 0;
+    driverControlAPI.apply();
+    */
+
+    sleep(1000000);
   }
 }

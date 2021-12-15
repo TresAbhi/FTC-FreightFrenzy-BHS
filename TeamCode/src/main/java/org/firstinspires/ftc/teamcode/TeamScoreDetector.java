@@ -89,18 +89,20 @@ public class TeamScoreDetector extends OpenCvPipeline {
     right.release();
 
     // some info in the tele op
-    telemetry.addData("Left raw value", (int) Core.sumElems(left).val[0]);
-    telemetry.addData("Middle raw value", (int) Core.sumElems(middle).val[0]);
-    telemetry.addData("Right raw value", (int) Core.sumElems(right).val[0]);
-    telemetry.addData("Left percentage", Math.round(leftCoverage * 100) + "%");
-    telemetry.addData(
-      "Middle percentage",
-      Math.round(middleCoverage * 100) + "%"
-    );
-    telemetry.addData(
-      "Right percentage",
-      Math.round(rightCoverage * 100) + "%"
-    );
+    // telemetry.clearAll();
+
+    // telemetry.addData("Left raw value", (int) Core.sumElems(left).val[0]);
+    // telemetry.addData("Middle raw value", (int) Core.sumElems(middle).val[0]);
+    // telemetry.addData("Right raw value", (int) Core.sumElems(right).val[0]);
+    // telemetry.addData("Left percentage", Math.round(leftCoverage * 100) + "%");
+    // telemetry.addData(
+    //   "Middle percentage",
+    //   Math.round(middleCoverage * 100) + "%"
+    // );
+    // telemetry.addData(
+    //   "Right percentage",
+    //   Math.round(rightCoverage * 100) + "%"
+    // );
 
     // booleans to figure out which one is actually covered
     boolean leftCovered = leftCoverage > PERCENT_COLOR_COVERAGE_THRESHOLD;
@@ -115,16 +117,16 @@ public class TeamScoreDetector extends OpenCvPipeline {
       // set the variable all the way up there
       location = LOCATION.LEFT;
       // talk about it in the tele OP
-      telemetry.addData("Skystone Location", "left");
+      // telemetry.addData("Skystone Location", "left");
     } else if (middleCovered) {
       location = LOCATION.MIDDLE;
-      telemetry.addData("Skystone Location", "middle");
+      // telemetry.addData("Skystone Location", "middle");
     } else if (rightCovered) {
       location = LOCATION.RIGHT;
-      telemetry.addData("Skystone Location", "right");
+      // telemetry.addData("Skystone Location", "right");
     } else {
       location = LOCATION.NONE;
-      telemetry.addData("Skystone Location", "none");
+      // telemetry.addData("Skystone Location", "none");
     }
 
     // convert back to RGB
