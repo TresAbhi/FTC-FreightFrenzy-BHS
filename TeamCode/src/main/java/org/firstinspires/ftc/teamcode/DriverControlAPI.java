@@ -28,12 +28,11 @@ public class DriverControlAPI {
   // Constants
 
   public float ARM_JOINT_POWER = 1;
+  public float ARM_JOINT_MAX_VELOCITY = 320;
+  public int ARM_JOINT_MIN_ANGLE;
 
   public float EXTENDER_POWER = 0.4f;
-  public float ARM_JOINT_MAX_VELOCITY = 320;
-  public float ARM_JOINT_VELOCITY_DAMPING = 4;
 
-  public int ARM_JOINT_MIN_ANGLE;
   public int EXTENDER_MIN_POS;
 
   // Preset states
@@ -140,31 +139,31 @@ public class DriverControlAPI {
       armJointTargetAngle = ARM_JOINT_LOW_ANGLE;
       extenderTargetPos = EXTENDER_LOW_POS;
       wristTargetAngle = WRIST_LOW_ANGLE;
-      apply();
+      iterate();
     } else if (state == STATE.MIDDLE) {
       armJointTargetAngle = ARM_JOINT_MIDDLE_ANGLE;
       extenderTargetPos = EXTENDER_MIDDLE_POS;
       wristTargetAngle = WRIST_MIDDLE_ANGLE;
-      apply();
+      iterate();
     } else if (state == STATE.HIGH) {
       armJointTargetAngle = ARM_JOINT_HIGH_ANGLE;
       extenderTargetPos = EXTENDER_HIGH_POS;
       wristTargetAngle = WRIST_HIGH_ANGLE;
-      apply();
+      iterate();
     } else if (state == STATE.GROUND) {
       armJointTargetAngle = ARM_JOINT_GROUND_ANGLE;
       extenderTargetPos = EXTENDER_GROUND_POS;
       wristTargetAngle = WRIST_GROUND_ANGLE;
-      apply();
+      iterate();
     } else if (state == STATE.BACK) {
       armJointTargetAngle = ARM_JOINT_BACK_ANGLE;
       extenderTargetPos = EXTENDER_BACK_POS;
       wristTargetAngle = WRIST_BACK_ANGLE;
-      apply();
+      iterate();
     }
   }
 
-  public void apply() {
+  public void iterate() {
     // Trig to find out partial offsets in axes (plural of axis)
     // Don't mess with this unless you know what you're doing!!!
     double vectorNormal = Math.hypot(moveX, moveY);
@@ -182,14 +181,7 @@ public class DriverControlAPI {
 
     // Tweak powers based on velocities
     double armJointPowerCoefficient =
-      1 -
-      Math.pow(
-        Math.min(
-          Math.abs(ARM_JOINT_LEFT.getVelocity()) / ARM_JOINT_MAX_VELOCITY,
-          1
-        ),
-        ARM_JOINT_VELOCITY_DAMPING
-      );
+      1 - (Math.abs(ARM_JOINT_LEFT.getVelocity()) / ARM_JOINT_MAX_VELOCITY);
     ARM_JOINT_LEFT.setPower(armJointPowerCoefficient * ARM_JOINT_POWER);
     ARM_JOINT_RIGHT.setPower(armJointPowerCoefficient * ARM_JOINT_POWER);
 

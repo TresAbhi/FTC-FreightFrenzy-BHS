@@ -147,7 +147,7 @@ public class DriverControl extends LinearOpMode {
       driverControlAPI.clawTargetState = player2.dpad_left ? 0 : 1;
       driverControlAPI.spinnerSpeed = player1.right_bumper ? 1f : 0.5f;
 
-      driverControlAPI.apply();
+      driverControlAPI.iterate();
 
       telemetry.addData("Status", "Run Time: " + runtime.toString());
       telemetry.addData("Drive mode", driveMode);

@@ -60,14 +60,14 @@ public class AutoBlueRightDuck extends LinearOpMode {
     driverControlAPI.spinnerSpeed = 1;
     driverControlAPI.moveX = 1;
     driverControlAPI.moveY = -0.2;
-    driverControlAPI.apply();
+    driverControlAPI.iterate();
     sleep(550);
 
     // stop moving
     driverControlAPI.moveX = 0;
     driverControlAPI.moveY = 0;
     driverControlAPI.spinnerJointSpeed = 0.8f;
-    driverControlAPI.apply();
+    driverControlAPI.iterate();
     sleep(9500);
 
     // wait for ducks to fall off and go back to original position
@@ -75,13 +75,13 @@ public class AutoBlueRightDuck extends LinearOpMode {
     driverControlAPI.spinnerJointSpeed = 0.4f;
     driverControlAPI.moveX = -1;
     driverControlAPI.moveY = 0;
-    driverControlAPI.apply();
+    driverControlAPI.iterate();
     sleep(950);
 
     // stop moving to the left and bring it back in
     driverControlAPI.moveX = 0;
     driverControlAPI.spinnerJointSpeed = 0.5f;
-    driverControlAPI.apply();
+    driverControlAPI.iterate();
 
     /**
      * move the arm to the level
@@ -97,26 +97,29 @@ public class AutoBlueRightDuck extends LinearOpMode {
     } else {
       driverControlAPI.setState(DriverControlAPI.STATE.LOW);
     }
-    sleep(2000);
+    for (int i = 0; i < 200; i++) {
+      sleep(10);
+      driverControlAPI.iterate(); // dampen power as needed
+    }
 
     // move forward
     driverControlAPI.moveY = -0.4;
-    driverControlAPI.apply();
+    driverControlAPI.iterate();
     sleep(1100);
 
     // stop moving
     driverControlAPI.moveY = 0;
-    driverControlAPI.apply();
+    driverControlAPI.iterate();
     sleep(200);
 
     // let go of the block
     driverControlAPI.clawTargetState = 0;
-    driverControlAPI.apply();
+    driverControlAPI.iterate();
     sleep(500);
 
     // move back
     driverControlAPI.moveY = 0.4;
-    driverControlAPI.apply();
+    driverControlAPI.iterate();
     sleep(600);
 
     // move right again
@@ -128,11 +131,11 @@ public class AutoBlueRightDuck extends LinearOpMode {
     // move forward
     driverControlAPI.moveX = 0;
     driverControlAPI.moveY = -1;
-    driverControlAPI.apply();
+    driverControlAPI.iterate();
     sleep(350);
 
     driverControlAPI.moveY = 0;
-    driverControlAPI.apply();
-    sleep(520);
+    driverControlAPI.iterate();
+    sleep(550);
   }
 }
