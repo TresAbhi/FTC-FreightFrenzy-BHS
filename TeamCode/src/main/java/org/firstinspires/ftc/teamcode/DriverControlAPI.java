@@ -73,7 +73,7 @@ public class DriverControlAPI {
   public float clawTargetState = 1;
 
   public float spinnerSpeed = 0.49f;
-  public float spinnerJointTargetAngle = 0;
+  public float spinnerJointSpeed = 0.49f;
 
   public double moveX = 0;
   public double moveY = 0;
