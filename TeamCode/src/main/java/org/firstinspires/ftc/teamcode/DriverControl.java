@@ -64,11 +64,19 @@ public class DriverControl extends LinearOpMode {
         player1.left_bumper ? SPEED_LOW_POWER : SPEED_HIGH_POWER;
 
       // God mode toggler
-      if ((player1.back || player1.back) && !isModeSwitched) {
+      if ((player1.back || player2.back) && !isModeSwitched) {
         driveMode = driveMode == "normal" ? "god" : "normal";
         isModeSwitched = true;
       }
-      if (!(player1.back || player1.back)) isModeSwitched = false;
+      if (!(player1.back || player2.back)) isModeSwitched = false;
+
+      // Tweak spinner joint speed
+      if (player1.right_trigger > 0) {
+        driverControlAPI.spinnerJointSpeed =
+          (player1.right_trigger * 0.5f) + 0.5f;
+      } else if (player1.left_trigger > 0) {
+        driverControlAPI.spinnerJointSpeed = (player1.right_trigger * 0.5f);
+      } else driverControlAPI.spinnerJointSpeed = 0.5f;
 
       // Dampen controls to give more precision at lower power levels
       double dampedLeftJoystickX =

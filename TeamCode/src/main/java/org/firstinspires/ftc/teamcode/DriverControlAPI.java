@@ -72,8 +72,8 @@ public class DriverControlAPI {
   public float wristTargetAngle = 0f;
   public float clawTargetState = 1;
 
-  public float spinnerSpeed = 0.49f;
-  public float spinnerJointSpeed = 0.49f;
+  public float spinnerSpeed = 0.5f;
+  public float spinnerJointSpeed = 0.5f;
 
   public double moveX = 0;
   public double moveY = 0;
@@ -193,5 +193,6 @@ public class DriverControlAPI {
     CLAW.setPosition(clawTargetState);
 
     SPINNER.setPosition(spinnerSpeed);
+    SPINNER_JOINT.setPosition(spinnerJointSpeed);
   }
 }
