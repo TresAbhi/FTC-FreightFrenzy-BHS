@@ -88,14 +88,13 @@ public class DriverControl extends LinearOpMode {
       double dampedRightJoystickX =
         Math.signum(player1.right_stick_x) *
         Math.pow(player1.right_stick_x, MOVEMENT_PRECISION);
-      double dampedRightJoystickY =
+      double dampedRightJoystickY = // unused for now
         Math.signum(player1.right_stick_y) *
         Math.pow(player1.right_stick_y, MOVEMENT_PRECISION);
 
       driverControlAPI.moveX = dampedLeftJoystickX;
       driverControlAPI.moveY = dampedLeftJoystickY;
       driverControlAPI.rotX = dampedRightJoystickX;
-      driverControlAPI.rotY = dampedRightJoystickY;
 
       // Tweak arm joint target
       if (player2.right_bumper) {

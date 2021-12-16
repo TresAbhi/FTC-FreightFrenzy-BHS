@@ -83,7 +83,6 @@ public class DriverControlAPI {
   public double moveX = 0;
   public double moveY = 0;
   public double rotX = 0;
-  public double rotY = 0;
 
   public float movementPower = 1f;
 
