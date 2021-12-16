@@ -27,7 +27,7 @@ public class DriverControlAPI {
 
   // Constants
 
-  public float ARM_JOINT_POWER = 0.2f;
+  public float ARM_JOINT_POWER = 0.4f;
   public float ARM_JOINT_MAX_VELOCITY = 320;
   public int ARM_JOINT_MIN_ANGLE;
 
@@ -120,10 +120,14 @@ public class DriverControlAPI {
     ARM_JOINT_RIGHT.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     ARM_JOINT_LEFT.setTargetPosition(ARM_JOINT_MIN_ANGLE);
     ARM_JOINT_RIGHT.setTargetPosition(ARM_JOINT_MIN_ANGLE);
+    ARM_JOINT_LEFT.setTargetPositionTolerance(0);
+    ARM_JOINT_RIGHT.setTargetPositionTolerance(0);
     ARM_JOINT_LEFT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     ARM_JOINT_RIGHT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     ARM_JOINT_LEFT.setPower(ARM_JOINT_POWER);
     ARM_JOINT_RIGHT.setPower(ARM_JOINT_POWER);
+    ARM_JOINT_LEFT.setVelocityPIDFCoefficients(1, 0.1, 0, 10);
+    ARM_JOINT_RIGHT.setVelocityPIDFCoefficients(1, 0.1, 0, 10);
 
     EXTENDER.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     EXTENDER.setTargetPosition(EXTENDER_MIN_POS);
@@ -133,44 +137,36 @@ public class DriverControlAPI {
     WRIST.setPosition(0);
   }
 
-  public void dampenPower() {
-    // Tweak powers based on velocities
-    double armJointPowerCoefficient =
-      1 - (Math.abs(ARM_JOINT_LEFT.getVelocity()) / ARM_JOINT_MAX_VELOCITY);
-    ARM_JOINT_LEFT.setPower(armJointPowerCoefficient * ARM_JOINT_POWER);
-    ARM_JOINT_RIGHT.setPower(armJointPowerCoefficient * ARM_JOINT_POWER);
-  }
-
   public void setState(STATE state) {
     if (state == STATE.LOW) {
       armJointTargetAngle = ARM_JOINT_LOW_ANGLE;
       extenderTargetPos = EXTENDER_LOW_POS;
       wristTargetAngle = WRIST_LOW_ANGLE;
-      iterate();
+      apply();
     } else if (state == STATE.MIDDLE) {
       armJointTargetAngle = ARM_JOINT_MIDDLE_ANGLE;
       extenderTargetPos = EXTENDER_MIDDLE_POS;
       wristTargetAngle = WRIST_MIDDLE_ANGLE;
-      iterate();
+      apply();
     } else if (state == STATE.HIGH) {
       armJointTargetAngle = ARM_JOINT_HIGH_ANGLE;
       extenderTargetPos = EXTENDER_HIGH_POS;
       wristTargetAngle = WRIST_HIGH_ANGLE;
-      iterate();
+      apply();
     } else if (state == STATE.GROUND) {
       armJointTargetAngle = ARM_JOINT_GROUND_ANGLE;
       extenderTargetPos = EXTENDER_GROUND_POS;
       wristTargetAngle = WRIST_GROUND_ANGLE;
-      iterate();
+      apply();
     } else if (state == STATE.BACK) {
       armJointTargetAngle = ARM_JOINT_BACK_ANGLE;
       extenderTargetPos = EXTENDER_BACK_POS;
       wristTargetAngle = WRIST_BACK_ANGLE;
-      iterate();
+      apply();
     }
   }
 
-  public void iterate() {
+  public void apply() {
     // Trig to find out partial offsets in axes (plural of axis)
     // Don't mess with this unless you know what you're doing!!!
     double vectorNormal = Math.hypot(moveX, moveY);
