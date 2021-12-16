@@ -44,7 +44,7 @@ public class AutoBlueRightDuck extends LinearOpMode {
     telemetry.update();
 
     // don't burn CPU cycles busy-looping in this sample
-    sleep(200);
+    sleep(1000);
 
     TeamScoreDetector.LOCATION camResult = teamScoreDetector.getAnalysis();
 
@@ -66,7 +66,7 @@ public class AutoBlueRightDuck extends LinearOpMode {
     // stop moving
     driverControlAPI.moveX = 0;
     driverControlAPI.moveY = 0;
-    driverControlAPI.spinnerJointSpeed = 0.8f;
+    driverControlAPI.spinnerJointSpeed = 0.6f;
     driverControlAPI.iterate();
     sleep(9500);
 
@@ -90,6 +90,8 @@ public class AutoBlueRightDuck extends LinearOpMode {
      * middle = middle
      * right = high
      */
+    driverControlAPI.ARM_JOINT_LEFT.setPower(0.2);
+    driverControlAPI.ARM_JOINT_RIGHT.setPower(0.2);
     if (camResult == TeamScoreDetector.LOCATION.RIGHT) {
       driverControlAPI.setState(DriverControlAPI.STATE.HIGH);
     } else if (camResult == TeamScoreDetector.LOCATION.MIDDLE) {
@@ -97,10 +99,12 @@ public class AutoBlueRightDuck extends LinearOpMode {
     } else {
       driverControlAPI.setState(DriverControlAPI.STATE.LOW);
     }
-    for (int i = 0; i < 200; i++) {
-      sleep(10);
-      driverControlAPI.iterate(); // dampen power as needed
-    }
+    sleep(1000);
+
+    // increase the power to hold it in place better
+    driverControlAPI.ARM_JOINT_LEFT.setPower(1);
+    driverControlAPI.ARM_JOINT_RIGHT.setPower(1);
+    sleep(1000);
 
     // move forward
     driverControlAPI.moveY = -0.4;
@@ -125,6 +129,9 @@ public class AutoBlueRightDuck extends LinearOpMode {
     // move right again
     driverControlAPI.moveX = 1;
     driverControlAPI.moveY = 0;
+    driverControlAPI.clawTargetState = 1;
+    driverControlAPI.ARM_JOINT_LEFT.setPower(0.2);
+    driverControlAPI.ARM_JOINT_RIGHT.setPower(0.2);
     driverControlAPI.setState(DriverControlAPI.STATE.BACK);
     sleep(1300);
 
@@ -132,10 +139,10 @@ public class AutoBlueRightDuck extends LinearOpMode {
     driverControlAPI.moveX = 0;
     driverControlAPI.moveY = -1;
     driverControlAPI.iterate();
-    sleep(350);
+    sleep(450);
 
     driverControlAPI.moveY = 0;
     driverControlAPI.iterate();
-    sleep(550);
+    sleep(500);
   }
 }

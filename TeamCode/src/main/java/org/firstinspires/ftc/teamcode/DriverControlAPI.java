@@ -10,24 +10,24 @@ public class DriverControlAPI {
   HardwareMap hardwareMap;
 
   // Components
-  private DcMotor LEFT_FRONT;
-  private DcMotor LEFT_REAR;
-  private DcMotor RIGHT_FRONT;
-  private DcMotor RIGHT_REAR;
+  public DcMotor LEFT_FRONT;
+  public DcMotor LEFT_REAR;
+  public DcMotor RIGHT_FRONT;
+  public DcMotor RIGHT_REAR;
 
-  private DcMotorEx ARM_JOINT_LEFT;
-  private DcMotorEx ARM_JOINT_RIGHT;
+  public DcMotorEx ARM_JOINT_LEFT;
+  public DcMotorEx ARM_JOINT_RIGHT;
 
-  private DcMotor EXTENDER;
-  private Servo WRIST;
-  private Servo CLAW;
+  public DcMotor EXTENDER;
+  public Servo WRIST;
+  public Servo CLAW;
 
-  private Servo SPINNER;
-  private Servo SPINNER_JOINT;
+  public Servo SPINNER;
+  public Servo SPINNER_JOINT;
 
   // Constants
 
-  public float ARM_JOINT_POWER = 1;
+  public float ARM_JOINT_POWER = 0.2f;
   public float ARM_JOINT_MAX_VELOCITY = 320;
   public int ARM_JOINT_MIN_ANGLE;
 
@@ -134,6 +134,14 @@ public class DriverControlAPI {
     WRIST.setPosition(0);
   }
 
+  public void dampenPower() {
+    // Tweak powers based on velocities
+    double armJointPowerCoefficient =
+      1 - (Math.abs(ARM_JOINT_LEFT.getVelocity()) / ARM_JOINT_MAX_VELOCITY);
+    ARM_JOINT_LEFT.setPower(armJointPowerCoefficient * ARM_JOINT_POWER);
+    ARM_JOINT_RIGHT.setPower(armJointPowerCoefficient * ARM_JOINT_POWER);
+  }
+
   public void setState(STATE state) {
     if (state == STATE.LOW) {
       armJointTargetAngle = ARM_JOINT_LOW_ANGLE;
@@ -178,12 +186,6 @@ public class DriverControlAPI {
     LEFT_REAR.setPower((-vector2 + rotX) * movementPower);
     RIGHT_FRONT.setPower((-vector3 - rotX) * movementPower);
     RIGHT_REAR.setPower((-vector4 - rotX) * movementPower);
-
-    // Tweak powers based on velocities
-    double armJointPowerCoefficient =
-      1 - (Math.abs(ARM_JOINT_LEFT.getVelocity()) / ARM_JOINT_MAX_VELOCITY);
-    ARM_JOINT_LEFT.setPower(armJointPowerCoefficient * ARM_JOINT_POWER);
-    ARM_JOINT_RIGHT.setPower(armJointPowerCoefficient * ARM_JOINT_POWER);
 
     // Apply all targets
     ARM_JOINT_LEFT.setTargetPosition(armJointTargetAngle);
