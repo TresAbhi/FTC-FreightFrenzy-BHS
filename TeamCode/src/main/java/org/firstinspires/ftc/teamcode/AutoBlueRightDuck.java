@@ -139,7 +139,7 @@ public class AutoBlueRightDuck extends LinearOpMode {
     driverControlAPI.moveX = 0;
     driverControlAPI.moveY = -1;
     driverControlAPI.iterate();
-    sleep(450);
+    sleep(440);
 
     driverControlAPI.moveY = 0;
     driverControlAPI.iterate();
