@@ -29,7 +29,7 @@ public class DriverControlAPI {
   // Constants
   public float ARM_JOINT_POWER = 0.08f;
   public float ARM_JOINT_MAX_VELOCITY = 32767 / 750;
-  public int ARM_JOINT_MIN_ANGLE;
+  public int ARM_JOINT_MIN_ANGLE = 55;
 
   public float EXTENDER_POWER = 0.4f;
 
@@ -46,12 +46,12 @@ public class DriverControlAPI {
   }
 
   // b: lower tower layer
-  public int ARM_JOINT_LOW_ANGLE = ARM_JOINT_MIN_ANGLE + 360;
+  public int ARM_JOINT_LOW_ANGLE = ARM_JOINT_MIN_ANGLE + 265;
   public int EXTENDER_LOW_POS = EXTENDER_MIN_POS;
   public float WRIST_LOW_ANGLE = 0.8f;
 
   // x: middle tower layer
-  public int ARM_JOINT_MIDDLE_ANGLE = ARM_JOINT_MIN_ANGLE + 290;
+  public int ARM_JOINT_MIDDLE_ANGLE = ARM_JOINT_MIN_ANGLE + 195;
   public int EXTENDER_MIDDLE_POS = EXTENDER_MIN_POS + 110;
   public float WRIST_MIDDLE_ANGLE = 0.75f;
 
