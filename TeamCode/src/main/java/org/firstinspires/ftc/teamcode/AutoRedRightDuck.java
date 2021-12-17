@@ -83,14 +83,13 @@ public class AutoRedRightDuck extends LinearOpMode {
     // move to the left and bring back in the spinner
     driverControlAPI.moveX = -1;
     driverControlAPI.spinnerJointSpeed = 0.4f;
+    driverControlAPI.spinnerSpeed = 0.5f;
     driverControlAPI.apply();
-    sleep(750);
+    sleep(960);
 
     // stop moving, move the arm to correct position, and stop the spinner joint
     driverControlAPI.moveX = 0;
     driverControlAPI.spinnerJointSpeed = 0.5f;
-    driverControlAPI.ARM_JOINT_LEFT.setPower(0.2);
-    driverControlAPI.ARM_JOINT_RIGHT.setPower(0.2);
     if (camResult == TeamScoreDetector.LOCATION.RIGHT) {
       driverControlAPI.setState(DriverControlAPI.STATE.HIGH);
     } else if (camResult == TeamScoreDetector.LOCATION.MIDDLE) {
@@ -98,11 +97,17 @@ public class AutoRedRightDuck extends LinearOpMode {
     } else {
       driverControlAPI.setState(DriverControlAPI.STATE.LOW);
     }
-    sleep(1000);
+    sleep(2000);
 
-    // increase the power to hold it in place better
-    driverControlAPI.ARM_JOINT_LEFT.setPower(1);
-    driverControlAPI.ARM_JOINT_RIGHT.setPower(1);
-    sleep(1000);
+    // move forward
+    driverControlAPI.moveY = -0.4f;
+    driverControlAPI.apply();
+    sleep(1500);
+
+    driverControlAPI.moveY = 0;
+    driverControlAPI.apply();
+    sleep(200);
+
+    sleep(100000);
   }
 }

@@ -41,9 +41,10 @@ public class DriverControl extends LinearOpMode {
     telemetry.addData("Status", "Initialized");
     telemetry.update();
 
-    driverControlAPI.init(hardwareMap);
     driverControlAPI.ARM_JOINT_MIN_ANGLE = ARM_JOINT_MIN_ANGLE;
     driverControlAPI.EXTENDER_MIN_POS = EXTENDER_MIN_POS;
+
+    driverControlAPI.init(hardwareMap);
 
     waitForStart();
 
@@ -150,6 +151,9 @@ public class DriverControl extends LinearOpMode {
 
       telemetry.addData("Status", "Run Time: " + runtime.toString());
       telemetry.addData("Drive mode", driveMode);
+      telemetry.addData("target", driverControlAPI.armJointTargetAngle);
+      telemetry.addData("current L", driverControlAPI.ARM_JOINT_LEFT.getCurrentPosition());
+      telemetry.addData("current R", driverControlAPI.ARM_JOINT_RIGHT.getCurrentPosition());
 
       telemetry.update();
     }

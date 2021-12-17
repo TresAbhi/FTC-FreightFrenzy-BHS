@@ -36,8 +36,8 @@ public class Stateless extends LinearOpMode {
     RIGHT_FRONT = hardwareMap.get(DcMotor.class, "right_front");
     RIGHT_REAR = hardwareMap.get(DcMotor.class, "right_rear");
 
-    ARM_JOINT_LEFT = hardwareMap.get(DcMotor.class, "conveyor_left");
-    ARM_JOINT_RIGHT = hardwareMap.get(DcMotor.class, "conveyor_right");
+    ARM_JOINT_LEFT = hardwareMap.get(DcMotor.class, "arm_joint_left");
+    ARM_JOINT_RIGHT = hardwareMap.get(DcMotor.class, "arm_joint_right");
     EXTENDER = hardwareMap.get(DcMotor.class, "extender");
     CLAW = hardwareMap.get(Servo.class, "claw");
     WRIST = hardwareMap.get(Servo.class, "wrist");
