@@ -51,7 +51,7 @@ public class DriverControlAPI {
   public float WRIST_LOW_ANGLE = 0.8f;
 
   // x: middle tower layer
-  public int ARM_JOINT_MIDDLE_ANGLE = ARM_JOINT_MIN_ANGLE + 195;
+  public int ARM_JOINT_MIDDLE_ANGLE = ARM_JOINT_MIN_ANGLE + 215;
   public int EXTENDER_MIDDLE_POS = EXTENDER_MIN_POS + 110;
   public float WRIST_MIDDLE_ANGLE = 0.75f;
 
