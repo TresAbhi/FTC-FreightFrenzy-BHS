@@ -27,7 +27,7 @@ public class DriverControlAPI {
   public Servo SPINNER_JOINT;
 
   // Constants
-  public float ARM_JOINT_SPEED = 0.2f;
+  public float ARM_JOINT_SPEED = 0.08f;
   public float ARM_JOINT_MAX_VELOCITY = 32767 / 750;
   public int ARM_JOINT_MIN_ANGLE = 55;
 

@@ -102,11 +102,26 @@ public class AutoRedLeftDuck extends LinearOpMode {
     // move forward
     driverControlAPI.moveY = -0.4f;
     driverControlAPI.apply();
-    sleep(1500);
+    sleep(1200);
 
     // stop and drop the box
     driverControlAPI.moveY = 0;
-    driverControlAPI.clawTargetState = 1;
+    driverControlAPI.clawTargetState = 0;
+    driverControlAPI.apply();
+    sleep(200);
+
+    // go back
+    driverControlAPI.moveY = 1;
+    driverControlAPI.apply();
+    sleep(200);
+
+    // stop moving back and move right
+    driverControlAPI.moveY = 0;
+    driverControlAPI.moveX = 1;
+    driverControlAPI.apply();
+    sleep(500);
+
+    driverControlAPI.moveX = 0;
     driverControlAPI.apply();
     sleep(200);
 
