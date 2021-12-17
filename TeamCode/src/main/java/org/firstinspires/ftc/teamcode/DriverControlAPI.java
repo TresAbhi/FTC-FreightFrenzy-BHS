@@ -27,7 +27,7 @@ public class DriverControlAPI {
   public Servo SPINNER_JOINT;
 
   // Constants
-  public float ARM_JOINT_POWER = 0.08f;
+  public float ARM_JOINT_SPEED = 0.2f;
   public float ARM_JOINT_MAX_VELOCITY = 32767 / 750;
   public int ARM_JOINT_MIN_ANGLE = 55;
 
@@ -146,8 +146,8 @@ public class DriverControlAPI {
     );
     ARM_JOINT_LEFT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     ARM_JOINT_RIGHT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    ARM_JOINT_LEFT.setPower(ARM_JOINT_POWER);
-    ARM_JOINT_RIGHT.setPower(ARM_JOINT_POWER);
+    ARM_JOINT_LEFT.setPower(ARM_JOINT_SPEED);
+    ARM_JOINT_RIGHT.setPower(ARM_JOINT_SPEED);
 
     EXTENDER.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     EXTENDER.setTargetPosition(EXTENDER_MIN_POS);
@@ -159,29 +159,29 @@ public class DriverControlAPI {
 
   public void setState(STATE state) {
     if (state == STATE.LOW) {
-      armJointTargetAngle = ARM_JOINT_LOW_ANGLE;
-      extenderTargetPos = EXTENDER_LOW_POS;
       wristTargetAngle = WRIST_LOW_ANGLE;
+      extenderTargetPos = EXTENDER_LOW_POS;
+      armJointTargetAngle = ARM_JOINT_LOW_ANGLE;
       apply();
     } else if (state == STATE.MIDDLE) {
-      armJointTargetAngle = ARM_JOINT_MIDDLE_ANGLE;
-      extenderTargetPos = EXTENDER_MIDDLE_POS;
       wristTargetAngle = WRIST_MIDDLE_ANGLE;
+      extenderTargetPos = EXTENDER_MIDDLE_POS;
+      armJointTargetAngle = ARM_JOINT_MIDDLE_ANGLE;
       apply();
     } else if (state == STATE.HIGH) {
-      armJointTargetAngle = ARM_JOINT_HIGH_ANGLE;
-      extenderTargetPos = EXTENDER_HIGH_POS;
       wristTargetAngle = WRIST_HIGH_ANGLE;
+      extenderTargetPos = EXTENDER_HIGH_POS;
+      armJointTargetAngle = ARM_JOINT_HIGH_ANGLE;
       apply();
     } else if (state == STATE.GROUND) {
-      armJointTargetAngle = ARM_JOINT_GROUND_ANGLE;
-      extenderTargetPos = EXTENDER_GROUND_POS;
       wristTargetAngle = WRIST_GROUND_ANGLE;
+      extenderTargetPos = EXTENDER_GROUND_POS;
+      armJointTargetAngle = ARM_JOINT_GROUND_ANGLE;
       apply();
     } else if (state == STATE.BACK) {
-      armJointTargetAngle = ARM_JOINT_BACK_ANGLE;
-      extenderTargetPos = EXTENDER_BACK_POS;
       wristTargetAngle = WRIST_BACK_ANGLE;
+      extenderTargetPos = EXTENDER_BACK_POS;
+      armJointTargetAngle = ARM_JOINT_BACK_ANGLE;
       apply();
     }
   }

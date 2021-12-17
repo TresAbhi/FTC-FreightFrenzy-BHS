@@ -8,7 +8,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
-@Autonomous(name = "AA-PROTO-AutoRedRightDuck", group = "A")
+@Autonomous(name = "AutoRedRightDuck", group = "A")
 // @Disabled
 public class AutoRedRightDuck extends LinearOpMode {
 
@@ -56,40 +56,42 @@ public class AutoRedRightDuck extends LinearOpMode {
 
     runtime.reset();
 
-    // move a bit up
-    driverControlAPI.moveY = -1;
-    driverControlAPI.apply();
-    sleep(120);
-
-    // stop moving and rotate 90
-    driverControlAPI.moveY = 0;
-    driverControlAPI.rotX = 1;
-    driverControlAPI.apply();
-    sleep(420);
-
-    // stop rotating, move back, swing the spinner out, and start the spinner
-    driverControlAPI.moveY = 1;
-    driverControlAPI.spinnerJointSpeed = 0.6f;
+    // Move right and a bit up
     driverControlAPI.spinnerSpeed = 1;
-    driverControlAPI.rotX = 0;
+    driverControlAPI.moveX = 1;
+    driverControlAPI.moveY = -0.2;
     driverControlAPI.apply();
     sleep(550);
 
-    // stop moving and wait for ducks to fall
+    // stop moving
+    driverControlAPI.moveX = 0;
+    driverControlAPI.moveY = 0;
+    driverControlAPI.spinnerJointSpeed = 0.6f;
+    driverControlAPI.apply();
+    sleep(9500);
+
+    // wait for ducks to fall off and go back to original position
+    driverControlAPI.spinnerSpeed = 0.49f;
+    driverControlAPI.spinnerJointSpeed = 0.4f;
+    driverControlAPI.moveX = -1;
     driverControlAPI.moveY = 0;
     driverControlAPI.apply();
-    sleep(8500);
+    sleep(950);
 
-    // move to the left and bring back in the spinner
-    driverControlAPI.moveX = -1;
-    driverControlAPI.spinnerJointSpeed = 0.4f;
-    driverControlAPI.spinnerSpeed = 0.5f;
-    driverControlAPI.apply();
-    sleep(960);
-
-    // stop moving, move the arm to correct position, and stop the spinner joint
+    // stop moving to the left and bring it back in
     driverControlAPI.moveX = 0;
     driverControlAPI.spinnerJointSpeed = 0.5f;
+    driverControlAPI.apply();
+
+    /**
+     * move the arm to the level
+     *
+     * left = low
+     * middle = middle
+     * right = high
+     */
+    driverControlAPI.ARM_JOINT_LEFT.setPower(0.2);
+    driverControlAPI.ARM_JOINT_RIGHT.setPower(0.2);
     if (camResult == TeamScoreDetector.LOCATION.RIGHT) {
       driverControlAPI.setState(DriverControlAPI.STATE.HIGH);
     } else if (camResult == TeamScoreDetector.LOCATION.MIDDLE) {
@@ -97,19 +99,50 @@ public class AutoRedRightDuck extends LinearOpMode {
     } else {
       driverControlAPI.setState(DriverControlAPI.STATE.LOW);
     }
-    sleep(2000);
+    sleep(1000);
+
+    // increase the power to hold it in place better
+    driverControlAPI.ARM_JOINT_LEFT.setPower(1);
+    driverControlAPI.ARM_JOINT_RIGHT.setPower(1);
+    sleep(1000);
 
     // move forward
-    driverControlAPI.moveY = -0.4f;
+    driverControlAPI.moveY = -0.4;
     driverControlAPI.apply();
-    sleep(1500);
+    sleep(1100);
 
-    // stop and drop the box
+    // stop moving
     driverControlAPI.moveY = 0;
-    driverControlAPI.clawTargetState = 1;
     driverControlAPI.apply();
     sleep(200);
 
-    sleep(100000);
+    // let go of the block
+    driverControlAPI.clawTargetState = 0;
+    driverControlAPI.apply();
+    sleep(500);
+
+    // move back
+    driverControlAPI.moveY = 0.4;
+    driverControlAPI.apply();
+    sleep(600);
+
+    // move right again
+    driverControlAPI.moveX = 1;
+    driverControlAPI.moveY = 0;
+    driverControlAPI.clawTargetState = 1;
+    driverControlAPI.ARM_JOINT_LEFT.setPower(0.2);
+    driverControlAPI.ARM_JOINT_RIGHT.setPower(0.2);
+    driverControlAPI.setState(DriverControlAPI.STATE.BACK);
+    sleep(1300);
+
+    // move forward
+    driverControlAPI.moveX = 0;
+    driverControlAPI.moveY = -1;
+    driverControlAPI.apply();
+    sleep(440);
+
+    driverControlAPI.moveY = 0;
+    driverControlAPI.apply();
+    sleep(500);
   }
 }
