@@ -38,13 +38,12 @@ public class DriverControl extends LinearOpMode {
 
   // @Override
   public void runOpMode() {
-    telemetry.addData("Status", "Initialized");
-    telemetry.update();
-
     driverControlAPI.ARM_JOINT_MIN_ANGLE = ARM_JOINT_MIN_ANGLE;
     driverControlAPI.EXTENDER_MIN_POS = EXTENDER_MIN_POS;
-
     driverControlAPI.init(hardwareMap);
+
+    telemetry.addData("Status", "Initialized");
+    telemetry.update();
 
     waitForStart();
 
@@ -72,12 +71,7 @@ public class DriverControl extends LinearOpMode {
       if (!(player1.back || player2.back)) isModeSwitched = false;
 
       // Tweak spinner joint speed
-      if (player1.right_trigger > 0) {
-        driverControlAPI.spinnerJointSpeed =
-          (player1.right_trigger * 0.5f) + 0.5f;
-      } else if (player1.left_trigger > 0) {
-        driverControlAPI.spinnerJointSpeed = (player1.right_trigger * 0.5f);
-      } else driverControlAPI.spinnerJointSpeed = 0.5f;
+      driverControlAPI.spinnerJointSpeed = player1.right_trigger;
 
       // Dampen controls to give more precision at lower power levels
       double dampedLeftJoystickX =
@@ -152,8 +146,15 @@ public class DriverControl extends LinearOpMode {
       telemetry.addData("Status", "Run Time: " + runtime.toString());
       telemetry.addData("Drive mode", driveMode);
       telemetry.addData("target", driverControlAPI.armJointTargetAngle);
-      telemetry.addData("current L", driverControlAPI.ARM_JOINT_LEFT.getCurrentPosition());
-      telemetry.addData("current R", driverControlAPI.ARM_JOINT_RIGHT.getCurrentPosition());
+      telemetry.addData(
+        "current L",
+        driverControlAPI.ARM_JOINT_LEFT.getCurrentPosition()
+      );
+      telemetry.addData(
+        "current R",
+        driverControlAPI.ARM_JOINT_RIGHT.getCurrentPosition()
+      );
+      telemetry.addData("changed min val", driverControlAPI.ARM_JOINT_MIN_ANGLE);
 
       telemetry.update();
     }

@@ -8,7 +8,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
-@Autonomous(name = "AA-PROTO-AutoRedLeftDuck", group = "A")
+@Autonomous(name = "AutoRedLeftDuck", group = "A")
 // @Disabled
 public class AutoRedLeftDuck extends LinearOpMode {
 
@@ -69,7 +69,7 @@ public class AutoRedLeftDuck extends LinearOpMode {
 
     // stop rotating, move back, swing the spinner out, and start the spinner
     driverControlAPI.moveY = 1;
-    driverControlAPI.spinnerJointSpeed = 0.6f;
+    driverControlAPI.spinnerJointSpeed = 1;
     driverControlAPI.spinnerSpeed = 1;
     driverControlAPI.rotX = 0;
     driverControlAPI.apply();
@@ -82,14 +82,14 @@ public class AutoRedLeftDuck extends LinearOpMode {
 
     // move to the left and bring back in the spinner
     driverControlAPI.moveX = -1;
-    driverControlAPI.spinnerJointSpeed = 0.4f;
+    driverControlAPI.spinnerJointSpeed = 0;
     driverControlAPI.spinnerSpeed = 0.5f;
     driverControlAPI.apply();
     sleep(960);
 
     // stop moving, move the arm to correct position, and stop the spinner joint
     driverControlAPI.moveX = 0;
-    driverControlAPI.spinnerJointSpeed = 0.5f;
+    driverControlAPI.spinnerJointSpeed = 0;
     if (camResult == TeamScoreDetector.LOCATION.RIGHT) {
       driverControlAPI.setState(DriverControlAPI.STATE.HIGH);
     } else if (camResult == TeamScoreDetector.LOCATION.MIDDLE) {
@@ -113,6 +113,7 @@ public class AutoRedLeftDuck extends LinearOpMode {
     // go back
     driverControlAPI.moveY = 1;
     driverControlAPI.clawTargetState = 1;
+    driverControlAPI.apply();
     sleep(450);
 
     // stop moving back and move right
@@ -121,6 +122,7 @@ public class AutoRedLeftDuck extends LinearOpMode {
     driverControlAPI.setState(DriverControlAPI.STATE.BACK);
     sleep(500);
 
+    // stop moving
     driverControlAPI.moveX = 0;
     driverControlAPI.apply();
     sleep(200);

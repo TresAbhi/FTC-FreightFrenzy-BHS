@@ -66,13 +66,13 @@ public class AutoBlueRightDuck extends LinearOpMode {
     // stop moving
     driverControlAPI.moveX = 0;
     driverControlAPI.moveY = 0;
-    driverControlAPI.spinnerJointSpeed = 0.6f;
+    driverControlAPI.spinnerJointSpeed = 1;
     driverControlAPI.apply();
     sleep(9500);
 
     // wait for ducks to fall off and go back to original position
     driverControlAPI.spinnerSpeed = 0.49f;
-    driverControlAPI.spinnerJointSpeed = 0.4f;
+    driverControlAPI.spinnerJointSpeed = 0;
     driverControlAPI.moveX = -1;
     driverControlAPI.moveY = 0;
     driverControlAPI.apply();
@@ -80,7 +80,7 @@ public class AutoBlueRightDuck extends LinearOpMode {
 
     // stop moving to the left and bring it back in
     driverControlAPI.moveX = 0;
-    driverControlAPI.spinnerJointSpeed = 0.5f;
+    driverControlAPI.spinnerJointSpeed = 0;
     driverControlAPI.apply();
 
     /**
