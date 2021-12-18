@@ -16,7 +16,7 @@ public class AutoRedLeftDuck extends LinearOpMode {
 
   OpenCvWebcam webcam;
   TeamScoreDetector teamScoreDetector = new TeamScoreDetector(telemetry);
-  DriverControlAPI driverControlAPI = new DriverControlAPI(hardwareMap);
+  DriverControlAPI driverControlAPI = new DriverControlAPI();
 
   // @Override
   public void runOpMode() {

@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import android.os.SystemClock;
-
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -9,8 +8,6 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class DriverControlAPI {
-
-  HardwareMap hardwareMap;
 
   // Components
   public DcMotor LEFT_FRONT;
@@ -31,7 +28,8 @@ public class DriverControlAPI {
   // Constants
   public float ARM_JOINT_SPEED = 0.08f;
   public float ARM_JOINT_MAX_VELOCITY = 32767 / 750;
-  public int ARM_JOINT_MIN_ANGLE = 55;
+  public int ARM_JOINT_MIN_ANGLE;
+  public int ARM_JOINT_RIGHT_OFFSET;
 
   public float EXTENDER_POWER = 0.4f;
 
@@ -68,7 +66,7 @@ public class DriverControlAPI {
   public float WRIST_GROUND_ANGLE = 1;
 
   // NONE: back
-  public int ARM_JOINT_BACK_ANGLE = ARM_JOINT_MIN_ANGLE;
+  public int ARM_JOINT_BACK_ANGLE;
   public int EXTENDER_BACK_POS = EXTENDER_MIN_POS;
   public float WRIST_BACK_ANGLE = 0;
 
@@ -88,10 +86,6 @@ public class DriverControlAPI {
 
   public float movementPower = 1f;
 
-  public DriverControlAPI(HardwareMap h) {
-    hardwareMap = h;
-  }
-
   public void init(HardwareMap hardwareMap) {
     // Components
     LEFT_FRONT = hardwareMap.get(DcMotor.class, "left_front");
@@ -108,10 +102,9 @@ public class DriverControlAPI {
     SPINNER = hardwareMap.get(Servo.class, "spinner");
     SPINNER_JOINT = hardwareMap.get(Servo.class, "spinner_joint");
 
-    SystemClock.sleep(2000);
-
     // reset to this pos
-    ARM_JOINT_MIN_ANGLE = ARM_JOINT_LEFT.getCurrentPosition();
+    ARM_JOINT_MIN_ANGLE = ARM_JOINT_LEFT.getCurrentPosition() + 55;
+    armJointTargetAngle = ARM_JOINT_MIN_ANGLE;
     ARM_JOINT_LOW_ANGLE = ARM_JOINT_MIN_ANGLE + 235;
     ARM_JOINT_MIDDLE_ANGLE = ARM_JOINT_MIN_ANGLE + 205;
     ARM_JOINT_HIGH_ANGLE = ARM_JOINT_MIN_ANGLE + 190;
@@ -131,30 +124,30 @@ public class DriverControlAPI {
     ARM_JOINT_RIGHT.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     ARM_JOINT_LEFT.setTargetPosition(armJointTargetAngle);
     ARM_JOINT_RIGHT.setTargetPosition(armJointTargetAngle);
-    ARM_JOINT_LEFT.setTargetPositionTolerance(0);
-    ARM_JOINT_RIGHT.setTargetPositionTolerance(0);
-        ARM_JOINT_LEFT.setPIDFCoefficients(
-          DcMotor.RunMode.RUN_USING_ENCODER,
-          (
-            new PIDFCoefficients(
-              ARM_JOINT_MAX_VELOCITY / 10,
-              ARM_JOINT_MAX_VELOCITY / 100,
-              0,
-              ARM_JOINT_MAX_VELOCITY
-            )
-          )
-        );
-        ARM_JOINT_RIGHT.setPIDFCoefficients(
-          DcMotor.RunMode.RUN_USING_ENCODER,
-          (
-            new PIDFCoefficients(
-              ARM_JOINT_MAX_VELOCITY / 10,
-              ARM_JOINT_MAX_VELOCITY / 100,
-              0,
-              ARM_JOINT_MAX_VELOCITY
-            )
-          )
-        );
+//    ARM_JOINT_LEFT.setTargetPositionTolerance(0);
+//    ARM_JOINT_RIGHT.setTargetPositionTolerance(0);
+//    ARM_JOINT_LEFT.setPIDFCoefficients(
+//      DcMotor.RunMode.RUN_USING_ENCODER,
+//      (
+//        new PIDFCoefficients(
+//          ARM_JOINT_MAX_VELOCITY / 10,
+//          ARM_JOINT_MAX_VELOCITY / 100,
+//          0,
+//          ARM_JOINT_MAX_VELOCITY
+//        )
+//      )
+//    );
+//    ARM_JOINT_RIGHT.setPIDFCoefficients(
+//      DcMotor.RunMode.RUN_USING_ENCODER,
+//      (
+//        new PIDFCoefficients(
+//          ARM_JOINT_MAX_VELOCITY / 10,
+//          ARM_JOINT_MAX_VELOCITY / 100,
+//          0,
+//          ARM_JOINT_MAX_VELOCITY
+//        )
+//      )
+//    );
     ARM_JOINT_LEFT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     ARM_JOINT_RIGHT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     ARM_JOINT_LEFT.setPower(ARM_JOINT_SPEED);

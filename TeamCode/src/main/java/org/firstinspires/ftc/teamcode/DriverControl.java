@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 // @Disabled
 public class DriverControl extends LinearOpMode {
 
-  DriverControlAPI driverControlAPI = new DriverControlAPI(hardwareMap);
+  DriverControlAPI driverControlAPI = new DriverControlAPI();
 
   private ElapsedTime runtime = new ElapsedTime();
 
@@ -19,8 +19,8 @@ public class DriverControl extends LinearOpMode {
   // Constants
   public float MOVEMENT_PRECISION = 2f;
 
-  public int ARM_JOINT_MIN_ANGLE = 55;
-  public int ARM_JOINT_MAX_ANGLE = ARM_JOINT_MIN_ANGLE + 430;
+  public int ARM_JOINT_MIN_ANGLE;
+  public int ARM_JOINT_MAX_ANGLE;
 
   public int EXTENDER_MIN_POS = 40;
   public int EXTENDER_MAX_POS = EXTENDER_MIN_POS + 1490;
@@ -38,9 +38,9 @@ public class DriverControl extends LinearOpMode {
 
   // @Override
   public void runOpMode() {
-    driverControlAPI.ARM_JOINT_MIN_ANGLE = ARM_JOINT_MIN_ANGLE;
-    driverControlAPI.EXTENDER_MIN_POS = EXTENDER_MIN_POS;
     driverControlAPI.init(hardwareMap);
+    ARM_JOINT_MIN_ANGLE = driverControlAPI.ARM_JOINT_MIN_ANGLE;
+    ARM_JOINT_MAX_ANGLE = driverControlAPI.ARM_JOINT_MIN_ANGLE + 445;
 
     telemetry.addData("Status", "Initialized");
     telemetry.update();
