@@ -29,8 +29,8 @@ public class DriverControlAPI {
   public Servo SPINNER_JOINT;
 
   // Constants
-  public float ARM_JOINT_SPEED = 0.2f;
-  public float ARM_JOINT_MAX_VELOCITY = 32767 / 1000;
+  public float ARM_JOINT_SPEED = 0.08f;
+  public float ARM_JOINT_MAX_VELOCITY = 32767 / 750;
   public int ARM_JOINT_MIN_ANGLE = 55;
 
   public float EXTENDER_POWER = 0.4f;
@@ -48,22 +48,22 @@ public class DriverControlAPI {
   }
 
   // b: lower tower layer
-  public int ARM_JOINT_LOW_ANGLE = ARM_JOINT_MIN_ANGLE + 235;
+  public int ARM_JOINT_LOW_ANGLE;
   public int EXTENDER_LOW_POS = EXTENDER_MIN_POS;
   public float WRIST_LOW_ANGLE = 0.65f;
 
   // x: middle tower layer
-  public int ARM_JOINT_MIDDLE_ANGLE = ARM_JOINT_MIN_ANGLE + 205;
+  public int ARM_JOINT_MIDDLE_ANGLE;
   public int EXTENDER_MIDDLE_POS = EXTENDER_MIN_POS + 110;
   public float WRIST_MIDDLE_ANGLE = 0.7f;
 
   // y: top tower layer
-  public int ARM_JOINT_HIGH_ANGLE = ARM_JOINT_MIN_ANGLE + 190;
+  public int ARM_JOINT_HIGH_ANGLE;
   public int EXTENDER_HIGH_POS = EXTENDER_MIN_POS + 630;
   public float WRIST_HIGH_ANGLE = 0.65f;
 
   // a: ground
-  public int ARM_JOINT_GROUND_ANGLE = ARM_JOINT_MIN_ANGLE + 430;
+  public int ARM_JOINT_GROUND_ANGLE;
   public int EXTENDER_GROUND_POS = EXTENDER_MIN_POS;
   public float WRIST_GROUND_ANGLE = 1;
 
@@ -112,17 +112,9 @@ public class DriverControlAPI {
 
     // reset to this pos
     ARM_JOINT_MIN_ANGLE = ARM_JOINT_LEFT.getCurrentPosition();
-
-    // b: lower tower layer
     ARM_JOINT_LOW_ANGLE = ARM_JOINT_MIN_ANGLE + 235;
-
-    // x: middle tower layer
     ARM_JOINT_MIDDLE_ANGLE = ARM_JOINT_MIN_ANGLE + 205;
-
-    // y: top tower layer
     ARM_JOINT_HIGH_ANGLE = ARM_JOINT_MIN_ANGLE + 190;
-
-    // a: ground
     ARM_JOINT_GROUND_ANGLE = ARM_JOINT_MIN_ANGLE + 430;
 
     // One time executions
@@ -141,28 +133,28 @@ public class DriverControlAPI {
     ARM_JOINT_RIGHT.setTargetPosition(armJointTargetAngle);
     ARM_JOINT_LEFT.setTargetPositionTolerance(0);
     ARM_JOINT_RIGHT.setTargetPositionTolerance(0);
-    //    ARM_JOINT_LEFT.setPIDFCoefficients(
-    //      DcMotor.RunMode.RUN_USING_ENCODER,
-    //      (
-    //        new PIDFCoefficients(
-    //          ARM_JOINT_MAX_VELOCITY / 10,
-    //          ARM_JOINT_MAX_VELOCITY / 100,
-    //          0,
-    //          ARM_JOINT_MAX_VELOCITY
-    //        )
-    //      )
-    //    );
-    //    ARM_JOINT_RIGHT.setPIDFCoefficients(
-    //      DcMotor.RunMode.RUN_USING_ENCODER,
-    //      (
-    //        new PIDFCoefficients(
-    //          ARM_JOINT_MAX_VELOCITY / 10,
-    //          ARM_JOINT_MAX_VELOCITY / 100,
-    //          0,
-    //          ARM_JOINT_MAX_VELOCITY
-    //        )
-    //      )
-    //    );
+        ARM_JOINT_LEFT.setPIDFCoefficients(
+          DcMotor.RunMode.RUN_USING_ENCODER,
+          (
+            new PIDFCoefficients(
+              ARM_JOINT_MAX_VELOCITY / 10,
+              ARM_JOINT_MAX_VELOCITY / 100,
+              0,
+              ARM_JOINT_MAX_VELOCITY
+            )
+          )
+        );
+        ARM_JOINT_RIGHT.setPIDFCoefficients(
+          DcMotor.RunMode.RUN_USING_ENCODER,
+          (
+            new PIDFCoefficients(
+              ARM_JOINT_MAX_VELOCITY / 10,
+              ARM_JOINT_MAX_VELOCITY / 100,
+              0,
+              ARM_JOINT_MAX_VELOCITY
+            )
+          )
+        );
     ARM_JOINT_LEFT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     ARM_JOINT_RIGHT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     ARM_JOINT_LEFT.setPower(ARM_JOINT_SPEED);
