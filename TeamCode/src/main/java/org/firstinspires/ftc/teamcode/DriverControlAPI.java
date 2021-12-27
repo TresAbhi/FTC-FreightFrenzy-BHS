@@ -124,30 +124,30 @@ public class DriverControlAPI {
     ARM_JOINT_RIGHT.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     ARM_JOINT_LEFT.setTargetPosition(armJointTargetAngle);
     ARM_JOINT_RIGHT.setTargetPosition(armJointTargetAngle);
-//    ARM_JOINT_LEFT.setTargetPositionTolerance(0);
-//    ARM_JOINT_RIGHT.setTargetPositionTolerance(0);
-//    ARM_JOINT_LEFT.setPIDFCoefficients(
-//      DcMotor.RunMode.RUN_USING_ENCODER,
-//      (
-//        new PIDFCoefficients(
-//          ARM_JOINT_MAX_VELOCITY / 10,
-//          ARM_JOINT_MAX_VELOCITY / 100,
-//          0,
-//          ARM_JOINT_MAX_VELOCITY
-//        )
-//      )
-//    );
-//    ARM_JOINT_RIGHT.setPIDFCoefficients(
-//      DcMotor.RunMode.RUN_USING_ENCODER,
-//      (
-//        new PIDFCoefficients(
-//          ARM_JOINT_MAX_VELOCITY / 10,
-//          ARM_JOINT_MAX_VELOCITY / 100,
-//          0,
-//          ARM_JOINT_MAX_VELOCITY
-//        )
-//      )
-//    );
+    // ARM_JOINT_LEFT.setTargetPositionTolerance(0);
+    // ARM_JOINT_RIGHT.setTargetPositionTolerance(0);
+    // ARM_JOINT_LEFT.setPIDFCoefficients(
+    //   DcMotor.RunMode.RUN_USING_ENCODER,
+    //   (
+    //     new PIDFCoefficients(
+    //       ARM_JOINT_MAX_VELOCITY / 10,
+    //       ARM_JOINT_MAX_VELOCITY / 100,
+    //       0,
+    //       ARM_JOINT_MAX_VELOCITY
+    //     )
+    //   )
+    // );
+    // ARM_JOINT_RIGHT.setPIDFCoefficients(
+    //   DcMotor.RunMode.RUN_USING_ENCODER,
+    //   (
+    //     new PIDFCoefficients(
+    //       ARM_JOINT_MAX_VELOCITY / 10,
+    //       ARM_JOINT_MAX_VELOCITY / 100,
+    //       0,
+    //       ARM_JOINT_MAX_VELOCITY
+    //     )
+    //   )
+    // );
     ARM_JOINT_LEFT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     ARM_JOINT_RIGHT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     ARM_JOINT_LEFT.setPower(ARM_JOINT_SPEED);
