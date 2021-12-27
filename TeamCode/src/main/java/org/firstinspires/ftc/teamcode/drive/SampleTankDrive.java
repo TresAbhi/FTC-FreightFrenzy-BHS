@@ -108,6 +108,9 @@ public class SampleTankDrive extends TankDrive {
     DcMotorEx rightRear = hardwareMap.get(DcMotorEx.class, "right_rear");
     DcMotorEx rightFront = hardwareMap.get(DcMotorEx.class, "right_front");
 
+    leftFront.setDirection(DcMotor.Direction.REVERSE);
+    rightRear.setDirection(DcMotor.Direction.REVERSE);
+
     motors = Arrays.asList(leftFront, leftRear, rightRear, rightFront);
     leftMotors = Arrays.asList(leftFront, leftRear);
     rightMotors = Arrays.asList(rightFront, rightRear);
