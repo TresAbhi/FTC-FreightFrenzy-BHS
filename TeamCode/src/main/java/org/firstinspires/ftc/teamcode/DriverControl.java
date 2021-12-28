@@ -89,13 +89,15 @@ public class DriverControl extends LinearOpMode {
       driverControlAPI.extenderTargetPos =
         Math.min(
           driverControlAPI.extenderTargetPos +
-          Math.round((EXTENDER_INPUT_SPEED * player2.right_trigger)),
+          EXTENDER_INPUT_SPEED *
+          player2.right_trigger,
           EXTENDER_MAX_POS
         );
       driverControlAPI.extenderTargetPos =
         Math.max(
           driverControlAPI.extenderTargetPos -
-          Math.round((EXTENDER_INPUT_SPEED * player2.left_trigger)),
+          EXTENDER_INPUT_SPEED *
+          player2.left_trigger,
           EXTENDER_MIN_POS
         );
 
@@ -116,7 +118,7 @@ public class DriverControl extends LinearOpMode {
         driverControlAPI.setState(DriverControlAPI.STATE.GROUND);
       }
 
-      driverControlAPI.clawTargetState = player2.dpad_left ? 0 : 1;
+      driverControlAPI.clawTargetState = player2.right_bumper ? 0 : 1;
       driverControlAPI.spinnerSpeed = player1.right_bumper ? 1f : 0.49f;
 
       driverControlAPI.apply();
