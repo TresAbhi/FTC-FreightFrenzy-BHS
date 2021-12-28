@@ -53,7 +53,7 @@ public class DriverControlAPI {
   public float WRIST_BACK_ANGLE = 0;
 
   // Mutables
-  public float extenderTargetPos = EXTENDER_MIN_POS;
+  public int extenderTargetPos = EXTENDER_MIN_POS;
 
   public float wristTargetAngle = 0f;
   public float clawTargetState = 1;

@@ -89,20 +89,18 @@ public class DriverControl extends LinearOpMode {
       driverControlAPI.extenderTargetPos =
         Math.min(
           driverControlAPI.extenderTargetPos +
-          EXTENDER_INPUT_SPEED *
-          player2.right_trigger,
+          Math.round(EXTENDER_INPUT_SPEED * player2.right_trigger),
           EXTENDER_MAX_POS
         );
       driverControlAPI.extenderTargetPos =
         Math.max(
           driverControlAPI.extenderTargetPos -
-          EXTENDER_INPUT_SPEED *
-          player2.left_trigger,
+          Math.round(EXTENDER_INPUT_SPEED * player2.left_trigger),
           EXTENDER_MIN_POS
         );
 
       // Tweak wrist joint target
-      if (player2.dpad_up) driverControlAPI.wristTargetAngle =
+      driverControlAPI.wristTargetAngle =
         Math.min(driverControlAPI.wristTargetAngle + WRIST_INPUT_SPEED, 1);
       if (player2.dpad_down) driverControlAPI.wristTargetAngle =
         Math.max(driverControlAPI.wristTargetAngle - WRIST_INPUT_SPEED, 0);
