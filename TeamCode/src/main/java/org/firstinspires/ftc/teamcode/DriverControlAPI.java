@@ -10,27 +10,14 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class DriverControlAPI {
 
   // Components
-  public DcMotor LEFT_FRONT;
-  public DcMotor LEFT_REAR;
-  public DcMotor RIGHT_FRONT;
-  public DcMotor RIGHT_REAR;
-
-  public DcMotorEx ARM_JOINT_LEFT;
-  public DcMotorEx ARM_JOINT_RIGHT;
+  public DcMotor LEFT_FRONT, LEFT_REAR, RIGHT_FRONT, RIGHT_REAR;
 
   public DcMotor EXTENDER;
-  public Servo WRIST;
-  public Servo CLAW;
+  public Servo WRIST, CLAW;
 
-  public Servo SPINNER;
-  public Servo SPINNER_JOINT;
+  public Servo SPINNER, SPINNER_JOINT;
 
   // Constants
-  public float ARM_JOINT_SPEED = 0.08f;
-  public float ARM_JOINT_MAX_VELOCITY = 32767 / 750;
-  public int ARM_JOINT_MIN_ANGLE;
-  public int ARM_JOINT_RIGHT_OFFSET;
-
   public float EXTENDER_POWER = 0.4f;
 
   public int EXTENDER_MIN_POS;
@@ -46,32 +33,26 @@ public class DriverControlAPI {
   }
 
   // b: lower tower layer
-  public int ARM_JOINT_LOW_ANGLE;
   public int EXTENDER_LOW_POS = EXTENDER_MIN_POS;
   public float WRIST_LOW_ANGLE = 0.65f;
 
   // x: middle tower layer
-  public int ARM_JOINT_MIDDLE_ANGLE;
   public int EXTENDER_MIDDLE_POS = EXTENDER_MIN_POS + 110;
   public float WRIST_MIDDLE_ANGLE = 0.7f;
 
   // y: top tower layer
-  public int ARM_JOINT_HIGH_ANGLE;
   public int EXTENDER_HIGH_POS = EXTENDER_MIN_POS + 630;
   public float WRIST_HIGH_ANGLE = 0.65f;
 
   // a: ground
-  public int ARM_JOINT_GROUND_ANGLE;
   public int EXTENDER_GROUND_POS = EXTENDER_MIN_POS;
   public float WRIST_GROUND_ANGLE = 1;
 
   // NONE: back
-  public int ARM_JOINT_BACK_ANGLE;
   public int EXTENDER_BACK_POS = EXTENDER_MIN_POS;
   public float WRIST_BACK_ANGLE = 0;
 
   // Mutables
-  public int armJointTargetAngle = ARM_JOINT_MIN_ANGLE;
   public int extenderTargetPos = EXTENDER_MIN_POS;
 
   public float wristTargetAngle = 0f;
@@ -93,22 +74,12 @@ public class DriverControlAPI {
     RIGHT_FRONT = hardwareMap.get(DcMotor.class, "right_front");
     RIGHT_REAR = hardwareMap.get(DcMotor.class, "right_rear");
 
-    ARM_JOINT_LEFT = hardwareMap.get(DcMotorEx.class, "arm_joint_left");
-    ARM_JOINT_RIGHT = hardwareMap.get(DcMotorEx.class, "arm_joint_right");
     EXTENDER = hardwareMap.get(DcMotor.class, "extender");
     CLAW = hardwareMap.get(Servo.class, "claw");
     WRIST = hardwareMap.get(Servo.class, "wrist");
 
     SPINNER = hardwareMap.get(Servo.class, "spinner");
     SPINNER_JOINT = hardwareMap.get(Servo.class, "spinner_joint");
-
-    // reset to this pos
-    ARM_JOINT_MIN_ANGLE = ARM_JOINT_LEFT.getCurrentPosition() + 55;
-    armJointTargetAngle = ARM_JOINT_MIN_ANGLE;
-    ARM_JOINT_LOW_ANGLE = ARM_JOINT_MIN_ANGLE + 235;
-    ARM_JOINT_MIDDLE_ANGLE = ARM_JOINT_MIN_ANGLE + 205;
-    ARM_JOINT_HIGH_ANGLE = ARM_JOINT_MIN_ANGLE + 190;
-    ARM_JOINT_GROUND_ANGLE = ARM_JOINT_MIN_ANGLE + 430;
 
     // One time executions
     LEFT_FRONT.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -117,41 +88,6 @@ public class DriverControlAPI {
     RIGHT_REAR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     LEFT_FRONT.setDirection(DcMotor.Direction.REVERSE);
     RIGHT_REAR.setDirection(DcMotor.Direction.REVERSE);
-
-    ARM_JOINT_LEFT.setDirection(DcMotor.Direction.FORWARD);
-    ARM_JOINT_RIGHT.setDirection(DcMotor.Direction.REVERSE);
-    ARM_JOINT_LEFT.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-    ARM_JOINT_RIGHT.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-    ARM_JOINT_LEFT.setTargetPosition(armJointTargetAngle);
-    ARM_JOINT_RIGHT.setTargetPosition(armJointTargetAngle);
-    // ARM_JOINT_LEFT.setTargetPositionTolerance(0);
-    // ARM_JOINT_RIGHT.setTargetPositionTolerance(0);
-    // ARM_JOINT_LEFT.setPIDFCoefficients(
-    //   DcMotor.RunMode.RUN_USING_ENCODER,
-    //   (
-    //     new PIDFCoefficients(
-    //       ARM_JOINT_MAX_VELOCITY / 10,
-    //       ARM_JOINT_MAX_VELOCITY / 100,
-    //       0,
-    //       ARM_JOINT_MAX_VELOCITY
-    //     )
-    //   )
-    // );
-    // ARM_JOINT_RIGHT.setPIDFCoefficients(
-    //   DcMotor.RunMode.RUN_USING_ENCODER,
-    //   (
-    //     new PIDFCoefficients(
-    //       ARM_JOINT_MAX_VELOCITY / 10,
-    //       ARM_JOINT_MAX_VELOCITY / 100,
-    //       0,
-    //       ARM_JOINT_MAX_VELOCITY
-    //     )
-    //   )
-    // );
-    ARM_JOINT_LEFT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    ARM_JOINT_RIGHT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    ARM_JOINT_LEFT.setPower(ARM_JOINT_SPEED);
-    ARM_JOINT_RIGHT.setPower(ARM_JOINT_SPEED);
 
     EXTENDER.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     EXTENDER.setTargetPosition(EXTENDER_MIN_POS);
@@ -165,27 +101,22 @@ public class DriverControlAPI {
     if (state == STATE.LOW) {
       wristTargetAngle = WRIST_LOW_ANGLE;
       extenderTargetPos = EXTENDER_LOW_POS;
-      armJointTargetAngle = ARM_JOINT_LOW_ANGLE;
       apply();
     } else if (state == STATE.MIDDLE) {
       wristTargetAngle = WRIST_MIDDLE_ANGLE;
       extenderTargetPos = EXTENDER_MIDDLE_POS;
-      armJointTargetAngle = ARM_JOINT_MIDDLE_ANGLE;
       apply();
     } else if (state == STATE.HIGH) {
       wristTargetAngle = WRIST_HIGH_ANGLE;
       extenderTargetPos = EXTENDER_HIGH_POS;
-      armJointTargetAngle = ARM_JOINT_HIGH_ANGLE;
       apply();
     } else if (state == STATE.GROUND) {
       wristTargetAngle = WRIST_GROUND_ANGLE;
       extenderTargetPos = EXTENDER_GROUND_POS;
-      armJointTargetAngle = ARM_JOINT_GROUND_ANGLE;
       apply();
     } else if (state == STATE.BACK) {
       wristTargetAngle = WRIST_BACK_ANGLE;
       extenderTargetPos = EXTENDER_BACK_POS;
-      armJointTargetAngle = ARM_JOINT_BACK_ANGLE;
       apply();
     }
   }
@@ -207,9 +138,6 @@ public class DriverControlAPI {
     RIGHT_REAR.setPower((-vector4 - rotX) * movementPower);
 
     // Apply all targets
-    ARM_JOINT_LEFT.setTargetPosition(armJointTargetAngle);
-    ARM_JOINT_RIGHT.setTargetPosition(armJointTargetAngle);
-
     EXTENDER.setTargetPosition(extenderTargetPos);
 
     WRIST.setPosition(wristTargetAngle);

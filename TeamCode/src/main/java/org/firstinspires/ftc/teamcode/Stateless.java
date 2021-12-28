@@ -19,8 +19,6 @@ public class Stateless extends LinearOpMode {
   private DcMotor RIGHT_FRONT = null;
   private DcMotor RIGHT_REAR = null;
 
-  private DcMotor ARM_JOINT_LEFT = null;
-  private DcMotor ARM_JOINT_RIGHT = null;
   private DcMotor EXTENDER = null;
 
   private Servo CLAW = null;
@@ -36,8 +34,6 @@ public class Stateless extends LinearOpMode {
     RIGHT_FRONT = hardwareMap.get(DcMotor.class, "right_front");
     RIGHT_REAR = hardwareMap.get(DcMotor.class, "right_rear");
 
-    ARM_JOINT_LEFT = hardwareMap.get(DcMotor.class, "arm_joint_left");
-    ARM_JOINT_RIGHT = hardwareMap.get(DcMotor.class, "arm_joint_right");
     EXTENDER = hardwareMap.get(DcMotor.class, "extender");
     CLAW = hardwareMap.get(Servo.class, "claw");
     WRIST = hardwareMap.get(Servo.class, "wrist");
@@ -59,14 +55,6 @@ public class Stateless extends LinearOpMode {
       telemetry.addData("Status", "Run Time: " + runtime.toString());
 
       telemetry.addData("Extender position", EXTENDER.getCurrentPosition());
-      telemetry.addData(
-        "Arm joint left angle",
-        ARM_JOINT_LEFT.getCurrentPosition()
-      );
-      telemetry.addData(
-        "Arm joint right angle",
-        ARM_JOINT_RIGHT.getCurrentPosition()
-      );
       telemetry.addData("Wrist angle", WRIST.getPosition());
 
       telemetry.update();

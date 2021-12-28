@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 // @Disabled
 public class DriverControl extends LinearOpMode {
 
-  NewDriverControlAPI driverControlAPI = new NewDriverControlAPI();
+  DriverControlAPI driverControlAPI = new DriverControlAPI();
 
   private ElapsedTime runtime = new ElapsedTime();
 
@@ -19,14 +19,11 @@ public class DriverControl extends LinearOpMode {
   // Constants
   public float MOVEMENT_PRECISION = 2f;
 
-  public int ARM_JOINT_MIN_ANGLE;
-
   public int EXTENDER_MIN_POS = 40;
   public int EXTENDER_MAX_POS = EXTENDER_MIN_POS + 1490;
 
-  public int ARM_JOINT_INPUT_SPEED = 4;
   public int EXTENDER_INPUT_SPEED = 24;
-  public float WRIST_INPUT_SPEED = 0.03f;
+  public float WRIST_INPUT_SPEED = 0.005f;
 
   public float SPEED_LOW_POWER = 0.4f;
   public float SPEED_HIGH_POWER = 0.8f;
@@ -88,22 +85,6 @@ public class DriverControl extends LinearOpMode {
       driverControlAPI.moveY = dampedLeftJoystickY;
       driverControlAPI.rotX = dampedRightJoystickX;
 
-      // Tweak arm joint target
-      if (player2.right_bumper) {
-        driverControlAPI.armJointTargetAngle =
-          Math.min(
-            driverControlAPI.armJointTargetAngle + ARM_JOINT_INPUT_SPEED,
-            driverControlAPI.ARM_JOINT_MAX_ANGLE
-          );
-      }
-      if (player2.left_bumper) {
-        driverControlAPI.armJointTargetAngle =
-          Math.max(
-            driverControlAPI.armJointTargetAngle - ARM_JOINT_INPUT_SPEED,
-            ARM_JOINT_MIN_ANGLE
-          );
-      }
-
       // Tweak extender joint target
       driverControlAPI.extenderTargetPos =
         Math.min(
@@ -126,29 +107,21 @@ public class DriverControl extends LinearOpMode {
 
       // Apply states
       if (player2.b) {
-        driverControlAPI.setState(NewDriverControlAPI.STATE.LOW);
+        driverControlAPI.setState(DriverControlAPI.STATE.LOW);
       } else if (player2.x) {
-        driverControlAPI.setState(NewDriverControlAPI.STATE.MIDDLE);
+        driverControlAPI.setState(DriverControlAPI.STATE.MIDDLE);
       } else if (player2.y) {
-        driverControlAPI.setState(NewDriverControlAPI.STATE.HIGH);
+        driverControlAPI.setState(DriverControlAPI.STATE.HIGH);
       } else if (player2.a) {
-        driverControlAPI.setState(NewDriverControlAPI.STATE.GROUND);
+        driverControlAPI.setState(DriverControlAPI.STATE.GROUND);
       }
 
       driverControlAPI.clawTargetState = player2.dpad_left ? 0 : 1;
-      driverControlAPI.spinnerSpeed = player1.right_bumper ? 1f : 0.5f;
+      driverControlAPI.spinnerSpeed = player1.right_bumper ? 1f : 0.49f;
 
       driverControlAPI.apply();
 
       telemetry.addData("Status", "Run Time: " + runtime.toString());
-      telemetry.addData("target", driverControlAPI.armJointTargetAngle);
-      telemetry.addData("current left", driverControlAPI.ARM_JOINT_LEFT.getCurrentPosition());
-      telemetry.addData("current right", driverControlAPI.ARM_JOINT_RIGHT.getCurrentPosition());
-      telemetry.addData("left diff", driverControlAPI.ARM_JOINT_LEFT.getCurrentPosition() - driverControlAPI.ARM_JOINT_LEFT_MIN_ANGLE);
-      telemetry.addData("right diff", driverControlAPI.ARM_JOINT_RIGHT.getCurrentPosition() - driverControlAPI.ARM_JOINT_RIGHT_MIN_ANGLE);
-      telemetry.addData("min left", driverControlAPI.ARM_JOINT_LEFT_MIN_ANGLE);
-      telemetry.addData("min right", driverControlAPI.ARM_JOINT_RIGHT_MIN_ANGLE);
-      telemetry.addData("max", driverControlAPI.ARM_JOINT_MAX_ANGLE);
       telemetry.addData("Drive mode", driveMode);
 
       telemetry.update();

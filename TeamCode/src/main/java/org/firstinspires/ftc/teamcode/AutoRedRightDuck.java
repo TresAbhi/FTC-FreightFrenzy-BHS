@@ -90,8 +90,6 @@ public class AutoRedRightDuck extends LinearOpMode {
      * middle = middle
      * right = high
      */
-    driverControlAPI.ARM_JOINT_LEFT.setPower(0.2);
-    driverControlAPI.ARM_JOINT_RIGHT.setPower(0.2);
     if (camResult == TeamScoreDetector.LOCATION.RIGHT) {
       driverControlAPI.setState(DriverControlAPI.STATE.HIGH);
     } else if (camResult == TeamScoreDetector.LOCATION.MIDDLE) {
@@ -102,8 +100,6 @@ public class AutoRedRightDuck extends LinearOpMode {
     sleep(1000);
 
     // increase the power to hold it in place better
-    driverControlAPI.ARM_JOINT_LEFT.setPower(1);
-    driverControlAPI.ARM_JOINT_RIGHT.setPower(1);
     sleep(1000);
 
     // move forward
@@ -130,8 +126,6 @@ public class AutoRedRightDuck extends LinearOpMode {
     driverControlAPI.moveX = 1;
     driverControlAPI.moveY = 0;
     driverControlAPI.clawTargetState = 1;
-    driverControlAPI.ARM_JOINT_LEFT.setPower(0.2);
-    driverControlAPI.ARM_JOINT_RIGHT.setPower(0.2);
     driverControlAPI.setState(DriverControlAPI.STATE.BACK);
     sleep(1300);
 
