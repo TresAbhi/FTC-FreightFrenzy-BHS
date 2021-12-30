@@ -96,3 +96,6 @@ java_pid11160.hprof
 # Ignore Gradle build output directory
 build
 java_pid1808.hprof
+
+# Copilot
+copilot.*

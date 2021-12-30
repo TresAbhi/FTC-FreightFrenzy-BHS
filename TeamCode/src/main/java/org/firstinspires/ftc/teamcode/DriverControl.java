@@ -121,6 +121,7 @@ public class DriverControl extends LinearOpMode {
 
       driverControlAPI.apply();
 
+      // Update telemetry
       telemetry.addData("Status", "Run Time: " + runtime.toString());
       telemetry.addData("Drive mode", driveMode);
 
