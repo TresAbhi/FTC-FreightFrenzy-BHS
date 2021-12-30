@@ -1,3 +1,4 @@
 {
-  "cSpell.words": ["Mutables", "Opmode", "gamepad"]
+  "cSpell.words": ["Mutables", "Opmode", "gamepad"],
+  "java.configuration.updateBuildConfiguration": "interactive"
 }

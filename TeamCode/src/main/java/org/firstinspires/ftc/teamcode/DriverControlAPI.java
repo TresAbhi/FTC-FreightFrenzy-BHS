@@ -18,7 +18,7 @@ public class DriverControlAPI {
   public Servo SPINNER, SPINNER_JOINT;
 
   // Constants
-  public float EXTENDER_POWER = 0.4f;
+  public float EXTENDER_POWER = 0.8f;
 
   public int EXTENDER_MIN_POS;
 

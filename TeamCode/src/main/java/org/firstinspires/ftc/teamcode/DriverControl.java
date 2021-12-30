@@ -20,15 +20,13 @@ public class DriverControl extends LinearOpMode {
   public float MOVEMENT_PRECISION = 2f;
 
   public int EXTENDER_MIN_POS = 40;
-  public int EXTENDER_MAX_POS = EXTENDER_MIN_POS + 1490;
+  public int EXTENDER_MAX_POS = EXTENDER_MIN_POS + 1550;
 
-  public int EXTENDER_INPUT_SPEED = 24;
+  public int EXTENDER_INPUT_SPEED = 10;
   public float WRIST_INPUT_SPEED = 0.005f;
 
   public float SPEED_LOW_POWER = 0.4f;
   public float SPEED_HIGH_POWER = 0.8f;
-
-  public float TRIGGER_THRESHOLD = 0.2f;
 
   // mutables
   String driveMode = "normal";
@@ -88,17 +86,13 @@ public class DriverControl extends LinearOpMode {
       driverControlAPI.rotX = dampedRightJoystickX;
 
       // Tweak extender joint target
-      if (
-        player2.right_trigger > TRIGGER_THRESHOLD
-      ) driverControlAPI.extenderTargetPos =
+      driverControlAPI.extenderTargetPos =
         Math.min(
           driverControlAPI.extenderTargetPos +
           Math.round(EXTENDER_INPUT_SPEED * player2.right_trigger),
           EXTENDER_MAX_POS
         );
-      if (
-        player2.left_trigger > TRIGGER_THRESHOLD
-      ) driverControlAPI.extenderTargetPos =
+      driverControlAPI.extenderTargetPos =
         Math.max(
           driverControlAPI.extenderTargetPos -
           Math.round(EXTENDER_INPUT_SPEED * player2.left_trigger),

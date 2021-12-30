@@ -89,3 +89,10 @@ lint/tmp/
 .DS_Store
 .idea
 java_pid11160.hprof
+
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build
+java_pid1808.hprof
