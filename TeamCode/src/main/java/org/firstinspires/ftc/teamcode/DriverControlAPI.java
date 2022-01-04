@@ -1,10 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
-import android.os.SystemClock;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class DriverControlAPI {
@@ -63,7 +60,7 @@ public class DriverControlAPI {
 
   public double moveX = 0;
   public double moveY = 0;
-  public double rotX = 0;
+  public double rot = 0;
 
   public float movementPower = 1f;
 
@@ -132,10 +129,10 @@ public class DriverControlAPI {
     double vector4 = vectorNormal * Math.cos(robotAngle);
 
     // Apply wheel motor powers
-    LEFT_FRONT.setPower((-vector1 + rotX) * movementPower);
-    LEFT_REAR.setPower((-vector2 + rotX) * movementPower);
-    RIGHT_FRONT.setPower((-vector3 - rotX) * movementPower);
-    RIGHT_REAR.setPower((-vector4 - rotX) * movementPower);
+    LEFT_FRONT.setPower((-vector1 + rot) * movementPower);
+    LEFT_REAR.setPower((-vector2 + rot) * movementPower);
+    RIGHT_FRONT.setPower((-vector3 - rot) * movementPower);
+    RIGHT_REAR.setPower((-vector4 - rot) * movementPower);
 
     // Apply all targets
     EXTENDER.setTargetPosition(extenderTargetPos);

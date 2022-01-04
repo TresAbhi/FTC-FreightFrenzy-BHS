@@ -84,7 +84,7 @@ public class DriverControl extends LinearOpMode {
 
       driverControlAPI.moveX = dampedLeftJoystickX;
       driverControlAPI.moveY = dampedLeftJoystickY;
-      driverControlAPI.rotX = dampedRightJoystickX;
+      driverControlAPI.rot = dampedRightJoystickX;
 
       // Tweak extender joint target
       driverControlAPI.extenderTargetPos =

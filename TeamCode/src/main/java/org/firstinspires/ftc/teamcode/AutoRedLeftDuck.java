@@ -63,7 +63,7 @@ public class AutoRedLeftDuck extends LinearOpMode {
 
     // stop moving and rotate 90
     driverControlAPI.moveY = 0;
-    driverControlAPI.rotX = 1;
+    driverControlAPI.rot = 1;
     driverControlAPI.apply();
     sleep(420);
 
@@ -71,7 +71,7 @@ public class AutoRedLeftDuck extends LinearOpMode {
     driverControlAPI.moveY = 1;
     driverControlAPI.spinnerJointSpeed = 1;
     driverControlAPI.spinnerSpeed = 1;
-    driverControlAPI.rotX = 0;
+    driverControlAPI.rot = 0;
     driverControlAPI.apply();
     sleep(550);
 
