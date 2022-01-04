@@ -55,7 +55,7 @@ public class DriverControlAPI {
   // Mutables
   public int extenderTargetPos = EXTENDER_MIN_POS;
 
-  public float wristTargetAngle = 0f;
+  public float wristTargetAngle = 1;
   public float clawTargetState = 0;
 
   public float spinnerSpeed = 0.49f;
