@@ -20,7 +20,7 @@ public class DriverControlAPI {
   // Constants
   public float EXTENDER_POWER = 0.8f;
 
-  public int EXTENDER_MIN_POS;
+  public int EXTENDER_MIN_POS = 0;
 
   // Preset states
 
@@ -33,7 +33,7 @@ public class DriverControlAPI {
   }
 
   // a: lower tower layer
-  public int EXTENDER_LOW_POS = EXTENDER_MIN_POS + 48;
+  public int EXTENDER_LOW_POS = EXTENDER_MIN_POS + 55;
   public float WRIST_LOW_ANGLE = 0.57f;
 
   // x: middle tower layer
@@ -41,7 +41,7 @@ public class DriverControlAPI {
   public float WRIST_MIDDLE_ANGLE = 0.57f;
 
   // y: top tower layer
-  public int EXTENDER_HIGH_POS = EXTENDER_MIN_POS + 1509;
+  public int EXTENDER_HIGH_POS = EXTENDER_MIN_POS + 1590;
   public float WRIST_HIGH_ANGLE = 0.57f;
 
   // b: ground

@@ -36,9 +36,9 @@ public class DriveConstants {
   public static final boolean RUN_USING_ENCODER = true;
   public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(
     0.2,
-    12.8,
     0,
-    0.2
+    0.2,
+    12.8
   );
 
   /*

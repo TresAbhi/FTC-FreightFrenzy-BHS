@@ -19,7 +19,7 @@ public class DriverControl extends LinearOpMode {
   // Constants
   public float MOVEMENT_PRECISION = 2f;
 
-  public int EXTENDER_MIN_POS = 40;
+  public int EXTENDER_MIN_POS = 0;
   public int EXTENDER_MAX_POS = EXTENDER_MIN_POS + 1550;
 
   public int EXTENDER_INPUT_SPEED = 10;
