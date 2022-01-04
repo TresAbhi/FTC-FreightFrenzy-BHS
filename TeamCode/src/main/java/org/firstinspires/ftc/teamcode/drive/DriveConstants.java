@@ -53,7 +53,7 @@ public class DriveConstants {
   public static double GEAR_RATIO =
     // 3 trials average
     ((66.25 / 66.75) + (67.13 / 66.66) + (67.36 / 67.30)) / 3; // output (wheel) speed / input (motor) speed
-  public static double TRACK_WIDTH = 16.34; // in
+  public static double TRACK_WIDTH = 16.35; // in
 
   /*
    * These are the feedforward parameters used to model the drive motor behavior. If you are using
@@ -93,10 +93,9 @@ public class DriveConstants {
      * You are free to raise this on your own if you would like. It is best determined through experimentation.
      
      */
-  public static double MAX_VEL = 52.48180821614297;
-  public static double MAX_ACCEL = 52.48180821614297;
-  public static double MAX_ANG_VEL =
-    (0.48444443941116333 + 0.3866666555404663 + 0.5266666412353516) / 3;
+  public static double MAX_VEL = 52.4818082;
+  public static double MAX_ACCEL = 52.4818082;
+  public static double MAX_ANG_VEL = 16.8;
   public static double MAX_ANG_ACCEL = Math.toRadians(184.02607784577722);
 
   public static double encoderTicksToInches(double ticks) {
