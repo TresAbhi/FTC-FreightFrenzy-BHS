@@ -32,31 +32,31 @@ public class DriverControlAPI {
     BACK,
   }
 
-  // b: lower tower layer
-  public int EXTENDER_LOW_POS = EXTENDER_MIN_POS;
-  public float WRIST_LOW_ANGLE = 0.65f;
+  // a: lower tower layer
+  public int EXTENDER_LOW_POS = EXTENDER_MIN_POS + 48;
+  public float WRIST_LOW_ANGLE = 0.57f;
 
   // x: middle tower layer
-  public int EXTENDER_MIDDLE_POS = EXTENDER_MIN_POS + 110;
-  public float WRIST_MIDDLE_ANGLE = 0.7f;
+  public int EXTENDER_MIDDLE_POS = EXTENDER_MIN_POS + 730;
+  public float WRIST_MIDDLE_ANGLE = 0.57f;
 
   // y: top tower layer
-  public int EXTENDER_HIGH_POS = EXTENDER_MIN_POS + 630;
-  public float WRIST_HIGH_ANGLE = 0.65f;
+  public int EXTENDER_HIGH_POS = EXTENDER_MIN_POS + 1509;
+  public float WRIST_HIGH_ANGLE = 0.57f;
 
-  // a: ground
+  // b: ground
   public int EXTENDER_GROUND_POS = EXTENDER_MIN_POS;
-  public float WRIST_GROUND_ANGLE = 1;
+  public float WRIST_GROUND_ANGLE = 0.425f;
 
   // NONE: back
   public int EXTENDER_BACK_POS = EXTENDER_MIN_POS;
-  public float WRIST_BACK_ANGLE = 0;
+  public float WRIST_BACK_ANGLE = 1f;
 
   // Mutables
   public int extenderTargetPos = EXTENDER_MIN_POS;
 
   public float wristTargetAngle = 0f;
-  public float clawTargetState = 1;
+  public float clawTargetState = 0;
 
   public float spinnerSpeed = 0.49f;
   public float spinnerJointSpeed = 0f;
@@ -94,7 +94,7 @@ public class DriverControlAPI {
     EXTENDER.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     EXTENDER.setPower(EXTENDER_POWER);
 
-    WRIST.setPosition(0);
+    WRIST.setPosition(1);
   }
 
   public void setState(STATE state) {

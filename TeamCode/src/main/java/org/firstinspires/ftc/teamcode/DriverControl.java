@@ -24,6 +24,7 @@ public class DriverControl extends LinearOpMode {
 
   public int EXTENDER_INPUT_SPEED = 10;
   public float WRIST_INPUT_SPEED = 0.005f;
+  public float WRIST_MIN_ANGLE = 0.425f;
 
   public float SPEED_LOW_POWER = 0.4f;
   public float SPEED_HIGH_POWER = 0.8f;
@@ -100,19 +101,22 @@ public class DriverControl extends LinearOpMode {
         );
 
       // Tweak wrist joint target
-      driverControlAPI.wristTargetAngle =
+      if (player2.dpad_up) driverControlAPI.wristTargetAngle =
         Math.min(driverControlAPI.wristTargetAngle + WRIST_INPUT_SPEED, 1);
       if (player2.dpad_down) driverControlAPI.wristTargetAngle =
-        Math.max(driverControlAPI.wristTargetAngle - WRIST_INPUT_SPEED, 0);
+        Math.max(
+          driverControlAPI.wristTargetAngle - WRIST_INPUT_SPEED,
+          WRIST_MIN_ANGLE
+        );
 
       // Apply states
-      if (player2.b) {
+      if (player2.a) {
         driverControlAPI.setState(DriverControlAPI.STATE.LOW);
       } else if (player2.x) {
         driverControlAPI.setState(DriverControlAPI.STATE.MIDDLE);
       } else if (player2.y) {
         driverControlAPI.setState(DriverControlAPI.STATE.HIGH);
-      } else if (player2.a) {
+      } else if (player2.b) {
         driverControlAPI.setState(DriverControlAPI.STATE.GROUND);
       }
 
@@ -125,6 +129,8 @@ public class DriverControl extends LinearOpMode {
       telemetry.addData("Status", "Run Time: " + runtime.toString());
       telemetry.addData("Drive mode", driveMode);
 
+      telemetry.addData("Extender", driverControlAPI.extenderTargetPos);
+      telemetry.addData("wrist angle", driverControlAPI.wristTargetAngle);
       telemetry.update();
     }
   }
