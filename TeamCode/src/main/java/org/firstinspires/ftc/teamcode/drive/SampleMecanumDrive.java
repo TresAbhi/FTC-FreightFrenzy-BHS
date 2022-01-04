@@ -51,11 +51,11 @@ import org.firstinspires.ftc.teamcode.util.LynxModuleUtil;
 public class SampleMecanumDrive extends MecanumDrive {
 
   public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(
-    0,
+    8,
     0,
     0
   );
-  public static PIDCoefficients HEADING_PID = new PIDCoefficients(0, 0, 0);
+  public static PIDCoefficients HEADING_PID = new PIDCoefficients(8, 0, 0);
 
   public static double LATERAL_MULTIPLIER = 50.29 / 42.38;
 
