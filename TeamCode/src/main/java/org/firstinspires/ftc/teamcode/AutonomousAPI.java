@@ -1,24 +1,28 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.os.SystemClock;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
 @Disabled
-@Autonomous(name = "AutonomousTemplate", group = "A")
-public class AutonomousTemplate extends LinearOpMode {
+@Autonomous(name = "AutonomousAPI", group = "A")
+public class AutonomousAPI {
 
   OpenCvWebcam webcam;
-  TeamScoreDetector teamScoreDetector = new TeamScoreDetector(telemetry);
-  DriverControlAPI driverControlAPI = new DriverControlAPI();
 
-  // @Override
-  public void runOpMode() {
+  TeamScoreDetector teamScoreDetector = new TeamScoreDetector();
+
+  TeamScoreDetector.LOCATION camResult;
+
+  public void init(HardwareMap hardwareMap) {
     int cameraMonitorViewId = hardwareMap.appContext
       .getResources()
       .getIdentifier(
@@ -38,34 +42,9 @@ public class AutonomousTemplate extends LinearOpMode {
     webcam.setPipeline(teamScoreDetector);
     webcam.startStreaming(432, 240, OpenCvCameraRotation.UPRIGHT);
 
-    driverControlAPI.init(hardwareMap);
-
-    telemetry.update();
-
     // don't burn CPU cycles busy-looping in this sample
-    sleep(1000);
+    SystemClock.sleep(1000);
 
-    TeamScoreDetector.LOCATION camResult = teamScoreDetector.getAnalysis();
-
-    telemetry.addData("Status", "Initialized");
-    telemetry.addData("Location", camResult);
-    telemetry.update();
-
-    waitForStart();
-
-    /**
-     * move the arm to the level
-     *
-     * left = low
-     * middle = middle
-     * right = high
-     */
-    if (camResult == TeamScoreDetector.LOCATION.RIGHT) {
-      driverControlAPI.setState(DriverControlAPI.STATE.HIGH);
-    } else if (camResult == TeamScoreDetector.LOCATION.MIDDLE) {
-      driverControlAPI.setState(DriverControlAPI.STATE.MIDDLE);
-    } else {
-      driverControlAPI.setState(DriverControlAPI.STATE.LOW);
-    }
+    camResult = teamScoreDetector.getAnalysis();
   }
 }

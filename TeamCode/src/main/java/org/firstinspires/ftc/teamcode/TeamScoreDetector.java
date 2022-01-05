@@ -60,9 +60,7 @@ public class TeamScoreDetector extends OpenCvPipeline {
   Mat mat = new Mat();
 
   // gives access to telemetry
-  public TeamScoreDetector(Telemetry t) {
-    telemetry = t;
-  }
+  public TeamScoreDetector() {}
 
   @Override
   public Mat processFrame(Mat input) {
@@ -87,22 +85,6 @@ public class TeamScoreDetector extends OpenCvPipeline {
     left.release();
     middle.release();
     right.release();
-
-    // some info in the tele op
-    // telemetry.clearAll();
-
-    // telemetry.addData("Left raw value", (int) Core.sumElems(left).val[0]);
-    // telemetry.addData("Middle raw value", (int) Core.sumElems(middle).val[0]);
-    // telemetry.addData("Right raw value", (int) Core.sumElems(right).val[0]);
-    // telemetry.addData("Left percentage", Math.round(leftCoverage * 100) + "%");
-    // telemetry.addData(
-    //   "Middle percentage",
-    //   Math.round(middleCoverage * 100) + "%"
-    // );
-    // telemetry.addData(
-    //   "Right percentage",
-    //   Math.round(rightCoverage * 100) + "%"
-    // );
 
     // booleans to figure out which one is actually covered
     boolean leftCovered = leftCoverage > PERCENT_COLOR_COVERAGE_THRESHOLD;
