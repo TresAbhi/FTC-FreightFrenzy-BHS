@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -8,9 +9,9 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
-@Autonomous(name = "AutoBRDuck", group = "A")
-// @Disabled
-public class AutoBRDuck extends LinearOpMode {
+@Disabled
+@Autonomous(name = "AutonomousTemplate", group = "A")
+public class AutonomousTemplate extends LinearOpMode {
 
   OpenCvWebcam webcam;
   TeamScoreDetector teamScoreDetector = new TeamScoreDetector(telemetry);
