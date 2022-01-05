@@ -11,7 +11,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 // @Disabled
 public class CamCheck extends LinearOpMode {
   OpenCvWebcam webcam;
-  TeamScoreDetector teamScoreDetector = new TeamScoreDetector(telemetry);
+  TeamScoreDetector teamScoreDetector = new TeamScoreDetector();
 
   public void runOpMode() {
     int cameraMonitorViewId = hardwareMap.appContext

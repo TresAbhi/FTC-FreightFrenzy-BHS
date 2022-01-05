@@ -12,8 +12,6 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
-@Disabled
-@Autonomous(name = "AutonomousAPI", group = "A")
 public class AutonomousAPI {
 
   OpenCvWebcam webcam;
