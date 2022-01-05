@@ -1,12 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import android.os.SystemClock;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -16,9 +11,9 @@ public class AutonomousAPI {
 
   OpenCvWebcam webcam;
 
-  TeamScoreDetector teamScoreDetector = new TeamScoreDetector();
+  CameraAPI cameraAPI = new CameraAPI();
 
-  TeamScoreDetector.LOCATION camResult;
+  CameraAPI.LOCATION camResult;
 
   public void init(HardwareMap hardwareMap) {
     int cameraMonitorViewId = hardwareMap.appContext
@@ -37,12 +32,12 @@ public class AutonomousAPI {
         );
 
     webcam.openCameraDevice();
-    webcam.setPipeline(teamScoreDetector);
+    webcam.setPipeline(cameraAPI);
     webcam.startStreaming(432, 240, OpenCvCameraRotation.UPRIGHT);
 
     // don't burn CPU cycles busy-looping in this sample
     SystemClock.sleep(1000);
 
-    camResult = teamScoreDetector.getAnalysis();
+    camResult = cameraAPI.getAnalysis();
   }
 }

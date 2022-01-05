@@ -4,12 +4,11 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
-@Disabled
+//@Disabled
 @Autonomous(name = "AutoBlueRightDuck", group = "A")
 public class AutoBlueRightDuck extends LinearOpMode {
 
@@ -39,9 +38,9 @@ public class AutoBlueRightDuck extends LinearOpMode {
 
     drive.followTrajectory(step1);
 
-    if (autonomousAPI.camResult == TeamScoreDetector.LOCATION.RIGHT) {
+    if (autonomousAPI.camResult == CameraAPI.LOCATION.RIGHT) {
       driverControlAPI.setState(DriverControlAPI.STATE.HIGH);
-    } else if (autonomousAPI.camResult == TeamScoreDetector.LOCATION.MIDDLE) {
+    } else if (autonomousAPI.camResult == CameraAPI.LOCATION.MIDDLE) {
       driverControlAPI.setState(DriverControlAPI.STATE.MIDDLE);
     } else {
       driverControlAPI.setState(DriverControlAPI.STATE.LOW);

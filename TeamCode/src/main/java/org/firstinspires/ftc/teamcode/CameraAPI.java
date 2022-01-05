@@ -9,7 +9,7 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 
-public class TeamScoreDetector extends OpenCvPipeline {
+public class CameraAPI extends OpenCvPipeline {
 
   // ROI: Region of intrest
   static final int ROI_WIDTH = 80;
@@ -60,7 +60,7 @@ public class TeamScoreDetector extends OpenCvPipeline {
   Mat mat = new Mat();
 
   // gives access to telemetry
-  public TeamScoreDetector() {}
+  public CameraAPI() {}
 
   @Override
   public Mat processFrame(Mat input) {
