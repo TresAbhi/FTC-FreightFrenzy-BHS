@@ -12,7 +12,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
 public class CamCheck extends LinearOpMode {
 
   OpenCvWebcam webcam;
-  CameraAPI cameraAPI = new CameraAPI();
+  CameraPipeline cameraPipeline = new CameraPipeline();
 
   public void runOpMode() {
     int cameraMonitorViewId = hardwareMap.appContext
@@ -31,11 +31,11 @@ public class CamCheck extends LinearOpMode {
         );
 
     webcam.openCameraDevice();
-    webcam.setPipeline(cameraAPI);
+    webcam.setPipeline(cameraPipeline);
     webcam.startStreaming(432, 240, OpenCvCameraRotation.UPRIGHT);
 
     while (opModeIsActive()) {
-      CameraAPI.LOCATION camResult = cameraAPI.getAnalysis();
+      CameraPipeline.LOCATION camResult = cameraPipeline.getAnalysis();
 
       telemetry.clearAll();
       telemetry.addData("Status", "Initialized");

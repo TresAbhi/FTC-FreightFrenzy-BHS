@@ -38,9 +38,9 @@ public class AutoBlueRightDuck extends LinearOpMode {
 
     drive.followTrajectory(step1);
 
-    if (autonomousAPI.camResult == CameraAPI.LOCATION.RIGHT) {
+    if (autonomousAPI.camResult == CameraPipeline.LOCATION.RIGHT) {
       driverControlAPI.setState(DriverControlAPI.STATE.HIGH);
-    } else if (autonomousAPI.camResult == CameraAPI.LOCATION.MIDDLE) {
+    } else if (autonomousAPI.camResult == CameraPipeline.LOCATION.MIDDLE) {
       driverControlAPI.setState(DriverControlAPI.STATE.MIDDLE);
     } else {
       driverControlAPI.setState(DriverControlAPI.STATE.LOW);

@@ -11,9 +11,9 @@ public class AutonomousAPI {
 
   OpenCvWebcam webcam;
 
-  CameraAPI cameraAPI = new CameraAPI();
+  CameraPipeline cameraPipeline = new CameraPipeline();
 
-  CameraAPI.LOCATION camResult;
+  CameraPipeline.LOCATION camResult;
 
   public void init(HardwareMap hardwareMap) {
     int cameraMonitorViewId = hardwareMap.appContext
@@ -32,12 +32,12 @@ public class AutonomousAPI {
         );
 
     webcam.openCameraDevice();
-    webcam.setPipeline(cameraAPI);
+    webcam.setPipeline(cameraPipeline);
     webcam.startStreaming(432, 240, OpenCvCameraRotation.UPRIGHT);
 
     // don't burn CPU cycles busy-looping in this sample
     SystemClock.sleep(1000);
 
-    camResult = cameraAPI.getAnalysis();
+    camResult = cameraPipeline.getAnalysis();
   }
 }

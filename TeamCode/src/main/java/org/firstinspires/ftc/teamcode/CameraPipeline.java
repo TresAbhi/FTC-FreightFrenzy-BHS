@@ -9,7 +9,7 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 
-public class CameraAPI extends OpenCvPipeline {
+public class CameraPipeline extends OpenCvPipeline {
 
   // ROI: Region of intrest
   static final int ROI_WIDTH = 80;
@@ -53,14 +53,8 @@ public class CameraAPI extends OpenCvPipeline {
    */
   static double PERCENT_COLOR_COVERAGE_THRESHOLD = 0.1;
 
-  // telemetry object; will be provided by the constructor
-  Telemetry telemetry;
-
   // the whole screen's region/matrix
   Mat mat = new Mat();
-
-  // gives access to telemetry
-  public CameraAPI() {}
 
   @Override
   public Mat processFrame(Mat input) {
