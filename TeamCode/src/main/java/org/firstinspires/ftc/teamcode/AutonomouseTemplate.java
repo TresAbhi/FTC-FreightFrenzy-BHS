@@ -8,11 +8,9 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
-@Autonomous(name = "AutoBlueRightDuck", group = "A")
+@Autonomous(name = "AutoBRDuck", group = "A")
 // @Disabled
-public class AutoBlueRightDuck extends LinearOpMode {
-
-  private ElapsedTime runtime = new ElapsedTime();
+public class AutoBRDuck extends LinearOpMode {
 
   OpenCvWebcam webcam;
   TeamScoreDetector teamScoreDetector = new TeamScoreDetector(telemetry);
@@ -54,35 +52,6 @@ public class AutoBlueRightDuck extends LinearOpMode {
 
     waitForStart();
 
-    runtime.reset();
-
-    // Move right and a bit up
-    driverControlAPI.spinnerSpeed = 1;
-    driverControlAPI.moveX = 1;
-    driverControlAPI.moveY = -0.2;
-    driverControlAPI.apply();
-    sleep(550);
-
-    // stop moving
-    driverControlAPI.moveX = 0;
-    driverControlAPI.moveY = 0;
-    driverControlAPI.spinnerJointSpeed = 1;
-    driverControlAPI.apply();
-    sleep(9500);
-
-    // wait for ducks to fall off and go back to original position
-    driverControlAPI.spinnerSpeed = 0.49f;
-    driverControlAPI.spinnerJointSpeed = 0;
-    driverControlAPI.moveX = -1;
-    driverControlAPI.moveY = 0;
-    driverControlAPI.apply();
-    sleep(950);
-
-    // stop moving to the left and bring it back in
-    driverControlAPI.moveX = 0;
-    driverControlAPI.spinnerJointSpeed = 0;
-    driverControlAPI.apply();
-
     /**
      * move the arm to the level
      *
@@ -97,46 +66,5 @@ public class AutoBlueRightDuck extends LinearOpMode {
     } else {
       driverControlAPI.setState(DriverControlAPI.STATE.LOW);
     }
-    sleep(1000);
-
-    // increase the power to hold it in place better
-    sleep(1000);
-
-    // move forward
-    driverControlAPI.moveY = -0.4;
-    driverControlAPI.apply();
-    sleep(1100);
-
-    // stop moving
-    driverControlAPI.moveY = 0;
-    driverControlAPI.apply();
-    sleep(200);
-
-    // let go of the block
-    driverControlAPI.clawTargetState = 0;
-    driverControlAPI.apply();
-    sleep(500);
-
-    // move back
-    driverControlAPI.moveY = 0.4;
-    driverControlAPI.apply();
-    sleep(600);
-
-    // move right again
-    driverControlAPI.moveX = 1;
-    driverControlAPI.moveY = 0;
-    driverControlAPI.clawTargetState = 1;
-    driverControlAPI.setState(DriverControlAPI.STATE.BACK);
-    sleep(1300);
-
-    // move forward
-    driverControlAPI.moveX = 0;
-    driverControlAPI.moveY = -1;
-    driverControlAPI.apply();
-    sleep(440);
-
-    driverControlAPI.moveY = 0;
-    driverControlAPI.apply();
-    sleep(500);
   }
 }

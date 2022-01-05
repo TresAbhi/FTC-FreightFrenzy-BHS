@@ -3,8 +3,8 @@ package org.firstinspires.ftc.teamcode.drive.opmode;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
@@ -22,34 +22,37 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
  * These coefficients can be tuned live in dashboard.
  */
 @Config
+@Disabled
 @Autonomous(group = "drive")
 public class FollowerPIDTuner extends LinearOpMode {
-    public static double DISTANCE = 48; // in
 
-    @Override
-    public void runOpMode() throws InterruptedException {
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+  public static double DISTANCE = 48; // in
 
-        Pose2d startPose = new Pose2d(-DISTANCE / 2, -DISTANCE / 2, 0);
+  @Override
+  public void runOpMode() throws InterruptedException {
+    SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
-        drive.setPoseEstimate(startPose);
+    Pose2d startPose = new Pose2d(-DISTANCE / 2, -DISTANCE / 2, 0);
 
-        waitForStart();
+    drive.setPoseEstimate(startPose);
 
-        if (isStopRequested()) return;
+    waitForStart();
 
-        while (!isStopRequested()) {
-            TrajectorySequence trajSeq = drive.trajectorySequenceBuilder(startPose)
-                    .forward(DISTANCE)
-                    .turn(Math.toRadians(90))
-                    .forward(DISTANCE)
-                    .turn(Math.toRadians(90))
-                    .forward(DISTANCE)
-                    .turn(Math.toRadians(90))
-                    .forward(DISTANCE)
-                    .turn(Math.toRadians(90))
-                    .build();
-            drive.followTrajectorySequence(trajSeq);
-        }
+    if (isStopRequested()) return;
+
+    while (!isStopRequested()) {
+      TrajectorySequence trajSeq = drive
+        .trajectorySequenceBuilder(startPose)
+        .forward(DISTANCE)
+        .turn(Math.toRadians(90))
+        .forward(DISTANCE)
+        .turn(Math.toRadians(90))
+        .forward(DISTANCE)
+        .turn(Math.toRadians(90))
+        .forward(DISTANCE)
+        .turn(Math.toRadians(90))
+        .build();
+      drive.followTrajectorySequence(trajSeq);
     }
+  }
 }
