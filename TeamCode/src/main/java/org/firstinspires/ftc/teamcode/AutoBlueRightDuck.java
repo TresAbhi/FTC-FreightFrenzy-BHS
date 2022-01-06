@@ -5,6 +5,7 @@ import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
@@ -12,23 +13,27 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 @Autonomous(name = "AutoBlueRightDuck", group = "A")
 public class AutoBlueRightDuck extends LinearOpMode {
 
-  AutonomousAPI autonomousAPI = new AutonomousAPI();
-  DriverControlAPI driverControlAPI = new DriverControlAPI();
-  SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+  AutonomousAPI autonomousAPI;
+  DriverControlAPI driverControlAPI;
+  SampleMecanumDrive drive;
 
   // @Override
   public void runOpMode() {
+    autonomousAPI = new AutonomousAPI();
+    driverControlAPI = new DriverControlAPI();
+    drive = new SampleMecanumDrive(hardwareMap);
+
     autonomousAPI.init(hardwareMap);
     driverControlAPI.init(hardwareMap);
 
     // Positions
-    Pose2d startPosition = new Pose2d(-63, 45, Math.toRadians(90));
+    Pose2d startPosition = new Pose2d(-39, -62, Math.toRadians(90));
 
     // Trajectories
     // move to the duck spinner
     Trajectory step1 = drive
       .trajectoryBuilder(startPosition)
-      .strafeTo(new Vector2d(-58, 60))
+      .forward(50)
       .build();
 
     // One-time executions
