@@ -117,8 +117,8 @@ public class SampleMecanumDrive extends MecanumDrive {
     rightRear = hardwareMap.get(DcMotorEx.class, "right_rear");
     rightFront = hardwareMap.get(DcMotorEx.class, "right_front");
 
-    leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
-    rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
+    // leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
+    rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
 
     motors = Arrays.asList(leftFront, leftRear, rightRear, rightFront);
 
@@ -324,10 +324,10 @@ public class SampleMecanumDrive extends MecanumDrive {
 
   @Override
   public void setMotorPowers(double v, double v1, double v2, double v3) {
-    leftFront.setPower(v);
-    leftRear.setPower(-v1);
+    leftFront.setPower(-v);
+    leftRear.setPower(v1);
     rightRear.setPower(v2);
-    rightFront.setPower(-v3);
+    rightFront.setPower(v3);
   }
 
   @Override

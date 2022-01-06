@@ -33,7 +33,7 @@ public class AutoBlueRightDuck extends LinearOpMode {
     // move to the duck spinner
     Trajectory step1 = drive
       .trajectoryBuilder(startPosition)
-      .forward(50)
+      .forward(10)
       .build();
 
     // One-time executions
