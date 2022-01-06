@@ -38,8 +38,7 @@ public class CamCheck extends LinearOpMode {
       CameraPipeline.LOCATION camResult = cameraPipeline.getAnalysis();
 
       telemetry.clearAll();
-      telemetry.addData("Status", "Initialized");
-      telemetry.addData("Location", camResult);
+      telemetry.addData("Location", camResult.toString());
       telemetry.update();
     }
   }
