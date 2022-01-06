@@ -1,7 +1,0 @@
-Max Velocity: 45.60344596939502
-Voltage Compensated kF: 17.822895597183948
-
-d: 0.2
-f: 12.8
-i: 0*
-p: 0.2
