@@ -10,7 +10,6 @@ import org.openftc.easyopencv.OpenCvWebcam;
 public class AutonomousAPI {
 
   OpenCvWebcam webcam;
-
   CameraPipeline cameraPipeline = new CameraPipeline();
 
   CameraPipeline.LOCATION camResult;

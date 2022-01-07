@@ -53,7 +53,7 @@ public class DriverControlAPI {
   public int extenderTargetPos = EXTENDER_MIN_POS;
 
   public float wristTargetAngle = 1;
-  public float clawTargetState = 0;
+  public float clawTargetState = 1;
 
   public float spinnerSpeed = 0.49f;
   public float spinnerJointSpeed = 0f;
@@ -92,6 +92,7 @@ public class DriverControlAPI {
     EXTENDER.setPower(EXTENDER_POWER);
 
     WRIST.setPosition(1);
+    CLAW.setPosition(clawTargetState);
   }
 
   public void setState(STATE state) {
