@@ -110,14 +110,16 @@ public class DriverControl extends LinearOpMode {
         );
 
       // Apply states
-      if (player2.a) {
-        driverControlAPI.setState(DriverControlAPI.STATE.LOW);
-      } else if (player2.x) {
-        driverControlAPI.setState(DriverControlAPI.STATE.MIDDLE);
-      } else if (player2.y) {
-        driverControlAPI.setState(DriverControlAPI.STATE.HIGH);
-      } else if (player2.b) {
-        driverControlAPI.setState(DriverControlAPI.STATE.GROUND);
+      if (!player2.start) {
+        if (player2.a) {
+          driverControlAPI.setState(DriverControlAPI.STATE.LOW);
+        } else if (player2.x) {
+          driverControlAPI.setState(DriverControlAPI.STATE.MIDDLE);
+        } else if (player2.y) {
+          driverControlAPI.setState(DriverControlAPI.STATE.HIGH);
+        } else if (player2.b) {
+          driverControlAPI.setState(DriverControlAPI.STATE.GROUND);
+        }
       }
 
       driverControlAPI.clawTargetState = player2.right_bumper ? 0 : 1;
