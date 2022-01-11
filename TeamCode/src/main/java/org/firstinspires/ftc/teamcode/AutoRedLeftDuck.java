@@ -53,7 +53,7 @@ public class AutoRedLeftDuck extends LinearOpMode {
     sleep(2200);
 
     // bring back in the spinner, move left, and move the arm to the correct height
-    driverControlAPI.spinnerJointSpeed = 0.2f;
+    driverControlAPI.spinnerJointSpeed = -0.3f;
     driverControlAPI.spinnerSpeed = 0.49f;
     driverControlAPI.moveX = -1;
     if (autonomousAPI.camResult == CameraPipeline.LOCATION.RIGHT) {
@@ -78,7 +78,7 @@ public class AutoRedLeftDuck extends LinearOpMode {
     sleep(500);
 
     // move forward but slower and stop pulling the spinner joint in
-    driverControlAPI.spinnerJointSpeed = 0.5f;
+    driverControlAPI.spinnerJointSpeed = 0;
     driverControlAPI.moveY = -0.2;
     driverControlAPI.apply();
     sleep(370);
