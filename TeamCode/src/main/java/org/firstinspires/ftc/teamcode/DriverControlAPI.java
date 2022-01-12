@@ -4,17 +4,16 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
-import org.opencv.core.Mat;
 
 public class DriverControlAPI {
 
   // Components
-  public DcMotor LEFT_FRONT, LEFT_REAR, RIGHT_FRONT, RIGHT_REAR;
+  public DcMotor leftFront, leftRear, rightFront, rightRear;
 
-  public DcMotor EXTENDER;
-  public Servo WRIST, CLAW;
+  public DcMotor extender;
+  public Servo wrist, claw;
 
-  public Servo SPINNER, SPINNER_JOINT;
+  public Servo spinner, spinnerJoint;
 
   // Constants
   public float EXTENDER_POWER = 0.8f;
@@ -72,33 +71,33 @@ public class DriverControlAPI {
     hardwareMap = hm;
 
     // Components
-    LEFT_FRONT = hardwareMap.get(DcMotor.class, "left_front");
-    LEFT_REAR = hardwareMap.get(DcMotor.class, "left_rear");
-    RIGHT_FRONT = hardwareMap.get(DcMotor.class, "right_front");
-    RIGHT_REAR = hardwareMap.get(DcMotor.class, "right_rear");
+    leftFront = hardwareMap.get(DcMotor.class, "left_front");
+    leftRear = hardwareMap.get(DcMotor.class, "left_rear");
+    rightFront = hardwareMap.get(DcMotor.class, "right_front");
+    rightRear = hardwareMap.get(DcMotor.class, "right_rear");
 
-    EXTENDER = hardwareMap.get(DcMotor.class, "extender");
-    CLAW = hardwareMap.get(Servo.class, "claw");
-    WRIST = hardwareMap.get(Servo.class, "wrist");
+    extender = hardwareMap.get(DcMotor.class, "extender");
+    claw = hardwareMap.get(Servo.class, "claw");
+    wrist = hardwareMap.get(Servo.class, "wrist");
 
-    SPINNER = hardwareMap.get(Servo.class, "spinner");
-    SPINNER_JOINT = hardwareMap.get(Servo.class, "spinner_joint");
+    spinner = hardwareMap.get(Servo.class, "spinner");
+    spinnerJoint = hardwareMap.get(Servo.class, "spinner_joint");
 
     // One time executions
-    LEFT_FRONT.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-    LEFT_REAR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-    RIGHT_FRONT.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-    RIGHT_REAR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-    LEFT_FRONT.setDirection(DcMotor.Direction.REVERSE);
-    RIGHT_REAR.setDirection(DcMotor.Direction.REVERSE);
+    leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    leftFront.setDirection(DcMotor.Direction.REVERSE);
+    rightRear.setDirection(DcMotor.Direction.REVERSE);
 
-    EXTENDER.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-    EXTENDER.setTargetPosition(EXTENDER_MIN_POS);
-    EXTENDER.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    EXTENDER.setPower(EXTENDER_POWER);
+    extender.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    extender.setTargetPosition(EXTENDER_MIN_POS);
+    extender.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    extender.setPower(EXTENDER_POWER);
 
-    WRIST.setPosition(1);
-    CLAW.setPosition(clawTargetState);
+    wrist.setPosition(1);
+    claw.setPosition(clawTargetState);
   }
 
   public void setState(STATE state) {
@@ -136,20 +135,20 @@ public class DriverControlAPI {
     double vector4 = vectorNormal * Math.cos(robotAngle);
 
     // Apply wheel motor powers
-    LEFT_FRONT.setPower((-vector1 + rot) * movementPower);
-    LEFT_REAR.setPower((-vector2 + rot) * movementPower);
-    RIGHT_FRONT.setPower((-vector3 - rot) * movementPower);
-    RIGHT_REAR.setPower((-vector4 - rot) * movementPower);
+    leftFront.setPower((-vector1 + rot) * movementPower);
+    leftRear.setPower((-vector2 + rot) * movementPower);
+    rightFront.setPower((-vector3 - rot) * movementPower);
+    rightRear.setPower((-vector4 - rot) * movementPower);
 
     // Apply all targets
-    EXTENDER.setTargetPosition(extenderTargetPos);
+    extender.setTargetPosition(extenderTargetPos);
 
-    WRIST.setPosition(wristTargetAngle);
+    wrist.setPosition(wristTargetAngle);
 
-    CLAW.setPosition(clawTargetState);
+    claw.setPosition(clawTargetState);
 
-    SPINNER.setPosition(spinnerSpeed);
-    SPINNER_JOINT.setPosition(spinnerJointSpeed);
+    spinner.setPosition(spinnerSpeed);
+    spinnerJoint.setPosition(spinnerJointSpeed);
   }
 
   public double getBatteryVoltage() {
