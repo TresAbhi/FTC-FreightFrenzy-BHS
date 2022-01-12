@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.VoltageSensor;
+import org.opencv.core.Mat;
 
 public class DriverControlAPI {
 
@@ -64,7 +66,11 @@ public class DriverControlAPI {
 
   public float movementPower = 1f;
 
-  public void init(HardwareMap hardwareMap) {
+  public HardwareMap hardwareMap;
+
+  public void init(HardwareMap hm) {
+    hardwareMap = hm;
+
     // Components
     LEFT_FRONT = hardwareMap.get(DcMotor.class, "left_front");
     LEFT_REAR = hardwareMap.get(DcMotor.class, "left_rear");
@@ -144,5 +150,19 @@ public class DriverControlAPI {
 
     SPINNER.setPosition(spinnerSpeed);
     SPINNER_JOINT.setPosition(spinnerJointSpeed);
+  }
+
+  public double getBatteryVoltage() {
+    double result = Double.POSITIVE_INFINITY;
+
+    for (VoltageSensor sensor : hardwareMap.voltageSensor) {
+      double voltage = sensor.getVoltage();
+
+      if (voltage > 0) {
+        result = Math.min(result, voltage);
+      }
+    }
+
+    return result;
   }
 }

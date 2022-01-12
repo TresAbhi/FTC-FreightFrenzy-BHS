@@ -133,6 +133,12 @@ public class DriverControl extends LinearOpMode {
 
       telemetry.addData("Extender", driverControlAPI.extenderTargetPos);
       telemetry.addData("wrist angle", driverControlAPI.wristTargetAngle);
+
+      telemetry.addData(
+        "Battery Voltage",
+        driverControlAPI.getBatteryVoltage()
+      );
+
       telemetry.update();
     }
   }

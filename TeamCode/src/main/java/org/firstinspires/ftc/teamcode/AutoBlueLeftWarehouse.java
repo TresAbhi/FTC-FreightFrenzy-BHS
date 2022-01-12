@@ -4,8 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 //@Disabled
-@Autonomous(name = "AutoBlueRightDuck", group = "A")
-public class AutoBlueRightDuck extends LinearOpMode {
+@Autonomous(name = "AA-PROTO-AutoBlueLeftWarehouse", group = "A")
+public class AutoBlueLeftWarehouse extends LinearOpMode {
 
   AutonomousAPI autonomousAPI;
   DriverControlAPI drive;
@@ -31,7 +31,7 @@ public class AutoBlueRightDuck extends LinearOpMode {
     drive.apply();
     sleep(700);
 
-    //pull out the spinner, and spin the spinner, and stop moving right
+    // pull out the spinner, and spin the spinner, and stop moving right
     drive.spinnerJointSpeed = 0.6f;
     drive.spinnerSpeed = 0.8f;
     drive.moveX = 0;
