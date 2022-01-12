@@ -46,7 +46,7 @@ public class AutoRedLeftDuck extends LinearOpMode {
     // spin the spinner
     drive.spinnerSpeed = -0.2f;
     drive.apply();
-    sleep(2200);
+    sleep(2500);
 
     // bring back in the spinner, move left, and move the arm to the correct height
     drive.spinnerJointSpeed = -0.3f;
@@ -65,7 +65,7 @@ public class AutoRedLeftDuck extends LinearOpMode {
     drive.moveX = 0;
     drive.rot = 0.5f;
     drive.apply();
-    sleep(125);
+    sleep(95);
 
     // stop rotating and move forward
     drive.rot = 0;
