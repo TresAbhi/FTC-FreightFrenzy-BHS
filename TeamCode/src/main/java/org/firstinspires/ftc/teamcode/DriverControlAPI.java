@@ -19,7 +19,7 @@ public class DriverControlAPI {
   public float EXTENDER_POWER = 0.8f;
   public int EXTENDER_MIN_POS = 0;
 
-  public float NORMAL_VOLTAGE = 10;
+  public float NORMAL_VOLTAGE = 13;
 
   // Preset states
   public enum STATE {
