@@ -59,9 +59,9 @@ public class DriverControlAPI {
   public float spinnerSpeed = 0.49f;
   public float spinnerJointSpeed = 0f;
 
-  public double moveX = 0;
-  public double moveY = 0;
-  public double rot = 0;
+  public float moveX = 0;
+  public float moveY = 0;
+  public float rot = 0;
 
   public float movementPower = 1f;
   public float voltageCompensatedPower = 1f;

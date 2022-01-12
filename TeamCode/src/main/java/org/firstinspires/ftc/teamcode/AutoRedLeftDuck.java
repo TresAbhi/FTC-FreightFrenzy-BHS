@@ -15,11 +15,11 @@ public class AutoRedLeftDuck extends LinearOpMode {
     autonomousAPI = new AutonomousAPI();
     drive = new DriverControlAPI();
 
-    autonomousAPI.init(hardwareMap);
     drive.init(hardwareMap);
     drive.compensateForVoltage();
 
     waitForStart();
+    autonomousAPI.init(hardwareMap);
 
     // move a bit forward
     drive.moveY = -1;
@@ -34,7 +34,7 @@ public class AutoRedLeftDuck extends LinearOpMode {
 
     // stop rotating, go back, and pull out the spinner
     drive.rot = 0;
-    drive.moveY = 0.5;
+    drive.moveY = 0.5f;
     drive.spinnerJointSpeed = 0.6f;
     drive.apply();
     sleep(960);
@@ -75,7 +75,7 @@ public class AutoRedLeftDuck extends LinearOpMode {
 
     // move forward but slower and stop pulling the spinner joint in
     drive.spinnerJointSpeed = 0;
-    drive.moveY = -0.2;
+    drive.moveY = -0.2f;
     drive.apply();
     sleep(370);
 

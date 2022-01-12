@@ -82,9 +82,9 @@ public class DriverControl extends LinearOpMode {
         Math.signum(player1.right_stick_y) *
         Math.pow(player1.right_stick_y, MOVEMENT_PRECISION);
 
-      driverControlAPI.moveX = dampedLeftJoystickX;
-      driverControlAPI.moveY = dampedLeftJoystickY;
-      driverControlAPI.rot = dampedRightJoystickX;
+      driverControlAPI.moveX = (float) dampedLeftJoystickX;
+      driverControlAPI.moveY = (float) dampedLeftJoystickY;
+      driverControlAPI.rot = (float) dampedRightJoystickX;
 
       // Tweak extender joint target
       driverControlAPI.extenderTargetPos =

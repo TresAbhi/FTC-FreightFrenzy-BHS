@@ -4,8 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 //@Disabled
-@Autonomous(name = "AutoBlueRightDuck", group = "A")
-public class AutoBlueRightDuck extends LinearOpMode {
+@Autonomous(name = "AutoBlueLeftBlock", group = "A")
+public class AutoBlueLeftBlock extends LinearOpMode {
 
   AutonomousAPI autonomousAPI;
   DriverControlAPI drive;
@@ -24,41 +24,15 @@ public class AutoBlueRightDuck extends LinearOpMode {
     // go forward
     drive.moveY = -1;
     drive.apply();
-    sleep(120);
+    sleep(150);
 
-    // stop moving forward, move right,
+    // stop moving forward and move right
     drive.moveY = 0;
     drive.moveX = 1;
     drive.apply();
-    sleep(700);
+    sleep(380);
 
-    // pull out the spinner, and spin the spinner, and stop moving right
-    drive.spinnerJointSpeed = 0.6f;
-    drive.spinnerSpeed = 0.8f;
-    drive.moveX = 0;
-    drive.apply();
-    sleep(300);
-
-    // stop moving and let the duck fall off
-    drive.moveX = 0;
-    drive.apply();
-    sleep(2500);
-
-    // pull back spinner, stop spinner and move right
-    drive.spinnerJointSpeed = -0.2f;
-    drive.spinnerSpeed = 0.49f;
-    drive.moveX = 1;
-    drive.apply();
-    sleep(100);
-
-    // stop moving right and move forward
-    drive.moveX = 0;
-    drive.moveY = -1;
-    drive.apply();
-    sleep(900);
-
-    // stop moving forward and move arm to correct height
-    drive.moveY = 0;
+    // stop moving right and move arm to position
     if (autonomousAPI.camResult == CameraPipeline.LOCATION.RIGHT) {
       drive.setState(DriverControlAPI.STATE.HIGH);
     } else if (autonomousAPI.camResult == CameraPipeline.LOCATION.MIDDLE) {
@@ -66,46 +40,54 @@ public class AutoBlueRightDuck extends LinearOpMode {
     } else {
       drive.setState(DriverControlAPI.STATE.LOW);
     }
-    drive.apply();
     sleep(500);
 
-    // and rotate left
-    drive.rot = -1;
-    drive.apply();
-    sleep(380);
-
-    // stop rotating and move forward
-    drive.rot = 0;
+    // go forward
+    drive.moveX = 0;
     drive.moveY = -0.5f;
     drive.apply();
-    sleep(1300);
+    sleep(520);
 
-    // open claw
+    // stop moving
     drive.moveY = 0;
+    drive.apply();
+    sleep(200);
+
+    // drop block
     drive.clawTargetState = 0;
     drive.apply();
     sleep(200);
 
-    // move back
+    // go back
     drive.moveY = 1;
     drive.apply();
-    sleep(505);
+    sleep(140);
 
-    // stop moving back and move to the left
+    // stop moving, turn left, set to low state, and mvoe the wrist up
     drive.moveY = 0;
+    drive.rot = -0.5f;
     drive.setState(DriverControlAPI.STATE.LOW);
-    drive.moveX = -1;
-    drive.apply();
-    sleep(760);
+    drive.wristTargetAngle = 1;
+    sleep(800);
 
-    // turn a bit to the right
-    drive.moveX = 0;
-    drive.rot = 1;
+    // stop turning and go forward
+    drive.rot = 0;
     drive.apply();
-    sleep(28);
+    sleep(200);
+
+    // move forward
+    drive.moveY = -1;
+    drive.apply();
+    sleep(1500);
+
+    // stop moving and move to the right
+    drive.moveY = 0;
+    drive.moveX = 1;
+    drive.apply();
+    sleep(500);
 
     // stop moving
-    drive.rot = 0;
+    drive.moveX = 0;
     drive.apply();
     sleep(200);
   }
