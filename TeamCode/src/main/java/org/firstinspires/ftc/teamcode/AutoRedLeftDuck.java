@@ -95,6 +95,7 @@ public class AutoRedLeftDuck extends LinearOpMode {
 
     // go back
     driverControlAPI.moveY = 1;
+    driverControlAPI.setState(DriverControlAPI.STATE.LOW);
     driverControlAPI.apply();
     sleep(510);
 
