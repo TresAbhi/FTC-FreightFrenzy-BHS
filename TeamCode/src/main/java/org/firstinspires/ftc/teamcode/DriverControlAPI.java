@@ -17,11 +17,11 @@ public class DriverControlAPI {
 
   // Constants
   public float EXTENDER_POWER = 0.8f;
-
   public int EXTENDER_MIN_POS = 0;
 
-  // Preset states
+  public float NORMAL_VOLTAGE = 10;
 
+  // Preset states
   public enum STATE {
     LOW,
     MIDDLE,
@@ -64,6 +64,7 @@ public class DriverControlAPI {
   public double rot = 0;
 
   public float movementPower = 1f;
+  public float voltageCompensatedPower = 1f;
 
   public HardwareMap hardwareMap;
 
@@ -135,10 +136,10 @@ public class DriverControlAPI {
     double vector4 = vectorNormal * Math.cos(robotAngle);
 
     // Apply wheel motor powers
-    leftFront.setPower((-vector1 + rot) * movementPower);
-    leftRear.setPower((-vector2 + rot) * movementPower);
-    rightFront.setPower((-vector3 - rot) * movementPower);
-    rightRear.setPower((-vector4 - rot) * movementPower);
+    leftFront.setPower((-vector1 + rot) * movementPower * voltageCompensatedPower);
+    leftRear.setPower((-vector2 + rot) * movementPower * voltageCompensatedPower);
+    rightFront.setPower((-vector3 - rot) * movementPower * voltageCompensatedPower);
+    rightRear.setPower((-vector4 - rot) * movementPower * voltageCompensatedPower);
 
     // Apply all targets
     extender.setTargetPosition(extenderTargetPos);
@@ -151,7 +152,7 @@ public class DriverControlAPI {
     spinnerJoint.setPosition(spinnerJointSpeed);
   }
 
-  public double getBatteryVoltage() {
+  public float getBatteryVoltage() {
     double result = Double.POSITIVE_INFINITY;
 
     for (VoltageSensor sensor : hardwareMap.voltageSensor) {
@@ -162,6 +163,10 @@ public class DriverControlAPI {
       }
     }
 
-    return result;
+    return (float) result;
+  }
+
+  public void compensateForVoltage() {
+    voltageCompensatedPower = NORMAL_VOLTAGE / getBatteryVoltage();
   }
 }

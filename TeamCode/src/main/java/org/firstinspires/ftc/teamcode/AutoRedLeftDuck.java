@@ -17,6 +17,7 @@ public class AutoRedLeftDuck extends LinearOpMode {
 
     autonomousAPI.init(hardwareMap);
     drive.init(hardwareMap);
+    drive.compensateForVoltage();
 
     waitForStart();
 
