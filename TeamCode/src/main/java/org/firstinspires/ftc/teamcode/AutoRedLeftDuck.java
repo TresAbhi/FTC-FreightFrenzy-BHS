@@ -91,15 +91,14 @@ public class AutoRedLeftDuck extends LinearOpMode {
 
     // go back
     drive.moveY = 1;
-    drive.setState(DriverControlAPI.STATE.LOW);
     drive.apply();
     sleep(510);
 
     // stop moving back and move right
     drive.moveY = 0;
     drive.moveX = 1;
-    drive.apply();
-    sleep(610);
+    drive.setState(DriverControlAPI.STATE.LOW);
+    sleep(560);
 
     // stop moving
     drive.moveX = 0;

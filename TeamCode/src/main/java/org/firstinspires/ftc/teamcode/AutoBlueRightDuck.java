@@ -17,13 +17,14 @@ public class AutoBlueRightDuck extends LinearOpMode {
 
     autonomousAPI.init(hardwareMap);
     drive.init(hardwareMap);
+    drive.compensateForVoltage();
 
     waitForStart();
 
     // go forward
     drive.moveY = -1;
     drive.apply();
-    sleep(150);
+    sleep(120);
 
     // stop moving forward, move right,
     drive.moveY = 0;
@@ -31,7 +32,7 @@ public class AutoBlueRightDuck extends LinearOpMode {
     drive.apply();
     sleep(700);
 
-    //pull out the spinner, and spin the spinner, and stop moving right
+    // pull out the spinner, and spin the spinner, and stop moving right
     drive.spinnerJointSpeed = 0.6f;
     drive.spinnerSpeed = 0.8f;
     drive.moveX = 0;
@@ -43,13 +44,14 @@ public class AutoBlueRightDuck extends LinearOpMode {
     drive.apply();
     sleep(2500);
 
-    // pull back spinner and move right
+    // pull back spinner, stop spinner and move right
     drive.spinnerJointSpeed = -0.2f;
+    drive.spinnerSpeed = 0.49f;
     drive.moveX = 1;
     drive.apply();
     sleep(100);
 
-    //stop moving right and move forward
+    // stop moving right and move forward
     drive.moveX = 0;
     drive.moveY = -1;
     drive.apply();
@@ -67,42 +69,42 @@ public class AutoBlueRightDuck extends LinearOpMode {
     drive.apply();
     sleep(500);
 
-    //and rotate left
+    // and rotate left
     drive.rot = -1;
     drive.apply();
-    sleep(400);
+    sleep(380);
 
-    //stop rotating and move forward
+    // stop rotating and move forward
     drive.rot = 0;
-    drive.moveY = -1;
+    drive.moveY = -0.5f;
     drive.apply();
-    sleep(650);
+    sleep(1300);
 
-    //open claw
+    // open claw
     drive.moveY = 0;
     drive.clawTargetState = 0;
     drive.apply();
     sleep(200);
 
-    //move back
+    // move back
     drive.moveY = 1;
     drive.apply();
-    sleep(600);
+    sleep(505);
 
-    //stop moving back and move to the left
+    // stop moving back and move to the left
     drive.moveY = 0;
     drive.setState(DriverControlAPI.STATE.LOW);
     drive.moveX = -1;
     drive.apply();
-    sleep(800);
+    sleep(760);
 
-    //turn a bit to the right
+    // turn a bit to the right
     drive.moveX = 0;
     drive.rot = 1;
     drive.apply();
-    sleep(20);
+    sleep(28);
 
-    //stop moving
+    // stop moving
     drive.rot = 0;
     drive.apply();
     sleep(200);
