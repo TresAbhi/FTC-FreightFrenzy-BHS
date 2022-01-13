@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 // @Disabled
 public class DriverControl extends LinearOpMode {
 
-  DriverControlAPI driverControlAPI = new DriverControlAPI();
+  DriverControlAPI drive = new DriverControlAPI();
 
   private ElapsedTime runtime = new ElapsedTime();
 
@@ -35,7 +35,7 @@ public class DriverControl extends LinearOpMode {
 
   // @Override
   public void runOpMode() {
-    driverControlAPI.init(hardwareMap);
+    drive.init(hardwareMap);
 
     telemetry.addData("Status", "Initialized");
     telemetry.update();
@@ -55,7 +55,7 @@ public class DriverControl extends LinearOpMode {
       }
 
       // Power modes for slow and fast robot speeds
-      driverControlAPI.movementPower =
+      drive.movementPower =
         player1.left_bumper ? SPEED_LOW_POWER : SPEED_HIGH_POWER;
 
       // God mode toggler
@@ -66,7 +66,7 @@ public class DriverControl extends LinearOpMode {
       if (!(player1.back || player2.back)) isModeSwitched = false;
 
       // Tweak spinner joint speed
-      driverControlAPI.spinnerJointSpeed = player1.right_trigger;
+      drive.spinnerJointSpeed = player1.right_trigger;
 
       // Dampen controls to give more precision at lower power levels
       double dampedLeftJoystickX =
@@ -82,61 +82,63 @@ public class DriverControl extends LinearOpMode {
         Math.signum(player1.right_stick_y) *
         Math.pow(player1.right_stick_y, MOVEMENT_PRECISION);
 
-      driverControlAPI.moveX = (float) dampedLeftJoystickX;
-      driverControlAPI.moveY = (float) dampedLeftJoystickY;
-      driverControlAPI.rot = (float) dampedRightJoystickX;
+      drive.moveX = (float) dampedLeftJoystickX;
+      drive.moveY = (float) dampedLeftJoystickY;
+      drive.rot = (float) dampedRightJoystickX;
 
       // Tweak extender joint target
-      driverControlAPI.extenderTargetPos =
+      drive.extenderTargetPos =
         Math.min(
-          driverControlAPI.extenderTargetPos +
+          drive.extenderTargetPos +
           Math.round(EXTENDER_INPUT_SPEED * player2.right_trigger),
           EXTENDER_MAX_POS
         );
-      driverControlAPI.extenderTargetPos =
+      drive.extenderTargetPos =
         Math.max(
-          driverControlAPI.extenderTargetPos -
+          drive.extenderTargetPos -
           Math.round(EXTENDER_INPUT_SPEED * player2.left_trigger),
           EXTENDER_MIN_POS
         );
 
       // Tweak wrist joint target
-      if (player2.dpad_up) driverControlAPI.wristTargetAngle =
-        Math.min(driverControlAPI.wristTargetAngle + WRIST_INPUT_SPEED, 1);
-      if (player2.dpad_down) driverControlAPI.wristTargetAngle =
+      if (player2.dpad_up) drive.wristTargetAngle =
+        Math.min(drive.wristTargetAngle + WRIST_INPUT_SPEED, 1);
+      if (player2.dpad_down) drive.wristTargetAngle =
         Math.max(
-          driverControlAPI.wristTargetAngle - WRIST_INPUT_SPEED,
+          drive.wristTargetAngle - WRIST_INPUT_SPEED,
           WRIST_MIN_ANGLE
         );
 
       // Apply states
       if (!player2.start) {
         if (player2.a) {
-          driverControlAPI.setState(DriverControlAPI.STATE.LOW);
+          drive.setState(DriverControlAPI.STATE.LOW);
         } else if (player2.x) {
-          driverControlAPI.setState(DriverControlAPI.STATE.MIDDLE);
+          drive.setState(DriverControlAPI.STATE.MIDDLE);
         } else if (player2.y) {
-          driverControlAPI.setState(DriverControlAPI.STATE.HIGH);
+          drive.setState(DriverControlAPI.STATE.HIGH);
         } else if (player2.b) {
-          driverControlAPI.setState(DriverControlAPI.STATE.GROUND);
+          drive.setState(DriverControlAPI.STATE.GROUND);
         }
       }
 
-      driverControlAPI.clawTargetState = player2.right_bumper ? 0 : 1;
-      driverControlAPI.spinnerSpeed = player1.right_bumper ? 1f : 0.49f;
+      drive.clawTargetState = player2.right_bumper ? 0 : 1;
+      if (player1.right_bumper) drive.spinnerSpeed = 1;
+      if (player1.left_bumper) drive.spinnerSpeed = 0;
+      if (!player1.right_bumper && !player1.left_bumper) drive.spinnerSpeed = 0.49f;
 
-      driverControlAPI.apply();
+      drive.apply();
 
       // Update telemetry
       telemetry.addData("Status", "Run Time: " + runtime.toString());
       telemetry.addData("Drive mode", driveMode);
 
-      telemetry.addData("Extender", driverControlAPI.extenderTargetPos);
-      telemetry.addData("wrist angle", driverControlAPI.wristTargetAngle);
+      telemetry.addData("Extender", drive.extenderTargetPos);
+      telemetry.addData("wrist angle", drive.wristTargetAngle);
 
       telemetry.addData(
         "Battery Voltage",
-        driverControlAPI.getBatteryVoltage()
+        drive.getBatteryVoltage()
       );
 
       telemetry.update();
