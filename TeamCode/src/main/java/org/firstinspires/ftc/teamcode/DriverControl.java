@@ -55,8 +55,7 @@ public class DriverControl extends LinearOpMode {
       }
 
       // Power modes for slow and fast robot speeds
-      drive.movementPower =
-        player1.left_bumper ? SPEED_LOW_POWER : SPEED_HIGH_POWER;
+      drive.movementPower = 1 - (player1.left_trigger * 0.5f);
 
       // God mode toggler
       if ((player1.back || player2.back) && !isModeSwitched) {
