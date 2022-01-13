@@ -4,8 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 //@Disabled
-@Autonomous(name = "AutoBlueLeftBlock", group = "A")
-public class AutoBlueLeftBlock extends LinearOpMode {
+@Autonomous(name = "AutoBlueLeftWait", group = "A")
+public class AutoBlueLeftWait extends LinearOpMode {
 
   AutonomousAPI autonomousAPI;
   DriverControlAPI drive;
@@ -20,6 +20,9 @@ public class AutoBlueLeftBlock extends LinearOpMode {
 
     waitForStart();
     autonomousAPI.init(hardwareMap);
+
+    // wait for 15 seconds
+    sleep(15000);
 
     // go forward
     drive.moveY = -1;
@@ -70,7 +73,7 @@ public class AutoBlueLeftBlock extends LinearOpMode {
     drive.wristTargetAngle = 1;
     sleep(800);
 
-    // stop turning
+    // stop turning and go forward
     drive.rot = 0;
     drive.apply();
     sleep(200);

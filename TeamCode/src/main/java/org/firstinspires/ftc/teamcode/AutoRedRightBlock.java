@@ -4,8 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 //@Disabled
-@Autonomous(name = "AutoBlueLeftBlock", group = "A")
-public class AutoBlueLeftBlock extends LinearOpMode {
+@Autonomous(name = "AutoRedRightBlock", group = "A")
+public class AutoRedRightBlock extends LinearOpMode {
 
   AutonomousAPI autonomousAPI;
   DriverControlAPI drive;
@@ -26,13 +26,13 @@ public class AutoBlueLeftBlock extends LinearOpMode {
     drive.apply();
     sleep(150);
 
-    // stop moving forward and move right
+    // stop moving forward and move left
     drive.moveY = 0;
-    drive.moveX = 1;
+    drive.moveX = -1;
     drive.apply();
-    sleep(380);
+    sleep(250);
 
-    // stop moving right and move arm to position
+    // move arm to position
     if (autonomousAPI.camResult == CameraPipeline.LOCATION.RIGHT) {
       drive.setState(DriverControlAPI.STATE.HIGH);
     } else if (autonomousAPI.camResult == CameraPipeline.LOCATION.MIDDLE) {
@@ -42,11 +42,11 @@ public class AutoBlueLeftBlock extends LinearOpMode {
     }
     sleep(500);
 
-    // go forward
+    // stop going left and go forward
     drive.moveX = 0;
     drive.moveY = -0.5f;
     drive.apply();
-    sleep(520);
+    sleep(480);
 
     // stop moving
     drive.moveY = 0;
@@ -63,12 +63,12 @@ public class AutoBlueLeftBlock extends LinearOpMode {
     drive.apply();
     sleep(140);
 
-    // stop moving, turn left, set to low state, and mvoe the wrist up
+    // stop moving, turn right, set to low state, and mvoe the wrist up
     drive.moveY = 0;
-    drive.rot = -0.5f;
+    drive.rot = 0.5f;
     drive.setState(DriverControlAPI.STATE.LOW);
     drive.wristTargetAngle = 1;
-    sleep(800);
+    sleep(850);
 
     // stop turning
     drive.rot = 0;
@@ -80,17 +80,17 @@ public class AutoBlueLeftBlock extends LinearOpMode {
     drive.apply();
     sleep(1500);
 
-    // stop moving
+    // stop moving forward
     drive.moveY = 0;
     drive.apply();
     sleep(200);
 
-    //move to the right
-    drive.moveX = 1;
+    //move to the left
+    drive.moveX = -1;
     drive.apply();
-    sleep(430);
+    sleep(400);
 
-    //stop moving right
+    //stop moving left
     drive.moveX = 0;
     drive.apply();
     sleep(200);
@@ -98,7 +98,7 @@ public class AutoBlueLeftBlock extends LinearOpMode {
     //forward a bit
     drive.moveY = -1;
     drive.apply();
-    sleep(400);
+    sleep(300);
 
     // stop moving
     drive.moveY = 0;
