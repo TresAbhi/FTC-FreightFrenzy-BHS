@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.core;
 
 import android.os.SystemClock;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -12,7 +12,7 @@ public class AutonomousAPI {
   OpenCvWebcam webcam;
   CameraPipeline cameraPipeline = new CameraPipeline();
 
-  CameraPipeline.LOCATION camResult;
+  public CameraPipeline.LOCATION camResult;
 
   public void init(HardwareMap hardwareMap) {
     int cameraMonitorViewId = hardwareMap.appContext

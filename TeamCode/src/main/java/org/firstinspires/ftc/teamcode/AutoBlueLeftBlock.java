@@ -3,6 +3,10 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.teamcode.core.AutonomousAPI;
+import org.firstinspires.ftc.teamcode.core.CameraPipeline;
+import org.firstinspires.ftc.teamcode.core.DriverControlAPI;
+
 //@Disabled
 @Autonomous(name = "AutoBlueLeftBlock", group = "A")
 public class AutoBlueLeftBlock extends LinearOpMode {
