@@ -127,6 +127,7 @@ public class DriverControl extends LinearOpMode {
       if (!player1.right_bumper && !player1.left_bumper) drive.spinnerSpeed = 0.49f;
 
       drive.apply();
+      drive.compensateForVoltage();
 
       // Update telemetry
       telemetry.addData("Status", "Run Time: " + runtime.toString());
