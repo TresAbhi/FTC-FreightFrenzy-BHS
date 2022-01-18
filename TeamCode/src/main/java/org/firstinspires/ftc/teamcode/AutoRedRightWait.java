@@ -11,19 +11,18 @@ import org.firstinspires.ftc.teamcode.core.DriverControlAPI;
 @Autonomous(name = "AutoRedRightWait", group = "A")
 public class AutoRedRightWait extends LinearOpMode {
 
-  AutonomousAPI autonomousAPI;
-  DriverControlAPI drive;
+  AutonomousAPI autonomousAPI = new AutonomousAPI();
+  DriverControlAPI drive = new DriverControlAPI();
 
   // @Override
   public void runOpMode() {
-    autonomousAPI = new AutonomousAPI();
-    drive = new DriverControlAPI();
-
     drive.init(hardwareMap);
+    autonomousAPI.init(hardwareMap);
+
     drive.compensateForVoltage();
 
     waitForStart();
-    autonomousAPI.init(hardwareMap);
+    autonomousAPI.recordTeamScorePos();
 
     // wait for 15 seconds
     sleep(15000);
@@ -40,13 +39,7 @@ public class AutoRedRightWait extends LinearOpMode {
     sleep(250);
 
     // move arm to position
-    if (autonomousAPI.camResult == CameraPipeline.LOCATION.RIGHT) {
-      drive.setState(DriverControlAPI.STATE.HIGH);
-    } else if (autonomousAPI.camResult == CameraPipeline.LOCATION.MIDDLE) {
-      drive.setState(DriverControlAPI.STATE.MIDDLE);
-    } else {
-      drive.setState(DriverControlAPI.STATE.LOW);
-    }
+    autonomousAPI.moveArmToCorrectPosition();
     sleep(500);
 
     // stop going left and go forward

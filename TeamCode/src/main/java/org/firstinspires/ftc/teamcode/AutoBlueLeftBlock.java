@@ -4,26 +4,24 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.core.AutonomousAPI;
-import org.firstinspires.ftc.teamcode.core.CameraPipeline;
 import org.firstinspires.ftc.teamcode.core.DriverControlAPI;
 
 //@Disabled
 @Autonomous(name = "AutoBlueLeftBlock", group = "A")
 public class AutoBlueLeftBlock extends LinearOpMode {
 
-  AutonomousAPI autonomousAPI;
-  DriverControlAPI drive;
+  AutonomousAPI autonomousAPI = new AutonomousAPI();
+  DriverControlAPI drive = new DriverControlAPI();
 
   // @Override
   public void runOpMode() {
-    autonomousAPI = new AutonomousAPI();
-    drive = new DriverControlAPI();
-
     drive.init(hardwareMap);
+    autonomousAPI.init(hardwareMap);
+
     drive.compensateForVoltage();
 
     waitForStart();
-    autonomousAPI.init(hardwareMap);
+    autonomousAPI.recordTeamScorePos();
 
     // go forward
     drive.moveY = -1;
@@ -36,17 +34,11 @@ public class AutoBlueLeftBlock extends LinearOpMode {
     drive.apply();
     sleep(380);
 
-    // stop moving right and move arm to position
-    if (autonomousAPI.camResult == CameraPipeline.LOCATION.RIGHT) {
-      drive.setState(DriverControlAPI.STATE.HIGH);
-    } else if (autonomousAPI.camResult == CameraPipeline.LOCATION.MIDDLE) {
-      drive.setState(DriverControlAPI.STATE.MIDDLE);
-    } else {
-      drive.setState(DriverControlAPI.STATE.LOW);
-    }
+    // move arm to position
+    autonomousAPI.moveArmToCorrectPosition();
     sleep(500);
 
-    // go forward
+    // stop moving right and go forward
     drive.moveX = 0;
     drive.moveY = -0.5f;
     drive.apply();

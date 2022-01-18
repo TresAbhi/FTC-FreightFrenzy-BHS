@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.core;
 
 import android.os.SystemClock;
+
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -11,10 +12,13 @@ public class AutonomousAPI {
 
   OpenCvWebcam webcam;
   CameraPipeline cameraPipeline = new CameraPipeline();
+  DriverControlAPI drive = new DriverControlAPI();
 
   public CameraPipeline.LOCATION camResult;
 
   public void init(HardwareMap hardwareMap) {
+    drive.init(hardwareMap);
+
     int cameraMonitorViewId = hardwareMap.appContext
       .getResources()
       .getIdentifier(
@@ -33,10 +37,19 @@ public class AutonomousAPI {
     webcam.openCameraDevice();
     webcam.setPipeline(cameraPipeline);
     webcam.startStreaming(432, 240, OpenCvCameraRotation.UPRIGHT);
+  }
 
-    // don't burn CPU cycles busy-looping in this sample
-    SystemClock.sleep(1000);
-
+  public void recordTeamScorePos(){
     camResult = cameraPipeline.getAnalysis();
+  }
+
+  public void moveArmToCorrectPosition() {
+    if (camResult == CameraPipeline.LOCATION.RIGHT) {
+      drive.setState(DriverControlAPI.STATE.HIGH);
+    } else if (camResult == CameraPipeline.LOCATION.MIDDLE) {
+      drive.setState(DriverControlAPI.STATE.MIDDLE);
+    } else {
+      drive.setState(DriverControlAPI.STATE.LOW);
+    }
   }
 }

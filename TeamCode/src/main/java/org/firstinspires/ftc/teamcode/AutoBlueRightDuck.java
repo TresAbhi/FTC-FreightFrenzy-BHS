@@ -11,19 +11,18 @@ import org.firstinspires.ftc.teamcode.core.DriverControlAPI;
 @Autonomous(name = "AutoBlueRightDuck", group = "A")
 public class AutoBlueRightDuck extends LinearOpMode {
 
-  AutonomousAPI autonomousAPI;
-  DriverControlAPI drive;
+  AutonomousAPI autonomousAPI = new AutonomousAPI();
+  DriverControlAPI drive = new DriverControlAPI();
 
   // @Override
   public void runOpMode() {
-    autonomousAPI = new AutonomousAPI();
-    drive = new DriverControlAPI();
-
     drive.init(hardwareMap);
+    autonomousAPI.init(hardwareMap);
+
     drive.compensateForVoltage();
 
     waitForStart();
-    autonomousAPI.init(hardwareMap);
+    autonomousAPI.recordTeamScorePos();
 
     // go forward
     drive.moveY = -1;
@@ -63,14 +62,8 @@ public class AutoBlueRightDuck extends LinearOpMode {
 
     // stop moving forward and move arm to correct height
     drive.moveY = 0;
-    if (autonomousAPI.camResult == CameraPipeline.LOCATION.RIGHT) {
-      drive.setState(DriverControlAPI.STATE.HIGH);
-    } else if (autonomousAPI.camResult == CameraPipeline.LOCATION.MIDDLE) {
-      drive.setState(DriverControlAPI.STATE.MIDDLE);
-    } else {
-      drive.setState(DriverControlAPI.STATE.LOW);
-    }
     drive.apply();
+    autonomousAPI.moveArmToCorrectPosition();
     sleep(500);
 
     // and rotate left
