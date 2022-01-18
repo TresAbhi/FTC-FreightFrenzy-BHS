@@ -13,7 +13,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
 public class CamCheck extends LinearOpMode {
 
   OpenCvWebcam webcam;
-  CameraPipeline cameraPipeline = new CameraPipeline();
+  final CameraPipeline cameraPipeline = new CameraPipeline();
 
   public void runOpMode() {
     int cameraMonitorViewId = hardwareMap.appContext

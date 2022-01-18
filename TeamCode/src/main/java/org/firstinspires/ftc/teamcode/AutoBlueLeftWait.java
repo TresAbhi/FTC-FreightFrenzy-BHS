@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.core.DriverControlAPI;
 @Autonomous(name = "AutoBlueLeftWait", group = "A")
 public class AutoBlueLeftWait extends LinearOpMode {
 
-  AutoBlueLeftBlock autoBlueLeftBlock = new AutoBlueLeftBlock();
+  final AutoBlueLeftBlock autoBlueLeftBlock = new AutoBlueLeftBlock();
 
   // @Override
   public void runOpMode() {

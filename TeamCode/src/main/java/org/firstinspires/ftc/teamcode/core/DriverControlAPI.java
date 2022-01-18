@@ -16,10 +16,10 @@ public class DriverControlAPI {
   public Servo spinner, spinnerJoint;
 
   // Constants
-  public float EXTENDER_POWER = 0.8f;
-  public int EXTENDER_MIN_POS = 0;
+  public final float EXTENDER_POWER = 0.8f;
+  public final int EXTENDER_MIN_POS = 0;
 
-  public float NORMAL_VOLTAGE = 13;
+  public final float NORMAL_VOLTAGE = 13;
 
   // Preset states
   public enum STATE {
@@ -31,24 +31,24 @@ public class DriverControlAPI {
   }
 
   // a: lower tower layer
-  public int EXTENDER_LOW_POS = EXTENDER_MIN_POS + 55;
-  public float WRIST_LOW_ANGLE = 0.57f;
+  public final int EXTENDER_LOW_POS = EXTENDER_MIN_POS + 55;
+  public final float WRIST_LOW_ANGLE = 0.57f;
 
   // x: middle tower layer
-  public int EXTENDER_MIDDLE_POS = EXTENDER_MIN_POS + 730;
-  public float WRIST_MIDDLE_ANGLE = 0.57f;
+  public final int EXTENDER_MIDDLE_POS = EXTENDER_MIN_POS + 730;
+  public final float WRIST_MIDDLE_ANGLE = 0.57f;
 
   // y: top tower layer
-  public int EXTENDER_HIGH_POS = EXTENDER_MIN_POS + 1590;
-  public float WRIST_HIGH_ANGLE = 0.57f;
+  public final int EXTENDER_HIGH_POS = EXTENDER_MIN_POS + 1590;
+  public final float WRIST_HIGH_ANGLE = 0.57f;
 
   // b: ground
-  public int EXTENDER_GROUND_POS = EXTENDER_MIN_POS;
-  public float WRIST_GROUND_ANGLE = 0.425f;
+  public final int EXTENDER_GROUND_POS = EXTENDER_MIN_POS;
+  public final float WRIST_GROUND_ANGLE = 0.425f;
 
   // NONE: back
-  public int EXTENDER_BACK_POS = EXTENDER_MIN_POS;
-  public float WRIST_BACK_ANGLE = 1f;
+  public final int EXTENDER_BACK_POS = EXTENDER_MIN_POS;
+  public final float WRIST_BACK_ANGLE = 1f;
 
   // Mutables
   public int extenderTargetPos = EXTENDER_MIN_POS;

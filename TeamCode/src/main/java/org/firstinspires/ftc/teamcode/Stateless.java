@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 // @Disabled
 public class Stateless extends LinearOpMode {
 
-  private ElapsedTime runtime = new ElapsedTime();
+  private final ElapsedTime runtime = new ElapsedTime();
 
   private DcMotor LEFT_FRONT = null;
   private DcMotor LEFT_REAR = null;

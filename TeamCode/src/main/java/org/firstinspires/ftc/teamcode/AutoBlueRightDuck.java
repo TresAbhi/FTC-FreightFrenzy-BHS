@@ -10,8 +10,8 @@ import org.firstinspires.ftc.teamcode.core.DriverControlAPI;
 @Autonomous(name = "AutoBlueRightDuck", group = "A")
 public class AutoBlueRightDuck extends LinearOpMode {
 
-  AutonomousAPI auto = new AutonomousAPI();
-  DriverControlAPI drive = new DriverControlAPI();
+  final AutonomousAPI auto = new AutonomousAPI();
+  final DriverControlAPI drive = new DriverControlAPI();
 
   // @Override
   public void runOpMode() {

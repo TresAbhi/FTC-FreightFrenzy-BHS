@@ -66,7 +66,7 @@ import org.firstinspires.ftc.teamcode.drive.StandardTrackingWheelLocalizer;
 @Disabled
 @TeleOp(group = "drive")
 public class TrackingWheelLateralDistanceTuner extends LinearOpMode {
-    public static int NUM_TURNS = 10;
+    public static final int NUM_TURNS = 10;
 
     @Override
     public void runOpMode() throws InterruptedException {

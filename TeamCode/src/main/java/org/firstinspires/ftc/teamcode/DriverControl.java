@@ -10,25 +10,22 @@ import org.firstinspires.ftc.teamcode.core.DriverControlAPI;
 // @Disabled
 public class DriverControl extends LinearOpMode {
 
-  DriverControlAPI drive = new DriverControlAPI();
+  final DriverControlAPI drive = new DriverControlAPI();
 
-  private ElapsedTime runtime = new ElapsedTime();
+  private final ElapsedTime runtime = new ElapsedTime();
 
   private Gamepad player1 = gamepad1;
   private Gamepad player2 = gamepad2;
 
   // Constants
-  public float MOVEMENT_PRECISION = 2f;
+  public final float MOVEMENT_PRECISION = 2f;
 
-  public int EXTENDER_MIN_POS = 0;
-  public int EXTENDER_MAX_POS = EXTENDER_MIN_POS + 1550;
+  public final int EXTENDER_MIN_POS = 0;
+  public final int EXTENDER_MAX_POS = EXTENDER_MIN_POS + 1550;
 
-  public int EXTENDER_INPUT_SPEED = 10;
-  public float WRIST_INPUT_SPEED = 0.005f;
-  public float WRIST_MIN_ANGLE = 0.425f;
-
-  public float SPEED_LOW_POWER = 0.4f;
-  public float SPEED_HIGH_POWER = 0.8f;
+  public final int EXTENDER_INPUT_SPEED = 10;
+  public final float WRIST_INPUT_SPEED = 0.005f;
+  public final float WRIST_MIN_ANGLE = 0.425f;
 
   // mutables
   String driveMode = "normal";

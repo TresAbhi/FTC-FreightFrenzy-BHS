@@ -34,7 +34,7 @@ public class DriveConstants {
    * from DriveVelocityPIDTuner.
    */
   public static final boolean RUN_USING_ENCODER = true;
-  public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(
+  public static final PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(
     0.2,
     0,
     0.2,
@@ -49,11 +49,11 @@ public class DriveConstants {
    * angular distances although most angular parameters are wrapped in Math.toRadians() for
    * convenience. Make sure to exclude any gear ratio included in MOTOR_CONFIG from GEAR_RATIO.
    */
-  public static double WHEEL_RADIUS = 1.88976; // in
-  public static double GEAR_RATIO =
+  public static final double WHEEL_RADIUS = 1.88976; // in
+  public static final double GEAR_RATIO =
     // 3 trials average
     ((66.25 / 66.75) + (67.13 / 66.66) + (67.36 / 67.30)) / 3; // output (wheel) speed / input (motor) speed
-  public static double TRACK_WIDTH = 16.35; // in
+  public static final double TRACK_WIDTH = 16.35; // in
 
   /*
    * These are the feedforward parameters used to model the drive motor behavior. If you are using
@@ -61,9 +61,9 @@ public class DriveConstants {
    * motor encoders or have elected not to use them for velocity control, these values should be
    * empirically tuned.
    */
-  public static double kV = 1.0 / rpmToVelocity(MAX_RPM);
-  public static double kA = 0;
-  public static double kStatic = 0;
+  public static final double kV = 1.0 / rpmToVelocity(MAX_RPM);
+  public static final double kA = 0;
+  public static final double kStatic = 0;
 
   /*
    * These values are used to generate the trajectories for you robot. To ensure proper operation,
@@ -93,10 +93,10 @@ public class DriveConstants {
      * You are free to raise this on your own if you would like. It is best determined through experimentation.
      
      */
-  public static double MAX_VEL = 52.4818082;
-  public static double MAX_ACCEL = 52.4818082;
-  public static double MAX_ANG_VEL = 16.8;
-  public static double MAX_ANG_ACCEL = Math.toRadians(184.02607784577722);
+  public static final double MAX_VEL = 52.4818082;
+  public static final double MAX_ACCEL = 52.4818082;
+  public static final double MAX_ANG_VEL = 16.8;
+  public static final double MAX_ANG_ACCEL = Math.toRadians(184.02607784577722);
 
   public static double encoderTicksToInches(double ticks) {
     return WHEEL_RADIUS * 2 * Math.PI * GEAR_RATIO * ticks / TICKS_PER_REV;

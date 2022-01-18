@@ -51,20 +51,20 @@ import org.firstinspires.ftc.teamcode.util.LynxModuleUtil;
 @Config
 public class SampleMecanumDrive extends MecanumDrive {
 
-  public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(
+  public static final PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(
     8,
     0,
     0
   );
-  public static PIDCoefficients HEADING_PID = new PIDCoefficients(8, 0, 0);
+  public static final PIDCoefficients HEADING_PID = new PIDCoefficients(8, 0, 0);
 
-  public static double LATERAL_MULTIPLIER = 50.29 / 42.38;
+  public static final double LATERAL_MULTIPLIER = 50.29 / 42.38;
 
-  public static double VX_WEIGHT = 1;
-  public static double VY_WEIGHT = 1;
-  public static double OMEGA_WEIGHT = 1;
+  public static final double VX_WEIGHT = 1;
+  public static final double VY_WEIGHT = 1;
+  public static final double OMEGA_WEIGHT = 1;
 
-  private TrajectorySequenceRunner trajectorySequenceRunner;
+  private final TrajectorySequenceRunner trajectorySequenceRunner;
 
   private static final TrajectoryVelocityConstraint VEL_CONSTRAINT = getVelocityConstraint(
     MAX_VEL,
@@ -75,13 +75,16 @@ public class SampleMecanumDrive extends MecanumDrive {
     MAX_ACCEL
   );
 
-  private TrajectoryFollower follower;
+  private final TrajectoryFollower follower;
 
-  private DcMotorEx leftFront, leftRear, rightRear, rightFront;
-  private List<DcMotorEx> motors;
+  private final DcMotorEx leftFront;
+    private final DcMotorEx leftRear;
+    private final DcMotorEx rightRear;
+    private final DcMotorEx rightFront;
+  private final List<DcMotorEx> motors;
 
-  private BNO055IMU imu;
-  private VoltageSensor batteryVoltageSensor;
+  private final BNO055IMU imu;
+  private final VoltageSensor batteryVoltageSensor;
 
   public SampleMecanumDrive(HardwareMap hardwareMap) {
     super(kV, kA, kStatic, TRACK_WIDTH, TRACK_WIDTH, LATERAL_MULTIPLIER);

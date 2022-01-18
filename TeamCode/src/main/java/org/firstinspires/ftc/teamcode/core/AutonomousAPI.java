@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.core;
 
-import android.os.SystemClock;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -10,8 +9,8 @@ import org.openftc.easyopencv.OpenCvWebcam;
 public class AutonomousAPI {
 
   OpenCvWebcam webcam;
-  CameraPipeline cameraPipeline = new CameraPipeline();
-  DriverControlAPI drive = new DriverControlAPI();
+  final CameraPipeline cameraPipeline = new CameraPipeline();
+  final DriverControlAPI drive = new DriverControlAPI();
 
   public CameraPipeline.LOCATION camResult;
 

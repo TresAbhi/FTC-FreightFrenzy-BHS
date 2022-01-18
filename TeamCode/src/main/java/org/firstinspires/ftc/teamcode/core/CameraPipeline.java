@@ -15,12 +15,12 @@ public class CameraPipeline extends OpenCvPipeline {
   static final int ROI_HEIGHT = 80;
 
   // The minimum and maximum colors that we will accept
-  Scalar LOW_ACCEPTANCE_COLOR = new Scalar(23, 50, 70); // in HSV
-  Scalar HIGH_ACCEPTANCE_COLOR = new Scalar(32, 255, 255); // in HSV
+  final Scalar LOW_ACCEPTANCE_COLOR = new Scalar(23, 50, 70); // in HSV
+  final Scalar HIGH_ACCEPTANCE_COLOR = new Scalar(32, 255, 255); // in HSV
 
   // colors for either the team score is there or not
-  Scalar TEAM_SCORE_VISUAL_COLOR = new Scalar(0, 255, 0); // in RGB
-  Scalar NO_TEAM_SCORE_VISUAL_COLOR = new Scalar(255, 0, 0); // in RGB
+  final Scalar TEAM_SCORE_VISUAL_COLOR = new Scalar(0, 255, 0); // in RGB
+  final Scalar NO_TEAM_SCORE_VISUAL_COLOR = new Scalar(255, 0, 0); // in RGB
 
   // enumerations: the only possible results
   public enum LOCATION {
@@ -50,10 +50,10 @@ public class CameraPipeline extends OpenCvPipeline {
    * this percentage or above of the box will have to be covered with yellow
    * in order to be considered `true`
    */
-  static double PERCENT_COLOR_COVERAGE_THRESHOLD = 0.1;
+  static final double PERCENT_COLOR_COVERAGE_THRESHOLD = 0.1;
 
   // the whole screen's region/matrix
-  Mat mat = new Mat();
+  final Mat mat = new Mat();
 
   @Override
   public Mat processFrame(Mat input) {

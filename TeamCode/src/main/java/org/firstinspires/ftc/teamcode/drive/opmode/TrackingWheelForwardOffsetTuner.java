@@ -38,9 +38,9 @@ import org.firstinspires.ftc.teamcode.drive.StandardTrackingWheelLocalizer;
 @Disabled
 @Autonomous(group="drive")
 public class TrackingWheelForwardOffsetTuner extends LinearOpMode {
-    public static double ANGLE = 180; // deg
-    public static int NUM_TRIALS = 5;
-    public static int DELAY = 1000; // ms
+    public static final double ANGLE = 180; // deg
+    public static final int NUM_TRIALS = 5;
+    public static final int DELAY = 1000; // ms
 
     @Override
     public void runOpMode() throws InterruptedException {
