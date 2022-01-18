@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
 import org.firstinspires.ftc.teamcode.core.DriverControlAPI;
 
 @TeleOp(name = "DriverControl", group = "Linear Opmode")
@@ -105,10 +104,7 @@ public class DriverControl extends LinearOpMode {
       if (player2.dpad_up) drive.wristTargetAngle =
         Math.min(drive.wristTargetAngle + WRIST_INPUT_SPEED, 1);
       if (player2.dpad_down) drive.wristTargetAngle =
-        Math.max(
-          drive.wristTargetAngle - WRIST_INPUT_SPEED,
-          WRIST_MIN_ANGLE
-        );
+        Math.max(drive.wristTargetAngle - WRIST_INPUT_SPEED, WRIST_MIN_ANGLE);
 
       // Apply states
       if (!player2.start) {
@@ -126,7 +122,8 @@ public class DriverControl extends LinearOpMode {
       drive.clawTargetState = player2.right_bumper ? 0 : 1;
       if (player1.right_bumper) drive.spinnerSpeed = 1;
       if (player1.left_bumper) drive.spinnerSpeed = 0;
-      if (!player1.right_bumper && !player1.left_bumper) drive.spinnerSpeed = 0.49f;
+      if (!player1.right_bumper && !player1.left_bumper) drive.spinnerSpeed =
+        0.49f;
 
       drive.apply();
       drive.compensateForVoltage();
@@ -138,10 +135,7 @@ public class DriverControl extends LinearOpMode {
       telemetry.addData("Extender", drive.extenderTargetPos);
       telemetry.addData("wrist angle", drive.wristTargetAngle);
 
-      telemetry.addData(
-        "Battery Voltage",
-        drive.getBatteryVoltage()
-      );
+      telemetry.addData("Battery Voltage", drive.getBatteryVoltage());
 
       telemetry.update();
     }
