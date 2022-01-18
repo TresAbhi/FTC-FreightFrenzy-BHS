@@ -8,7 +8,7 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 
-public class CameraPipeline extends OpenCvPipeline {
+public class Cam extends OpenCvPipeline {
 
   // ROI: Region of intrest
   static final int ROI_WIDTH = 80;

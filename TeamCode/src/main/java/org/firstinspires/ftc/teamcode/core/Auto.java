@@ -6,13 +6,13 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
-public class AutonomousAPI {
+public class Auto {
 
   OpenCvWebcam webcam;
-  final CameraPipeline cameraPipeline = new CameraPipeline();
-  final DriverControlAPI drive = new DriverControlAPI();
+  final Cam cam = new Cam();
+  final Drive drive = new Drive();
 
-  public CameraPipeline.LOCATION camResult;
+  public Cam.LOCATION camResult;
 
   public void init(HardwareMap hardwareMap) {
     drive.init(hardwareMap);
@@ -33,21 +33,21 @@ public class AutonomousAPI {
         );
 
     webcam.openCameraDevice();
-    webcam.setPipeline(cameraPipeline);
+    webcam.setPipeline(cam);
     webcam.startStreaming(432, 240, OpenCvCameraRotation.UPRIGHT);
   }
 
   public void recordTeamScorePos() {
-    camResult = cameraPipeline.getAnalysis();
+    camResult = cam.getAnalysis();
   }
 
   public void moveArmToCorrectPosition() {
-    if (camResult == CameraPipeline.LOCATION.RIGHT) {
-      drive.setState(DriverControlAPI.STATE.HIGH);
-    } else if (camResult == CameraPipeline.LOCATION.MIDDLE) {
-      drive.setState(DriverControlAPI.STATE.MIDDLE);
+    if (camResult == Cam.LOCATION.RIGHT) {
+      drive.setState(Drive.STATE.HIGH);
+    } else if (camResult == Cam.LOCATION.MIDDLE) {
+      drive.setState(Drive.STATE.MIDDLE);
     } else {
-      drive.setState(DriverControlAPI.STATE.LOW);
+      drive.setState(Drive.STATE.LOW);
     }
   }
 }

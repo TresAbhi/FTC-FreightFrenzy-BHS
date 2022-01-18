@@ -4,13 +4,13 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import org.firstinspires.ftc.teamcode.core.DriverControlAPI;
+import org.firstinspires.ftc.teamcode.core.Drive;
 
 @TeleOp(name = "DriverControl", group = "Linear Opmode")
 // @Disabled
 public class DriverControl extends LinearOpMode {
 
-  final DriverControlAPI drive = new DriverControlAPI();
+  final Drive drive = new Drive();
 
   private final ElapsedTime runtime = new ElapsedTime();
 
@@ -106,13 +106,13 @@ public class DriverControl extends LinearOpMode {
       // Apply states
       if (!player2.start) {
         if (player2.a) {
-          drive.setState(DriverControlAPI.STATE.LOW);
+          drive.setState(Drive.STATE.LOW);
         } else if (player2.x) {
-          drive.setState(DriverControlAPI.STATE.MIDDLE);
+          drive.setState(Drive.STATE.MIDDLE);
         } else if (player2.y) {
-          drive.setState(DriverControlAPI.STATE.HIGH);
+          drive.setState(Drive.STATE.HIGH);
         } else if (player2.b) {
-          drive.setState(DriverControlAPI.STATE.GROUND);
+          drive.setState(Drive.STATE.GROUND);
         }
       }
 

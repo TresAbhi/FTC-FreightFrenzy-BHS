@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
-public class DriverControlAPI {
+public class Drive {
 
   // Components
   public DcMotor leftFront, leftRear, rightFront, rightRear;

@@ -2,15 +2,15 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import org.firstinspires.ftc.teamcode.core.AutonomousAPI;
-import org.firstinspires.ftc.teamcode.core.DriverControlAPI;
+import org.firstinspires.ftc.teamcode.core.Auto;
+import org.firstinspires.ftc.teamcode.core.Drive;
 
 //@Disabled
 @Autonomous(name = "AutoBlueRightDuck", group = "A")
 public class AutoBlueRightDuck extends LinearOpMode {
 
-  final AutonomousAPI auto = new AutonomousAPI();
-  final DriverControlAPI drive = new DriverControlAPI();
+  final Auto auto = new Auto();
+  final Drive drive = new Drive();
 
   // @Override
   public void runOpMode() {
@@ -88,7 +88,7 @@ public class AutoBlueRightDuck extends LinearOpMode {
 
     // stop moving back and move to the left
     drive.moveY = 0;
-    drive.setState(DriverControlAPI.STATE.LOW);
+    drive.setState(Drive.STATE.LOW);
     drive.moveX = -1;
     drive.apply();
     sleep(760);

@@ -2,15 +2,15 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import org.firstinspires.ftc.teamcode.core.AutonomousAPI;
-import org.firstinspires.ftc.teamcode.core.DriverControlAPI;
+import org.firstinspires.ftc.teamcode.core.Auto;
+import org.firstinspires.ftc.teamcode.core.Drive;
 
 //@Disabled
 @Autonomous(name = "AutoRedRightBlock", group = "A")
 public class AutoRedRightBlock extends LinearOpMode {
 
-  final AutonomousAPI auto = new AutonomousAPI();
-  final DriverControlAPI drive = new DriverControlAPI();
+  final Auto auto = new Auto();
+  final Drive drive = new Drive();
 
   // @Override
   public void runOpMode() {
@@ -61,7 +61,7 @@ public class AutoRedRightBlock extends LinearOpMode {
     // stop moving, turn right, set to low state, and mvoe the wrist up
     drive.moveY = 0;
     drive.rot = 0.5f;
-    drive.setState(DriverControlAPI.STATE.LOW);
+    drive.setState(Drive.STATE.LOW);
     drive.wristTargetAngle = 1;
     sleep(850);
 

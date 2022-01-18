@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.core.CameraPipeline;
+import org.firstinspires.ftc.teamcode.core.Cam;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
@@ -13,7 +13,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
 public class CamCheck extends LinearOpMode {
 
   OpenCvWebcam webcam;
-  final CameraPipeline cameraPipeline = new CameraPipeline();
+  final Cam cam = new Cam();
 
   public void runOpMode() {
     int cameraMonitorViewId = hardwareMap.appContext
@@ -32,11 +32,11 @@ public class CamCheck extends LinearOpMode {
         );
 
     webcam.openCameraDevice();
-    webcam.setPipeline(cameraPipeline);
+    webcam.setPipeline(cam);
     webcam.startStreaming(432, 240, OpenCvCameraRotation.UPRIGHT);
 
     while (opModeIsActive()) {
-      CameraPipeline.LOCATION camResult = cameraPipeline.getAnalysis();
+      Cam.LOCATION camResult = cam.getAnalysis();
 
       telemetry.clearAll();
       telemetry.addData("Location", camResult.toString());
