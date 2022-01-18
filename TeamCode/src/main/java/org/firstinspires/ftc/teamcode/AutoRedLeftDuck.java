@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-
 import org.firstinspires.ftc.teamcode.core.AutonomousAPI;
 import org.firstinspires.ftc.teamcode.core.CameraPipeline;
 import org.firstinspires.ftc.teamcode.core.DriverControlAPI;
@@ -11,18 +10,18 @@ import org.firstinspires.ftc.teamcode.core.DriverControlAPI;
 @Autonomous(name = "AutoRedLeftDuck", group = "A")
 public class AutoRedLeftDuck extends LinearOpMode {
 
-  AutonomousAPI autonomousAPI = new AutonomousAPI();
+  AutonomousAPI auto = new AutonomousAPI();
   DriverControlAPI drive = new DriverControlAPI();
 
   // @Override
   public void runOpMode() {
     drive.init(hardwareMap);
-    autonomousAPI.init(hardwareMap);
+    auto.init(hardwareMap);
 
     drive.compensateForVoltage();
 
     waitForStart();
-    autonomousAPI.recordTeamScorePos();
+    auto.recordTeamScorePos();
 
     // move a bit forward
     drive.moveY = -1;
@@ -56,7 +55,7 @@ public class AutoRedLeftDuck extends LinearOpMode {
     drive.spinnerSpeed = 0.49f;
     drive.moveX = -1;
     drive.apply();
-    autonomousAPI.moveArmToCorrectPosition();
+    auto.moveArmToCorrectPosition();
     sleep(1150);
 
     // turn a bit and stop moving

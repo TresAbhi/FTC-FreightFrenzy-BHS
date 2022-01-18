@@ -136,10 +136,18 @@ public class DriverControlAPI {
     double vector4 = vectorNormal * Math.cos(robotAngle);
 
     // Apply wheel motor powers
-    leftFront.setPower((-vector1 + rot) * movementPower * voltageCompensatedPower);
-    leftRear.setPower((-vector2 + rot) * movementPower * voltageCompensatedPower);
-    rightFront.setPower((-vector3 - rot) * movementPower * voltageCompensatedPower);
-    rightRear.setPower((-vector4 - rot) * movementPower * voltageCompensatedPower);
+    leftFront.setPower(
+      (-vector1 + rot) * movementPower * voltageCompensatedPower
+    );
+    leftRear.setPower(
+      (-vector2 + rot) * movementPower * voltageCompensatedPower
+    );
+    rightFront.setPower(
+      (-vector3 - rot) * movementPower * voltageCompensatedPower
+    );
+    rightRear.setPower(
+      (-vector4 - rot) * movementPower * voltageCompensatedPower
+    );
 
     // Apply all targets
     extender.setTargetPosition(extenderTargetPos);

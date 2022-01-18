@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-
 import org.firstinspires.ftc.teamcode.core.AutonomousAPI;
 import org.firstinspires.ftc.teamcode.core.CameraPipeline;
 import org.firstinspires.ftc.teamcode.core.DriverControlAPI;
@@ -11,18 +10,18 @@ import org.firstinspires.ftc.teamcode.core.DriverControlAPI;
 @Autonomous(name = "AutoBlueRightDuck", group = "A")
 public class AutoBlueRightDuck extends LinearOpMode {
 
-  AutonomousAPI autonomousAPI = new AutonomousAPI();
+  AutonomousAPI auto = new AutonomousAPI();
   DriverControlAPI drive = new DriverControlAPI();
 
   // @Override
   public void runOpMode() {
     drive.init(hardwareMap);
-    autonomousAPI.init(hardwareMap);
+    auto.init(hardwareMap);
 
     drive.compensateForVoltage();
 
     waitForStart();
-    autonomousAPI.recordTeamScorePos();
+    auto.recordTeamScorePos();
 
     // go forward
     drive.moveY = -1;
@@ -63,7 +62,7 @@ public class AutoBlueRightDuck extends LinearOpMode {
     // stop moving forward and move arm to correct height
     drive.moveY = 0;
     drive.apply();
-    autonomousAPI.moveArmToCorrectPosition();
+    auto.moveArmToCorrectPosition();
     sleep(500);
 
     // and rotate left
