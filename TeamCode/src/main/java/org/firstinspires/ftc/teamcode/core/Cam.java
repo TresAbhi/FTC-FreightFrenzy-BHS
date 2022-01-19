@@ -15,8 +15,8 @@ public class Cam extends OpenCvPipeline {
   static final int ROI_HEIGHT = 80;
 
   // The minimum and maximum colors that we will accept
-  final Scalar LOW_ACCEPTANCE_COLOR = new Scalar(23, 50, 70); // in HSV
-  final Scalar HIGH_ACCEPTANCE_COLOR = new Scalar(32, 255, 255); // in HSV
+  final Scalar LOW_ACCEPTANCE_COLOR = new Scalar(20, 50, 70); // in HSV
+  final Scalar HIGH_ACCEPTANCE_COLOR = new Scalar(35, 255, 255); // in HSV
 
   // colors for either the team score is there or not
   final Scalar TEAM_SCORE_VISUAL_COLOR = new Scalar(0, 255, 0); // in RGB
