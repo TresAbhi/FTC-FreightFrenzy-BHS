@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.core;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
@@ -86,11 +87,14 @@ public class Drive {
 
     // One time executions
     leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-    leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-    rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-    rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     leftFront.setDirection(DcMotor.Direction.REVERSE);
-    rightRear.setDirection(DcMotor.Direction.REVERSE);
+
+    leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
+
+    rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+    rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
     extender.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     extender.setTargetPosition(EXTENDER_MIN_POS);
