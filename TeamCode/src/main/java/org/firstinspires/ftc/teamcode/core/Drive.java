@@ -70,6 +70,10 @@ public class Drive {
   public HardwareMap hardwareMap;
 
   public void init(HardwareMap hm) {
+    init(hm, true);
+  }
+
+  public void init(HardwareMap hm, boolean setInitialPositions) {
     hardwareMap = hm;
 
     // Components
@@ -99,10 +103,13 @@ public class Drive {
     extender.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     extender.setTargetPosition(EXTENDER_MIN_POS);
     extender.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    extender.setPower(EXTENDER_POWER);
 
-    wrist.setPosition(1);
-    claw.setPosition(clawTargetState);
+    if (setInitialPositions) {
+      extender.setPower(EXTENDER_POWER);
+
+      wrist.setPosition(1);
+      claw.setPosition(clawTargetState);
+    }
   }
 
   public void setState(ARM_STATE state) {

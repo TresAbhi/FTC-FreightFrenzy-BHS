@@ -6,7 +6,7 @@ import org.firstinspires.ftc.teamcode.core.Auto;
 import org.firstinspires.ftc.teamcode.core.Drive;
 
 //@Disabled
-@Autonomous(name = "AutoBlueRightDuck", group = "A")
+@Autonomous(name = "A-PROTO-AutoBlueRightDuck", group = "A")
 public class AutoBlueRightDuck extends LinearOpMode {
 
   final Auto auto = new Auto();
@@ -15,7 +15,7 @@ public class AutoBlueRightDuck extends LinearOpMode {
   // @Override
   public void runOpMode() {
     drive.init(hardwareMap);
-    auto.init(hardwareMap);
+    auto.init(hardwareMap, telemetry, drive);
 
     drive.compensateForVoltage();
 
@@ -45,7 +45,7 @@ public class AutoBlueRightDuck extends LinearOpMode {
     drive.apply();
     sleep(2500);
 
-    // pull back spinner, stop spinner and move right
+    // pull back spinner, stop spinner and move forward
     drive.spinnerJointSpeed = -0.2f;
     drive.spinnerSpeed = 0.49f;
     drive.moveX = 1;
@@ -67,7 +67,7 @@ public class AutoBlueRightDuck extends LinearOpMode {
     // and rotate left
     drive.rot = -1;
     drive.apply();
-    sleep(380);
+    sleep(350);
 
     // stop rotating and move forward
     drive.rot = 0;
@@ -84,24 +84,18 @@ public class AutoBlueRightDuck extends LinearOpMode {
     // move back
     drive.moveY = -1;
     drive.apply();
-    sleep(505);
+    sleep(560);
 
     // stop moving back and move to the left
     drive.moveY = 0;
-    drive.setState(Drive.ARM_STATE.LOW);
+    drive.setState(Drive.ARM_STATE.DEFAULT);
     drive.moveX = -1;
     drive.apply();
-    sleep(760);
+    sleep(620);
 
-    // turn a bit to the right
+    // stop moving left
     drive.moveX = 0;
-    drive.rot = 1;
     drive.apply();
-    sleep(28);
-
-    // stop moving
-    drive.rot = 0;
-    drive.apply();
-    sleep(200);
+    sleep(190);
   }
 }

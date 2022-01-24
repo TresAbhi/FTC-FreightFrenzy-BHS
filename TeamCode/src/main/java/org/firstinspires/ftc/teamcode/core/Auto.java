@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.core;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -10,12 +12,21 @@ public class Auto {
 
   OpenCvWebcam webcam;
   final Cam cam = new Cam();
-  final Drive drive = new Drive();
+  Drive drive;
 
   public Cam.LOCATION camResult;
 
-  public void init(HardwareMap hardwareMap) {
-    drive.init(hardwareMap);
+  Telemetry telemetry;
+
+  public void init(HardwareMap hardwareMap, Telemetry tl, Drive dr) {
+    drive = dr;
+
+    drive.init(hardwareMap, false);
+
+    telemetry = tl;
+
+    telemetry.addData("Cam", "Starting");
+    telemetry.update();
 
     int cameraMonitorViewId = hardwareMap.appContext
       .getResources()
@@ -35,10 +46,15 @@ public class Auto {
     webcam.openCameraDevice();
     webcam.setPipeline(cam);
     webcam.startStreaming(432, 240, OpenCvCameraRotation.UPRIGHT);
+
+    telemetry.addData("Cam", "Initialized");
+    telemetry.update();
   }
 
   public void recordTeamScorePos() {
     camResult = cam.getAnalysis();
+    telemetry.addData("Position", camResult);
+    telemetry.update();
   }
 
   public void moveArmToCorrectPosition() {
