@@ -34,16 +34,16 @@ public class Cam extends OpenCvPipeline {
   public LOCATION location = LOCATION.NONE;
 
   static final Rect LEFT_ROI = new Rect( // Left region of intrest
-    new Point(0, 50),
-    new Point(0 + ROI_WIDTH, 50 + ROI_HEIGHT)
+    new Point(55, 110),
+    new Point(55 + ROI_WIDTH, 110 + ROI_HEIGHT)
   );
   static final Rect MIDDLE_ROI = new Rect( // middle region of intrest
-    new Point(100, 50),
-    new Point(100 + ROI_WIDTH, 50 + ROI_HEIGHT)
+    new Point(155, 110),
+    new Point(155 + ROI_WIDTH, 110 + ROI_HEIGHT)
   );
   static final Rect RIGHT_ROI = new Rect( // right region of intrest
-    new Point(210, 50),
-    new Point(210 + ROI_WIDTH, 50 + ROI_HEIGHT)
+    new Point(265, 110),
+    new Point(265 + ROI_WIDTH, 110 + ROI_HEIGHT)
   );
 
   /**
