@@ -93,7 +93,7 @@ public class AutoRedLeftDuck extends LinearOpMode {
     // stop moving back and move right
     drive.moveY = 0;
     drive.moveX = 1;
-    drive.setState(Drive.STATE.LOW);
+    drive.setState(Drive.ARM_STATE.LOW);
     sleep(560);
 
     // stop moving

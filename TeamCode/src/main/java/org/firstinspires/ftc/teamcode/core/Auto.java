@@ -43,11 +43,11 @@ public class Auto {
 
   public void moveArmToCorrectPosition() {
     if (camResult == Cam.LOCATION.RIGHT) {
-      drive.setState(Drive.STATE.HIGH);
+      drive.setState(Drive.ARM_STATE.HIGH);
     } else if (camResult == Cam.LOCATION.MIDDLE) {
-      drive.setState(Drive.STATE.MIDDLE);
+      drive.setState(Drive.ARM_STATE.MIDDLE);
     } else {
-      drive.setState(Drive.STATE.LOW);
+      drive.setState(Drive.ARM_STATE.LOW);
     }
   }
 }

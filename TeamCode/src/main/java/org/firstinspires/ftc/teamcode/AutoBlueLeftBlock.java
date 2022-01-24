@@ -61,7 +61,7 @@ public class AutoBlueLeftBlock extends LinearOpMode {
     // stop moving, turn left, set to low state, and mvoe the wrist up
     drive.moveY = 0;
     drive.rot = -0.5f;
-    drive.setState(Drive.STATE.LOW);
+    drive.setState(Drive.ARM_STATE.LOW);
     drive.wristTargetAngle = 1;
     sleep(800);
 

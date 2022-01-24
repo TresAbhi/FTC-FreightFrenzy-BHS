@@ -23,24 +23,24 @@ public class Drive {
   public final float NORMAL_VOLTAGE = 13;
 
   // Preset states
-  public enum STATE {
+  public enum ARM_STATE {
     LOW,
     MIDDLE,
     HIGH,
     GROUND,
-    BACK,
+    DEFAULT,
   }
 
   // a: lower tower layer
-  public final int EXTENDER_LOW_POS = EXTENDER_MIN_POS + 55;
+  public final int EXTENDER_LOW_POS = EXTENDER_MIN_POS + 70;
   public final float WRIST_LOW_ANGLE = 0.57f;
 
   // x: middle tower layer
-  public final int EXTENDER_MIDDLE_POS = EXTENDER_MIN_POS + 730;
+  public final int EXTENDER_MIDDLE_POS = EXTENDER_MIN_POS + 750;
   public final float WRIST_MIDDLE_ANGLE = 0.57f;
 
   // y: top tower layer
-  public final int EXTENDER_HIGH_POS = EXTENDER_MIN_POS + 1590;
+  public final int EXTENDER_HIGH_POS = EXTENDER_MIN_POS + 1610;
   public final float WRIST_HIGH_ANGLE = 0.57f;
 
   // b: ground
@@ -105,24 +105,24 @@ public class Drive {
     claw.setPosition(clawTargetState);
   }
 
-  public void setState(STATE state) {
-    if (state == STATE.LOW) {
+  public void setState(ARM_STATE state) {
+    if (state == ARM_STATE.LOW) {
       wristTargetAngle = WRIST_LOW_ANGLE;
       extenderTargetPos = EXTENDER_LOW_POS;
       apply();
-    } else if (state == STATE.MIDDLE) {
+    } else if (state == ARM_STATE.MIDDLE) {
       wristTargetAngle = WRIST_MIDDLE_ANGLE;
       extenderTargetPos = EXTENDER_MIDDLE_POS;
       apply();
-    } else if (state == STATE.HIGH) {
+    } else if (state == ARM_STATE.HIGH) {
       wristTargetAngle = WRIST_HIGH_ANGLE;
       extenderTargetPos = EXTENDER_HIGH_POS;
       apply();
-    } else if (state == STATE.GROUND) {
+    } else if (state == ARM_STATE.GROUND) {
       wristTargetAngle = WRIST_GROUND_ANGLE;
       extenderTargetPos = EXTENDER_GROUND_POS;
       apply();
-    } else if (state == STATE.BACK) {
+    } else if (state == ARM_STATE.DEFAULT) {
       wristTargetAngle = WRIST_BACK_ANGLE;
       extenderTargetPos = EXTENDER_BACK_POS;
       apply();

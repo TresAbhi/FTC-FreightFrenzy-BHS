@@ -26,6 +26,7 @@ public class DriverControl extends LinearOpMode {
   public final int EXTENDER_INPUT_SPEED = 10;
   public final float WRIST_INPUT_SPEED = 0.005f;
   public final float WRIST_MIN_ANGLE = 0.425f;
+  public final float WRIST_MAX_ANGLE = 0.85f;
 
   // mutables
   String driveMode = "normal";
@@ -101,18 +102,21 @@ public class DriverControl extends LinearOpMode {
       if (player2.dpad_up) drive.wristTargetAngle =
         Math.min(drive.wristTargetAngle + WRIST_INPUT_SPEED, 1);
       if (player2.dpad_down) drive.wristTargetAngle =
-        Math.max(drive.wristTargetAngle - WRIST_INPUT_SPEED, WRIST_MIN_ANGLE);
+        Math.min(
+          Math.max(drive.wristTargetAngle - WRIST_INPUT_SPEED, WRIST_MIN_ANGLE),
+          WRIST_MAX_ANGLE
+        );
 
       // Apply states
       if (!player2.start) {
         if (player2.a) {
-          drive.setState(Drive.STATE.LOW);
+          drive.setState(Drive.ARM_STATE.LOW);
         } else if (player2.x) {
-          drive.setState(Drive.STATE.MIDDLE);
+          drive.setState(Drive.ARM_STATE.MIDDLE);
         } else if (player2.y) {
-          drive.setState(Drive.STATE.HIGH);
+          drive.setState(Drive.ARM_STATE.HIGH);
         } else if (player2.b) {
-          drive.setState(Drive.STATE.GROUND);
+          drive.setState(Drive.ARM_STATE.GROUND);
         }
       }
 
