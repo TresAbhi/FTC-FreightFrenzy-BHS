@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.core;
 
+import android.os.SystemClock;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -185,7 +187,18 @@ public class Drive {
     return (float) result;
   }
 
-  public void compensateForVoltage() {
-    voltageCompensatedPower = NORMAL_VOLTAGE / getBatteryVoltage();
+  public void compensateForVoltage(int iterationCount) {
+    float averageBatteryVoltage = getBatteryVoltage();
+
+    for (int i = 0; i < iterationCount - 1; i++) {
+      averageBatteryVoltage += getBatteryVoltage();
+      SystemClock.sleep(100);
+    }
+
+    averageBatteryVoltage = averageBatteryVoltage / iterationCount;
+
+    voltageCompensatedPower = NORMAL_VOLTAGE / averageBatteryVoltage;
   }
+
+  public void compensateForVoltage() { compensateForVoltage(1); }
 }

@@ -21,7 +21,7 @@ public class Auto {
   public void init(HardwareMap hardwareMap, Telemetry tl, Drive dr) {
     drive = dr;
 
-    drive.init(hardwareMap, false);
+    drive.compensateForVoltage(5);
 
     telemetry = tl;
 

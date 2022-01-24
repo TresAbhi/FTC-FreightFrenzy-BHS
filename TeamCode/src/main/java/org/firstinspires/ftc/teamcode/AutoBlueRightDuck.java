@@ -17,8 +17,6 @@ public class AutoBlueRightDuck extends LinearOpMode {
     drive.init(hardwareMap);
     auto.init(hardwareMap, telemetry, drive);
 
-    drive.compensateForVoltage();
-
     waitForStart();
     auto.recordTeamScorePos();
 
