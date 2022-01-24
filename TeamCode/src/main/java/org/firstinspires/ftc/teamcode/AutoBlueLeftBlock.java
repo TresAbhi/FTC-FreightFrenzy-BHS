@@ -23,7 +23,7 @@ public class AutoBlueLeftBlock extends LinearOpMode {
     auto.recordTeamScorePos();
 
     // go forward
-    drive.moveY = -1;
+    drive.moveY = 1;
     drive.apply();
     sleep(150);
 
@@ -39,7 +39,7 @@ public class AutoBlueLeftBlock extends LinearOpMode {
 
     // stop moving right and go forward
     drive.moveX = 0;
-    drive.moveY = -0.5f;
+    drive.moveY = 0.5f;
     drive.apply();
     sleep(520);
 
@@ -54,7 +54,7 @@ public class AutoBlueLeftBlock extends LinearOpMode {
     sleep(200);
 
     // go back
-    drive.moveY = 1;
+    drive.moveY = -1;
     drive.apply();
     sleep(140);
 
@@ -71,7 +71,7 @@ public class AutoBlueLeftBlock extends LinearOpMode {
     sleep(200);
 
     // move forward
-    drive.moveY = -1;
+    drive.moveY = 1;
     drive.apply();
     sleep(1500);
 
@@ -91,7 +91,7 @@ public class AutoBlueLeftBlock extends LinearOpMode {
     sleep(200);
 
     //forward a bit
-    drive.moveY = -1;
+    drive.moveY = 1;
     drive.apply();
     sleep(400);
 

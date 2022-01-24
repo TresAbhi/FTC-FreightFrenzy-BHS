@@ -23,7 +23,7 @@ public class AutoBlueRightDuck extends LinearOpMode {
     auto.recordTeamScorePos();
 
     // go forward
-    drive.moveY = -1;
+    drive.moveY = 1;
     drive.apply();
     sleep(120);
 
@@ -54,7 +54,7 @@ public class AutoBlueRightDuck extends LinearOpMode {
 
     // stop moving right and move forward
     drive.moveX = 0;
-    drive.moveY = -1;
+    drive.moveY = 1;
     drive.apply();
     sleep(900);
 
@@ -71,7 +71,7 @@ public class AutoBlueRightDuck extends LinearOpMode {
 
     // stop rotating and move forward
     drive.rot = 0;
-    drive.moveY = -0.5f;
+    drive.moveY = 0.5f;
     drive.apply();
     sleep(1300);
 
@@ -82,7 +82,7 @@ public class AutoBlueRightDuck extends LinearOpMode {
     sleep(200);
 
     // move back
-    drive.moveY = 1;
+    drive.moveY = -1;
     drive.apply();
     sleep(505);
 

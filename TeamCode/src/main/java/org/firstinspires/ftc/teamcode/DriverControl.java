@@ -80,7 +80,7 @@ public class DriverControl extends LinearOpMode {
         Math.pow(player1.right_stick_y, MOVEMENT_PRECISION);
 
       drive.moveX = (float) dampedLeftJoystickX;
-      drive.moveY = (float) dampedLeftJoystickY;
+      drive.moveY = (float) -dampedLeftJoystickY;
       drive.rot = (float) dampedRightJoystickX;
 
       // Tweak extender joint target

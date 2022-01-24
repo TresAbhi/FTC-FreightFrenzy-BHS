@@ -23,7 +23,7 @@ public class AutoRedLeftDuck extends LinearOpMode {
     auto.recordTeamScorePos();
 
     // move a bit forward
-    drive.moveY = -1;
+    drive.moveY = 1;
     drive.apply();
     sleep(175);
 
@@ -35,7 +35,7 @@ public class AutoRedLeftDuck extends LinearOpMode {
 
     // stop rotating, go back, and pull out the spinner
     drive.rot = 0;
-    drive.moveY = 0.5f;
+    drive.moveY = -0.5f;
     drive.spinnerJointSpeed = 0.6f;
     drive.apply();
     sleep(960);
@@ -65,13 +65,13 @@ public class AutoRedLeftDuck extends LinearOpMode {
 
     // stop rotating and move forward
     drive.rot = 0;
-    drive.moveY = -1;
+    drive.moveY = 1;
     drive.apply();
     sleep(500);
 
     // move forward but slower and stop pulling the spinner joint in
     drive.spinnerJointSpeed = 0;
-    drive.moveY = -0.2f;
+    drive.moveY = 0.2f;
     drive.apply();
     sleep(370);
 
@@ -86,7 +86,7 @@ public class AutoRedLeftDuck extends LinearOpMode {
     sleep(200);
 
     // go back
-    drive.moveY = 1;
+    drive.moveY = -1;
     drive.apply();
     sleep(510);
 

@@ -132,8 +132,8 @@ public class Drive {
   public void apply() {
     // Trig to find out partial offsets in axes (plural of axis)
     // Don't mess with this unless you know what you're doing!!!
-    double vectorNormal = Math.hypot(moveX, moveY);
-    double robotAngle = Math.atan2(moveY, -moveX) - Math.PI / 4;
+    double vectorNormal = Math.hypot(moveX, -moveY);
+    double robotAngle = Math.atan2(-moveY, -moveX) - Math.PI / 4;
     double vector1 = vectorNormal * Math.cos(robotAngle);
     double vector2 = vectorNormal * Math.sin(robotAngle);
     double vector3 = vectorNormal * Math.sin(robotAngle);
