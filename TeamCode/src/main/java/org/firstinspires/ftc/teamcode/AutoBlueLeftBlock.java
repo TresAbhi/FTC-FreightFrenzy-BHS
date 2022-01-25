@@ -6,7 +6,7 @@ import org.firstinspires.ftc.teamcode.core.Auto;
 import org.firstinspires.ftc.teamcode.core.Drive;
 
 //@Disabled
-@Autonomous(name = "AutoBlueLeftBlock", group = "A")
+@Autonomous(name = "A-PROTO-AutoBlueLeftBlock", group = "A")
 public class AutoBlueLeftBlock extends LinearOpMode {
 
   final Auto auto = new Auto();

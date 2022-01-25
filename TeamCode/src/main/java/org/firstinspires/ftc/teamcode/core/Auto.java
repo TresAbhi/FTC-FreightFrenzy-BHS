@@ -11,23 +11,28 @@ import org.openftc.easyopencv.OpenCvWebcam;
 public class Auto {
 
   OpenCvWebcam webcam;
-  final Cam cam = new Cam();
   Drive drive;
+  Telemetry telemetry;
+  HardwareMap hardwareMap;
+
+  final Cam cam = new Cam();
 
   public Cam.LOCATION camResult;
 
-  Telemetry telemetry;
 
-  public void init(HardwareMap hardwareMap, Telemetry tl, Drive dr) {
+  public void init(HardwareMap hm, Telemetry tl, Drive dr) {
+    // get access to runtime APIs
+    hardwareMap = hm;
+    telemetry = tl;
     drive = dr;
 
-    drive.compensateForVoltage(5);
-
-    telemetry = tl;
-
-    telemetry.addData("Cam", "Starting");
+    telemetry.addData("Compensation Voltage", "calculating...");
+    telemetry.addData("Cam", "starting...");
     telemetry.update();
 
+    telemetry.addData("Compensation Voltage", drive.compensateForVoltage(5));
+
+    // start the cam
     int cameraMonitorViewId = hardwareMap.appContext
       .getResources()
       .getIdentifier(
@@ -42,12 +47,13 @@ public class Auto {
           hardwareMap.get(WebcamName.class, "webcam"),
           cameraMonitorViewId
         );
-
     webcam.openCameraDevice();
     webcam.setPipeline(cam);
     webcam.startStreaming(432, 240, OpenCvCameraRotation.UPRIGHT);
 
+    // at this point, it's ready
     telemetry.addData("Cam", "Initialized");
+    telemetry.addData("Position", "waiting...");
     telemetry.update();
   }
 

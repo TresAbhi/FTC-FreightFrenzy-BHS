@@ -79,10 +79,10 @@ public class Drive {
     hardwareMap = hm;
 
     // Components
-    leftFront = hardwareMap.get(DcMotor.class, "left_front");
-    leftRear = hardwareMap.get(DcMotor.class, "left_rear");
-    rightFront = hardwareMap.get(DcMotor.class, "right_front");
-    rightRear = hardwareMap.get(DcMotor.class, "right_rear");
+    leftFront = hardwareMap.get(DcMotor.class, "left_front"); // slot 0
+    leftRear = hardwareMap.get(DcMotor.class, "left_rear"); // slot 1
+    rightRear = hardwareMap.get(DcMotor.class, "right_rear"); // slot 2
+    rightFront = hardwareMap.get(DcMotor.class, "right_front"); // slot 3
 
     extender = hardwareMap.get(DcMotor.class, "extender");
     claw = hardwareMap.get(Servo.class, "claw");
@@ -187,7 +187,7 @@ public class Drive {
     return (float) result;
   }
 
-  public void compensateForVoltage(int iterationCount) {
+  public float compensateForVoltage(int iterationCount) {
     float averageBatteryVoltage = getBatteryVoltage();
 
     for (int i = 0; i < iterationCount - 1; i++) {
@@ -196,8 +196,9 @@ public class Drive {
     }
 
     averageBatteryVoltage = averageBatteryVoltage / iterationCount;
-
     voltageCompensatedPower = NORMAL_VOLTAGE / averageBatteryVoltage;
+
+    return averageBatteryVoltage;
   }
 
   public void compensateForVoltage() { compensateForVoltage(1); }
