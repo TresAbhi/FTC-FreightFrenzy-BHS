@@ -72,7 +72,7 @@ public class AutoBlueRightDuck extends LinearOpMode {
     drive.rot = 0;
     drive.moveY = 0.5f;
     drive.apply();
-    sleep(1250);
+    sleep(1150);
 
     // stop moving
     drive.moveY = 0;
@@ -87,7 +87,7 @@ public class AutoBlueRightDuck extends LinearOpMode {
     // move back
     drive.moveY = -0.5f;
     drive.apply();
-    sleep(1750);
+    sleep(1650);
 
     // stop moving back and move to the left
     drive.moveY = 0;
@@ -99,6 +99,6 @@ public class AutoBlueRightDuck extends LinearOpMode {
     // stop moving left
     drive.moveX = 0;
     drive.apply();
-    sleep(190);
+    sleep(220);
   }
 }
