@@ -30,7 +30,7 @@ public class Auto {
     telemetry.addData("Cam", "starting...");
     telemetry.update();
 
-    telemetry.addData("Compensation Voltage", drive.compensateForVoltage(5));
+    telemetry.addData("Compensation Voltage", drive.compensateForVoltage(10));
 
     // start the cam
     int cameraMonitorViewId = hardwareMap.appContext

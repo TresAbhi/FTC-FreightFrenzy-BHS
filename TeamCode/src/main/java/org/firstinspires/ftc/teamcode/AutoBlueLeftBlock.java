@@ -29,7 +29,7 @@ public class AutoBlueLeftBlock extends LinearOpMode {
     drive.moveY = 0;
     drive.moveX = 0.5f;
     drive.apply();
-    sleep(1200);
+    sleep(1400);
 
     // move arm to position
     auto.moveArmToCorrectPosition();
@@ -39,7 +39,7 @@ public class AutoBlueLeftBlock extends LinearOpMode {
     drive.moveX = 0;
     drive.moveY = 0.5f;
     drive.apply();
-    sleep(520);
+    sleep(1100);
 
     // stop moving
     drive.moveY = 0;
@@ -54,14 +54,14 @@ public class AutoBlueLeftBlock extends LinearOpMode {
     // go back
     drive.moveY = -0.5f;
     drive.apply();
-    sleep(280);
+    sleep(700);
 
-    // stop moving, turn left, set to low state, and mvoe the wrist up
+    // stop moving, turn left, set to low state, and move the arm back
     drive.moveY = 0;
     drive.rot = -0.5f;
     drive.setState(Drive.ARM_STATE.DEFAULT);
     drive.wristTargetAngle = 1;
-    sleep(800);
+    sleep(730);
 
     // stop turning
     drive.rot = 0;
@@ -71,7 +71,7 @@ public class AutoBlueLeftBlock extends LinearOpMode {
     // move forward
     drive.moveY = 1;
     drive.apply();
-    sleep(1500);
+    sleep(1900);
 
     // stop moving
     drive.moveY = 0;

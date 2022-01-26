@@ -187,15 +187,15 @@ public class Drive {
     return (float) result;
   }
 
-  public float compensateForVoltage(int iterationCount) {
+  public float compensateForVoltage(int sampleCount) {
     float averageBatteryVoltage = getBatteryVoltage();
 
-    for (int i = 0; i < iterationCount - 1; i++) {
+    for (int i = 0; i < sampleCount - 1; i++) {
       averageBatteryVoltage += getBatteryVoltage();
       SystemClock.sleep(100);
     }
 
-    averageBatteryVoltage = averageBatteryVoltage / iterationCount;
+    averageBatteryVoltage = averageBatteryVoltage / sampleCount;
     voltageCompensatedPower = NORMAL_VOLTAGE / averageBatteryVoltage;
 
     return averageBatteryVoltage;
