@@ -21,15 +21,15 @@ public class AutoBlueLeftBlock extends LinearOpMode {
     auto.recordTeamScorePos();
 
     // go forward
-    drive.moveY = 1;
+    drive.moveY = 0.5f;
     drive.apply();
-    sleep(150);
+    sleep(300);
 
     // stop moving forward and move right
     drive.moveY = 0;
-    drive.moveX = 1;
+    drive.moveX = 0.5f;
     drive.apply();
-    sleep(380);
+    sleep(1200);
 
     // move arm to position
     auto.moveArmToCorrectPosition();
@@ -44,17 +44,17 @@ public class AutoBlueLeftBlock extends LinearOpMode {
     // stop moving
     drive.moveY = 0;
     drive.apply();
-    sleep(200);
+    sleep(500);
 
     // drop block
     drive.clawTargetState = 0;
     drive.apply();
-    sleep(200);
+    sleep(500);
 
     // go back
-    drive.moveY = -1;
+    drive.moveY = -0.5f;
     drive.apply();
-    sleep(140);
+    sleep(280);
 
     // stop moving, turn left, set to low state, and mvoe the wrist up
     drive.moveY = 0;
@@ -72,26 +72,6 @@ public class AutoBlueLeftBlock extends LinearOpMode {
     drive.moveY = 1;
     drive.apply();
     sleep(1500);
-
-    // stop moving
-    drive.moveY = 0;
-    drive.apply();
-    sleep(200);
-
-    //move to the right
-    drive.moveX = 1;
-    drive.apply();
-    sleep(430);
-
-    //stop moving right
-    drive.moveX = 0;
-    drive.apply();
-    sleep(200);
-
-    //forward a bit
-    drive.moveY = 1;
-    drive.apply();
-    sleep(400);
 
     // stop moving
     drive.moveY = 0;
