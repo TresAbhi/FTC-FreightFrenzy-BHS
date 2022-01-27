@@ -28,8 +28,13 @@ public class DriverControl extends LinearOpMode {
   public final float WRIST_MIN_ANGLE = 0.425f;
   public final float WRIST_MAX_ANGLE = 0.85f;
 
+  public enum DRIVE_MODE {
+    NORMAL,
+    GOD
+  }
+
   // mutables
-  String driveMode = "normal";
+  DRIVE_MODE driveMode = DRIVE_MODE.NORMAL;
   boolean isModeSwitched = false;
 
   // @Override
@@ -45,20 +50,20 @@ public class DriverControl extends LinearOpMode {
 
     while (opModeIsActive()) {
       // Switch between modes
-      if (driveMode == "normal") {
+      if (driveMode == DRIVE_MODE.NORMAL) {
         player1 = gamepad1;
         player2 = gamepad2;
-      } else if (driveMode == "god") {
+      } else if (driveMode == DRIVE_MODE.GOD) {
         player1 = gamepad1;
         player2 = gamepad1;
       }
 
       // Power modes for slow and fast robot speeds
-      drive.movementPower = 1 - (player1.left_trigger * 0.5f);
+      drive.movementPower = 0.75f - (player1.left_trigger * 0.5f);
 
       // God mode toggler
       if ((player1.back || player2.back) && !isModeSwitched) {
-        driveMode = driveMode == "normal" ? "god" : "normal";
+        driveMode = driveMode == DRIVE_MODE.NORMAL ? DRIVE_MODE.GOD : DRIVE_MODE.NORMAL;
         isModeSwitched = true;
       }
       if (!(player1.back || player2.back)) isModeSwitched = false;
