@@ -6,7 +6,7 @@ import org.firstinspires.ftc.teamcode.core.Auto;
 import org.firstinspires.ftc.teamcode.core.Drive;
 
 //@Disabled
-@Autonomous(name = "AutoRedLeftDuck", group = "A")
+@Autonomous(name = "A-PROTO-AutoRedLeftDuck", group = "A")
 public class AutoRedLeftDuck extends LinearOpMode {
 
   final Auto auto = new Auto();
@@ -21,25 +21,25 @@ public class AutoRedLeftDuck extends LinearOpMode {
     auto.recordTeamScorePos();
 
     // move a bit forward
-    drive.moveY = 1;
+    drive.moveY = 0.5f;
     drive.apply();
-    sleep(175);
+    sleep(450);
 
     // stop moving and rotate to right
     drive.moveY = 0;
-    drive.rot = 1;
+    drive.rot = 0.5f;
     drive.apply();
-    sleep(400);
+    sleep(800);
 
     // stop rotating, go back, and pull out the spinner
     drive.rot = 0;
     drive.moveY = -0.5f;
-    drive.spinnerJointSpeed = 0.6f;
     drive.apply();
-    sleep(960);
+    sleep(600);
 
     // stop moving backwards
     drive.moveY = 0;
+    drive.spinnerJointSpeed = 0.75f;
     sleep(500);
 
     // spin the spinner
@@ -50,22 +50,22 @@ public class AutoRedLeftDuck extends LinearOpMode {
     // bring back in the spinner, move left, and move the arm to the correct height
     drive.spinnerJointSpeed = -0.3f;
     drive.spinnerSpeed = 0.49f;
-    drive.moveX = -1;
+    drive.moveX = -0.5f;
     drive.apply();
-    auto.moveArmToCorrectPosition();
-    sleep(1150);
+    sleep(2500);
 
     // turn a bit and stop moving
     drive.moveX = 0;
     drive.rot = 0.5f;
     drive.apply();
-    sleep(95);
+    sleep(20);
 
     // stop rotating and move forward
     drive.rot = 0;
-    drive.moveY = 1;
+    drive.moveY = 0.5f;
+    auto.moveArmToCorrectPosition();
     drive.apply();
-    sleep(500);
+    sleep(1200);
 
     // move forward but slower and stop pulling the spinner joint in
     drive.spinnerJointSpeed = 0;
@@ -81,18 +81,18 @@ public class AutoRedLeftDuck extends LinearOpMode {
     // let go of the block
     drive.clawTargetState = 0;
     drive.apply();
-    sleep(200);
+    sleep(500);
 
     // go back
-    drive.moveY = -1;
+    drive.moveY = -0.5f;
     drive.apply();
-    sleep(510);
+    sleep(1450);
 
     // stop moving back and move right
     drive.moveY = 0;
-    drive.moveX = 1;
-    drive.setState(Drive.ARM_STATE.LOW);
-    sleep(560);
+    drive.moveX = 0.5f;
+    drive.setState(Drive.ARM_STATE.DEFAULT);
+    sleep(1020);
 
     // stop moving
     drive.moveX = 0;
