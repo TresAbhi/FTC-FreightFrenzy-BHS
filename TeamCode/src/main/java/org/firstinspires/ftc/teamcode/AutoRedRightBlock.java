@@ -6,7 +6,7 @@ import org.firstinspires.ftc.teamcode.core.Auto;
 import org.firstinspires.ftc.teamcode.core.Drive;
 
 //@Disabled
-@Autonomous(name = "AutoRedRightBlock", group = "A")
+@Autonomous(name = "A-PROTO-AutoRedRightBlock", group = "A")
 public class AutoRedRightBlock extends LinearOpMode {
 
   final Auto auto = new Auto();
@@ -21,15 +21,15 @@ public class AutoRedRightBlock extends LinearOpMode {
     auto.recordTeamScorePos();
 
     // go forward
-    drive.moveY = 1;
+    drive.moveY = 0.5f;
     drive.apply();
-    sleep(150);
+    sleep(300);
 
     // stop moving forward and move left
     drive.moveY = 0;
-    drive.moveX = -1;
+    drive.moveX = -0.5f;
     drive.apply();
-    sleep(250);
+    sleep(750);
 
     // move arm to position
     auto.moveArmToCorrectPosition();
@@ -39,29 +39,29 @@ public class AutoRedRightBlock extends LinearOpMode {
     drive.moveX = 0;
     drive.moveY = 0.5f;
     drive.apply();
-    sleep(480);
+    sleep(750);
 
     // stop moving
     drive.moveY = 0;
     drive.apply();
-    sleep(200);
+    sleep(500);
 
     // drop block
     drive.clawTargetState = 0;
     drive.apply();
-    sleep(200);
+    sleep(500);
 
     // go back
-    drive.moveY = -1;
+    drive.moveY = -0.5f;
     drive.apply();
-    sleep(140);
+    sleep(280);
 
-    // stop moving, turn right, set to low state, and mvoe the wrist up
+    // stop moving, turn right, set to default state, and move the wrist up
     drive.moveY = 0;
     drive.rot = 0.5f;
-    drive.setState(Drive.ARM_STATE.DEFAULT);
     drive.wristTargetAngle = 1;
-    sleep(850);
+    drive.setState(Drive.ARM_STATE.DEFAULT);
+    sleep(900);
 
     // stop turning
     drive.rot = 0;
@@ -71,29 +71,9 @@ public class AutoRedRightBlock extends LinearOpMode {
     // move forward
     drive.moveY = 1;
     drive.apply();
-    sleep(1500);
+    sleep(1800);
 
     // stop moving forward
-    drive.moveY = 0;
-    drive.apply();
-    sleep(200);
-
-    //move to the left
-    drive.moveX = -1;
-    drive.apply();
-    sleep(400);
-
-    //stop moving left
-    drive.moveX = 0;
-    drive.apply();
-    sleep(200);
-
-    //forward a bit
-    drive.moveY = 1;
-    drive.apply();
-    sleep(300);
-
-    // stop moving
     drive.moveY = 0;
     drive.apply();
     sleep(200);

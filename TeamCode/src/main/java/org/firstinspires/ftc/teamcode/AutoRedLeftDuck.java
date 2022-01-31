@@ -6,7 +6,7 @@ import org.firstinspires.ftc.teamcode.core.Auto;
 import org.firstinspires.ftc.teamcode.core.Drive;
 
 //@Disabled
-@Autonomous(name = "A-PROTO-AutoRedLeftDuck", group = "A")
+@Autonomous(name = "AutoRedLeftDuck", group = "A")
 public class AutoRedLeftDuck extends LinearOpMode {
 
   final Auto auto = new Auto();
