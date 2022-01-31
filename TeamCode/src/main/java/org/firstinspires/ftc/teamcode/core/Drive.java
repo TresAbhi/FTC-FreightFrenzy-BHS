@@ -104,8 +104,8 @@ public class Drive {
         extender.setPower(EXTENDER_POWER);
 
         wrist.setPosition(1);
-
         claw.setPosition(clawTargetState);
+        spinnerJoint.setPosition(0);
     }
 
     public void setState(ARM_STATE state) {

@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.core;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
-
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -18,7 +17,6 @@ public class Auto {
   final Cam cam = new Cam();
 
   public Cam.LOCATION camResult;
-
 
   public void init(HardwareMap hm, Telemetry tl, Drive dr) {
     // get access to runtime APIs
