@@ -139,8 +139,8 @@ public class DriverControl extends LinearOpMode {
       // Update telemetry
       telemetry.addData("Status", "Run Time: " + runtime.toString());
       telemetry.addData("Drive mode", driveMode);
-
       telemetry.addData("Battery Voltage", drive.getBatteryVoltage());
+      telemetry.addData("----------", "----------");
 
       drive.logTargetsAndCurrents();
 
