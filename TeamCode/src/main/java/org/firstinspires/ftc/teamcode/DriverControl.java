@@ -28,6 +28,8 @@ public class DriverControl extends LinearOpMode {
   public final float WRIST_MIN_ANGLE = 0.425f;
   public final float WRIST_MAX_ANGLE = 0.85f;
 
+  public final float TURN_COEFFICIENT = 0.8f;
+
   public enum DRIVE_MODE {
     NORMAL,
     GOD
@@ -39,7 +41,7 @@ public class DriverControl extends LinearOpMode {
 
   // @Override
   public void runOpMode() {
-    drive.init(hardwareMap);
+    drive.init(hardwareMap, telemetry);
 
     telemetry.addData("Status", "Initialized");
     telemetry.update();
@@ -69,7 +71,7 @@ public class DriverControl extends LinearOpMode {
       if (!(player1.back || player2.back)) isModeSwitched = false;
 
       // Tweak spinner joint speed
-      drive.spinnerJointSpeed = player1.right_trigger;
+      drive.spinnerJointPos = player1.right_trigger;
 
       // Dampen controls to give more precision at lower power levels
       double dampedLeftJoystickX =
@@ -87,7 +89,7 @@ public class DriverControl extends LinearOpMode {
 
       drive.moveX = (float) dampedLeftJoystickX;
       drive.moveY = (float) -dampedLeftJoystickY;
-      drive.rot = (float) dampedRightJoystickX;
+      drive.rot = (float) dampedRightJoystickX * TURN_COEFFICIENT;
 
       // Tweak extender joint target
       drive.extenderTargetPos =
@@ -138,10 +140,9 @@ public class DriverControl extends LinearOpMode {
       telemetry.addData("Status", "Run Time: " + runtime.toString());
       telemetry.addData("Drive mode", driveMode);
 
-      telemetry.addData("Extender", drive.extenderTargetPos);
-      telemetry.addData("wrist angle", drive.wristTargetAngle);
-
       telemetry.addData("Battery Voltage", drive.getBatteryVoltage());
+
+      drive.logTargetsAndCurrents();
 
       telemetry.update();
     }

@@ -32,7 +32,7 @@ public class AutoBlueRightDuck extends LinearOpMode {
     sleep(1400);
 
     // pull out the spinner, and spin the spinner, and stop moving right
-    drive.spinnerJointSpeed = 0.6f;
+    drive.spinnerJointPos = 0.6f;
     drive.spinnerSpeed = 0.8f;
     drive.moveX = 0;
     drive.apply();
@@ -44,7 +44,7 @@ public class AutoBlueRightDuck extends LinearOpMode {
     sleep(2500);
 
     // pull back spinner, stop spinner and move right and a bit forward
-    drive.spinnerJointSpeed = -0.2f;
+    drive.spinnerJointPos = -0.2f;
     drive.spinnerSpeed = 0.49f;
     drive.moveX = 0.5f;
     drive.moveY = 0.1f;

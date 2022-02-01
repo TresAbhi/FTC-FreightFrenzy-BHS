@@ -8,6 +8,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 public class Drive {
 
     // Components
@@ -60,7 +62,7 @@ public class Drive {
     public float clawTargetState = 1;
 
     public float spinnerSpeed = 0.49f;
-    public float spinnerJointSpeed = 0f;
+    public float spinnerJointPos = 0f;
 
     public float moveX = 0;
     public float moveY = 0;
@@ -70,6 +72,7 @@ public class Drive {
     public float voltageCompensatedPower = 1f;
 
     public HardwareMap hardwareMap;
+    public Telemetry telemetry;
 
     public void init(HardwareMap hm) {
         hardwareMap = hm;
@@ -106,6 +109,11 @@ public class Drive {
         wrist.setPosition(1);
         claw.setPosition(clawTargetState);
         spinnerJoint.setPosition(0);
+    }
+
+    public void init (HardwareMap hm, Telemetry tl) {
+        telemetry = tl;
+        init(hm);
     }
 
     public void setState(ARM_STATE state) {
@@ -164,7 +172,7 @@ public class Drive {
         claw.setPosition(clawTargetState);
 
         spinner.setPosition(spinnerSpeed);
-        spinnerJoint.setPosition(spinnerJointSpeed);
+        spinnerJoint.setPosition(spinnerJointPos);
     }
 
     public float getBatteryVoltage() {
@@ -197,5 +205,22 @@ public class Drive {
 
     public void compensateForVoltage() {
         compensateForVoltage(1);
+    }
+
+    public void logTargetsAndCurrents() {
+        telemetry.addData("extender target", extenderTargetPos);
+        telemetry.addData("extender pos", extender.getCurrentPosition());
+
+        telemetry.addData("wrist target", wristTargetAngle);
+        telemetry.addData("wrist pos", wrist.getPosition());
+
+        telemetry.addData("claw target", clawTargetState);
+        telemetry.addData("claw pos", claw.getPosition());
+
+        telemetry.addData("spinner target", spinnerSpeed);
+        telemetry.addData("spinner speed", spinner.getPosition());
+
+        telemetry.addData("spinner joint target", spinnerJointPos);
+        telemetry.addData("spinner joint pos", spinnerJoint.getPosition());
     }
 }
