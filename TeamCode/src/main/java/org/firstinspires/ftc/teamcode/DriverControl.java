@@ -21,12 +21,12 @@ public class DriverControl extends LinearOpMode {
   public final float MOVEMENT_PRECISION = 2f;
 
   public final int EXTENDER_MIN_POS = 0;
-  public final int EXTENDER_MAX_POS = EXTENDER_MIN_POS + 1550;
+  public final int EXTENDER_MAX_POS = EXTENDER_MIN_POS + 1700;
 
-  public final int EXTENDER_INPUT_SPEED = 10;
-  public final float WRIST_INPUT_SPEED = 0.005f;
-  public final float WRIST_MIN_ANGLE = 0.425f;
-  public final float WRIST_MAX_ANGLE = 0.85f;
+  public final int EXTENDER_INPUT_SPEED = 20;
+  public final float WRIST_INPUT_SPEED = 0.01f;
+  public final float WRIST_MIN_ANGLE = 0;
+  public final float WRIST_MAX_ANGLE = 1;
 
   public final float TURN_COEFFICIENT = 0.8f;
 
@@ -117,11 +117,11 @@ public class DriverControl extends LinearOpMode {
       // Apply states
       if (!player2.start) {
         if (player2.a) {
-          drive.setState(Drive.ARM_STATE.LOW);
+          drive.setState(Drive.ARM_STATE.BOTTOM);
         } else if (player2.x) {
           drive.setState(Drive.ARM_STATE.MIDDLE);
         } else if (player2.y) {
-          drive.setState(Drive.ARM_STATE.HIGH);
+          drive.setState(Drive.ARM_STATE.TOP);
         } else if (player2.b) {
           drive.setState(Drive.ARM_STATE.GROUND);
         }

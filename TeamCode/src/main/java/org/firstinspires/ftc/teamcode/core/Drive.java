@@ -28,28 +28,28 @@ public class Drive {
 
     // Preset states
     public enum ARM_STATE {
-        LOW,
+        BOTTOM,
         MIDDLE,
-        HIGH,
+        TOP,
         GROUND,
         DEFAULT,
     }
 
     // a: lower tower layer
     public final int EXTENDER_LOW_POS = EXTENDER_MIN_POS + 70;
-    public final float WRIST_LOW_ANGLE = 0.57f;
+    public final float WRIST_LOW_ANGLE = 0.32f;
 
     // x: middle tower layer
     public final int EXTENDER_MIDDLE_POS = EXTENDER_MIN_POS + 750;
-    public final float WRIST_MIDDLE_ANGLE = 0.57f;
+    public final float WRIST_MIDDLE_ANGLE = 0.32f;
 
     // y: top tower layer
     public final int EXTENDER_HIGH_POS = EXTENDER_MIN_POS + 1610;
-    public final float WRIST_HIGH_ANGLE = 0.57f;
+    public final float WRIST_HIGH_ANGLE = 0.32f;
 
     // b: ground
     public final int EXTENDER_GROUND_POS = EXTENDER_MIN_POS;
-    public final float WRIST_GROUND_ANGLE = 0.425f;
+    public final float WRIST_GROUND_ANGLE = 0;
 
     // NONE: back
     public final int EXTENDER_BACK_POS = EXTENDER_MIN_POS;
@@ -117,7 +117,7 @@ public class Drive {
     }
 
     public void setState(ARM_STATE state) {
-        if (state == ARM_STATE.LOW) {
+        if (state == ARM_STATE.BOTTOM) {
             wristTargetAngle = WRIST_LOW_ANGLE;
             extenderTargetPos = EXTENDER_LOW_POS;
             apply();
@@ -125,7 +125,7 @@ public class Drive {
             wristTargetAngle = WRIST_MIDDLE_ANGLE;
             extenderTargetPos = EXTENDER_MIDDLE_POS;
             apply();
-        } else if (state == ARM_STATE.HIGH) {
+        } else if (state == ARM_STATE.TOP) {
             wristTargetAngle = WRIST_HIGH_ANGLE;
             extenderTargetPos = EXTENDER_HIGH_POS;
             apply();
