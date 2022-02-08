@@ -26,7 +26,7 @@ public class DriverControl extends LinearOpMode {
   public final int EXTENDER_INPUT_SPEED = 20;
   public final float WRIST_INPUT_SPEED = 0.01f;
   public final float WRIST_MIN_ANGLE = 0;
-  public final float WRIST_MAX_ANGLE = 1;
+  public final float WRIST_MAX_ANGLE = 0.63f;
 
   public final float TURN_COEFFICIENT = 0.8f;
 

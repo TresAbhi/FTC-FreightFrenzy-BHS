@@ -6,7 +6,7 @@ import org.firstinspires.ftc.teamcode.core.Auto;
 import org.firstinspires.ftc.teamcode.core.Drive;
 
 //@Disabled
-@Autonomous(name = "AutoRedLeftDuck", group = "A")
+@Autonomous(name = "AB-PROTO-AutoRedLeftDuck", group = "A")
 public class AutoRedLeftDuck extends LinearOpMode {
 
   final Auto auto = new Auto();
@@ -54,24 +54,14 @@ public class AutoRedLeftDuck extends LinearOpMode {
     drive.apply();
     sleep(2500);
 
-    // turn a bit and stop moving
-    drive.moveX = 0;
-    drive.rot = 0.5f;
-    drive.apply();
-    sleep(20);
-
-    // stop rotating and move forward
+    // stop moving left, move forward, and stop pulling the spinner joint in
     drive.rot = 0;
+    drive.spinnerJointPos = 0;
+    drive.moveX = 0;
     drive.moveY = 0.5f;
     auto.moveArmToCorrectPosition();
     drive.apply();
-    sleep(1200);
-
-    // move forward but slower and stop pulling the spinner joint in
-    drive.spinnerJointPos = 0;
-    drive.moveY = 0.2f;
-    drive.apply();
-    sleep(370);
+    sleep(1348);
 
     // stop moving forward
     drive.moveY = 0;
@@ -86,17 +76,28 @@ public class AutoRedLeftDuck extends LinearOpMode {
     // go back
     drive.moveY = -0.5f;
     drive.apply();
-    sleep(1550);
+    sleep(1000);
 
-    // stop moving back and move right
+    // stop moving back, turn left, and move arm to default
     drive.moveY = 0;
-    drive.moveX = 0.5f;
+    drive.rot = -0.5f;
     drive.setState(Drive.ARM_STATE.DEFAULT);
-    sleep(1230);
+    sleep(690);
+
+    // stop turning and go forward
+    drive.moveY = 0.5f;
+    drive.rot = 0;
+    drive.apply();
+    sleep(500);
+
+    // stop moving forward and go left
+    drive.moveY = 0;
+    drive.moveX = -0.5f;
+    drive.apply();
+    sleep(500);
 
     // stop moving
     drive.moveX = 0;
     drive.apply();
-    sleep(200);
   }
 }

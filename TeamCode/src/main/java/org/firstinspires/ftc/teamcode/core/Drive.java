@@ -58,7 +58,7 @@ public class Drive {
     // Mutables
     public int extenderTargetPos = EXTENDER_MIN_POS;
 
-    public float wristTargetAngle = 1;
+    public float wristTargetAngle = 0.63f;
     public float clawTargetState = 1;
 
     public float spinnerSpeed = 0.49f;
