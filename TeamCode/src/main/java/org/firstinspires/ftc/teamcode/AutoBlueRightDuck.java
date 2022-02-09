@@ -86,26 +86,26 @@ public class AutoBlueRightDuck extends LinearOpMode {
     // move back
     drive.moveY = -0.5f;
     drive.apply();
-    sleep(1600);
+    sleep(1200);
 
     // stop moving back, move arm to default and turn left
     drive.moveY = 0;
     drive.rot = -0.5f;
     drive.setState(Drive.ARM_STATE.DEFAULT);
     drive.apply();
-    sleep(690);
+    sleep(800);
 
     // stop rotating and move forwards
     drive.rot = 0;
     drive.moveY = 0.5f;
     drive.apply();
-    sleep(670);
+    sleep(620);
 
     // stop moving and move left
     drive.moveY = 0;
     drive.moveX = -0.5f;
     drive.apply();
-    sleep(670);
+    sleep(700);
 
     // stop moving
     drive.moveX = 0;
