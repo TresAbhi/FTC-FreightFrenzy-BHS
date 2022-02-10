@@ -84,6 +84,11 @@ public class DriverControl extends LinearOpMode {
         while (gamepad2.back) sleep(1);
       }
 
+      if (driveMode == DRIVE_MODE.NORMAL) {
+        player1 = gamepad1;
+        player2 = gamepad2;
+      }
+
       // Tweak spinner joint speed
       drive.spinnerJointPos = player1.right_trigger;
 
