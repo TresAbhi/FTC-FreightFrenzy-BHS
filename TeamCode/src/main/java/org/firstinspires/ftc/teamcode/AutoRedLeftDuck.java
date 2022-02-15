@@ -66,7 +66,7 @@ public class AutoRedLeftDuck extends LinearOpMode {
     // stop moving forward
     drive.moveY = 0;
     drive.apply();
-    sleep(500);
+    sleep(550);
 
     // let go of the block
     drive.clawTargetState = 0;
@@ -100,7 +100,7 @@ public class AutoRedLeftDuck extends LinearOpMode {
     drive.moveX = 0;
     drive.moveY = -0.5f;
     drive.apply();
-    sleep(1380);
+    sleep(1130);
 
     // stop moving forward and go left
     drive.moveY = 0;

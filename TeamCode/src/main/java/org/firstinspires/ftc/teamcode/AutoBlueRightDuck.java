@@ -99,9 +99,9 @@ public class AutoBlueRightDuck extends LinearOpMode {
     drive.rot = 0;
     drive.moveY = 0.5f;
     drive.apply();
-    sleep(620);
+    sleep(600);
 
-    // stop moving and move left
+    // stop moving forwards and move left
     drive.moveY = 0;
     drive.moveX = -0.5f;
     drive.apply();
