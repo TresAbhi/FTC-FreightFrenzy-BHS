@@ -4,28 +4,26 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.teamcode.maquemer.Maquemer;
+
 //@Disabled
 @Autonomous(name = "AA-PROTO-MaquemerTest", group = "A")
 public class MaquemerTest extends LinearOpMode {
 
-  public DcMotor motor;
+  public Maquemer maquemer = new Maquemer(telemetry);
 
   // @Override
   public void runOpMode() {
-    motor = hardwareMap.get(DcMotor.class, "right_rear"); // slot 3
+    maquemer.init(hardwareMap);
 
     waitForStart();
 
-    motor.setPower(0.5);
-
     while (true) {
-      motor.setTargetPosition(0);
-      motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-      sleep(4000);
+      maquemer.moveY(537.6);
+      sleep(200);
 
-      motor.setTargetPosition(538);
-      motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-      sleep(4000);
+      maquemer.moveY(-537.6);
+      sleep(200);
     }
   }
 }
