@@ -14,16 +14,10 @@ public class MaquemerTest extends LinearOpMode {
 
   // @Override
   public void runOpMode() {
-    maquemer.init(hardwareMap);
+    maquemer.init(hardwareMap, telemetry);
 
     waitForStart();
 
-    while (true) {
-      maquemer.moveY(537.6);
-      sleep(200);
-
-      maquemer.moveY(-537.6);
-      sleep(200);
-    }
+    maquemer.moveY(537.6);
   }
 }

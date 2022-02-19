@@ -3,11 +3,12 @@ package org.firstinspires.ftc.teamcode.maquemer;
 public class Constants {
     double start = 0.1;
     double max = 0.5;
+    double maxAt = 0.5;
 
     public double progressToPower (double x) {
         double x1 = 0;
         double y1 = start;
-        double x2 = 0.5;
+        double x2 = maxAt;
         double y2 = max;
         double x3 = 1;
         double y3 = 0;

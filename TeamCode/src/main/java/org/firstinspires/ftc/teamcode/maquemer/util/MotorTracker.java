@@ -7,36 +7,36 @@ import org.opencv.core.Mat;
 
 public class MotorTracker {
 
+    DcMotor motor;
     Constants constants = new Constants();
 
-    DcMotor motor;
-
-    double start;
-    double direction;
-    double current;
-    double target;
-
+    public double target;
+    public double threshold;
+    public double start;
+    public double direction;
+    public double current;
+    public double progress = 0;
     public boolean done = false;
 
     public MotorTracker (DcMotor motor, double target, double threshold) {
         this.motor = motor;
-        this.start = motor.getCurrentPosition();
-        this.target = target + start;
 
-        this.direction = Math.signum(this.target - start);
+        this.start = motor.getTargetPosition();
+        this.target = start + target;
+        this.threshold = threshold;
         this.current = start;
+        this.direction = Math.signum(this.target - current);
     }
 
     public void iterate () {
-        done = Math.abs(target - start) < target;
-
         current = motor.getCurrentPosition();
-        double progress = (current - start) / (target - start);
+        progress = Math.abs(current - start) / Math.abs(target - start);
+        done = Math.abs(target - current) <= threshold;
 
         if (done) {
             motor.setPower(0);
         } else {
-            motor.setPower(direction * constants.progressToPower(progress));
+            motor.setPower(constants.progressToPower(progress));
         }
     }
 }

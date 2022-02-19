@@ -16,8 +16,9 @@ public class Maquemer {
         this.telemetry = telemetry;
     }
 
-    public void init (HardwareMap hardwareMap) {
+    public void init (HardwareMap hardwareMap, Telemetry telemetry) {
         this.hardwareMap = hardwareMap;
+        this.telemetry = telemetry;
 
         leftFront = hardwareMap.get(DcMotor.class, "left_front");
         leftRear = hardwareMap.get(DcMotor.class, "left_rear");
@@ -31,10 +32,10 @@ public class Maquemer {
     }
 
     public void moveY (double y) {
-        MotorTracker rightFrontTracker = new MotorTracker(rightFront, y, 5);
+        MotorTracker leftFrontTracker = new MotorTracker(leftFront, y, 5);
 
-        while (!rightFrontTracker.done) {
-            rightFrontTracker.iterate();
+        while (!leftFrontTracker.done) {
+            leftFrontTracker.iterate();
         }
     }
 }
