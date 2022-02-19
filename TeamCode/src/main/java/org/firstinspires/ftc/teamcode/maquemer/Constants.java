@@ -1,17 +1,18 @@
 package org.firstinspires.ftc.teamcode.maquemer;
 
 public class Constants {
-    double start = 0.1;
-    double max = 0.5;
-    double maxAt = 0.5;
+    final double START_POWER = 0.1;
+    final double END_POWER = 0.1;
+    final double MAX_POWER = 0.5;
+    final double MAX_POWER_AT_PROGRESS = 0.5;
 
     public double progressToPower (double x) {
         double x1 = 0;
-        double y1 = start;
-        double x2 = maxAt;
-        double y2 = max;
+        double y1 = START_POWER;
+        double x2 = MAX_POWER_AT_PROGRESS;
+        double y2 = MAX_POWER;
         double x3 = 1;
-        double y3 = 0;
+        double y3 = END_POWER;
 
         double a1 = -Math.pow(x1, 2) + Math.pow(x2, 2);
         double b1 = -x1 + x2;

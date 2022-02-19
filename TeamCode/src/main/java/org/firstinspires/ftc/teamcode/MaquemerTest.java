@@ -18,6 +18,12 @@ public class MaquemerTest extends LinearOpMode {
 
     waitForStart();
 
-    maquemer.moveY(537.6);
+    int i = 0;
+
+    while (true) {
+      maquemer.moveY(537.6, i);
+      i++;
+      sleep(1000);
+    }
   }
 }
