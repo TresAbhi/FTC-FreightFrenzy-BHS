@@ -25,8 +25,8 @@ public class DriverControl extends LinearOpMode {
 
   public final int EXTENDER_INPUT_SPEED = -20;
   public final float WRIST_INPUT_SPEED = 0.01f;
-  public final float WRIST_MIN_ANGLE = 0.2f;
-  public final float WRIST_MAX_ANGLE = 0.63f;
+  public final float WRIST_MIN_ANGLE = 0.33f;
+  public final float WRIST_MAX_ANGLE = 0.62f;
 
   public final float TURN_COEFFICIENT = 0.8f;
 
@@ -137,6 +137,9 @@ public class DriverControl extends LinearOpMode {
       if (player1.left_bumper) drive.spinnerSpeed = 0;
       if (!player1.right_bumper && !player1.left_bumper) drive.spinnerSpeed =
         0.49f;
+
+      //control the capper
+      drive.capperTargetState = player2.left_bumper ? 1 : 0;
 
       drive.apply();
       drive.compensateForVoltage();

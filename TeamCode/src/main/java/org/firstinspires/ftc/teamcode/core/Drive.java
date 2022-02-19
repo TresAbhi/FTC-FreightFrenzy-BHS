@@ -16,7 +16,7 @@ public class Drive {
     public DcMotor leftFront, leftRear, rightFront, rightRear;
 
     public DcMotor extender;
-    public Servo wrist, claw;
+    public Servo wrist, claw, capper;
 
     public Servo spinner, spinnerJoint;
 
@@ -36,20 +36,20 @@ public class Drive {
     }
 
     // a: lower tower layer
-    public final int EXTENDER_LOW_POS = EXTENDER_MIN_POS + 70;
-    public final float WRIST_LOW_ANGLE = 0.32f;
+    public final int EXTENDER_LOW_POS = EXTENDER_MIN_POS - 527;
+    public final float WRIST_LOW_ANGLE = 0.33f;
 
     // x: middle tower layer
-    public final int EXTENDER_MIDDLE_POS = EXTENDER_MIN_POS + 750;
-    public final float WRIST_MIDDLE_ANGLE = 0.32f;
+    public final int EXTENDER_MIDDLE_POS = EXTENDER_MIN_POS - 1253;
+    public final float WRIST_MIDDLE_ANGLE = 0.33f;
 
     // y: top tower layer
-    public final int EXTENDER_HIGH_POS = EXTENDER_MIN_POS + 1610;
-    public final float WRIST_HIGH_ANGLE = 0.32f;
+    public final int EXTENDER_HIGH_POS = EXTENDER_MIN_POS - 2080;
+    public final float WRIST_HIGH_ANGLE = 0.33f;
 
     // b: ground
     public final int EXTENDER_GROUND_POS = EXTENDER_MIN_POS;
-    public final float WRIST_GROUND_ANGLE = 0;
+    public final float WRIST_GROUND_ANGLE = 0.33f;
 
     // NONE: back
     public final int EXTENDER_BACK_POS = EXTENDER_MIN_POS;
@@ -60,6 +60,8 @@ public class Drive {
 
     public float wristTargetAngle = 0.63f;
     public float clawTargetState = 1;
+
+    public float capperTargetState = 0f;
 
     public float spinnerSpeed = 0.49f;
     public float spinnerJointPos = 0f;
@@ -86,6 +88,7 @@ public class Drive {
         extender = hardwareMap.get(DcMotor.class, "extender");
         claw = hardwareMap.get(Servo.class, "claw");
         wrist = hardwareMap.get(Servo.class, "wrist");
+        capper = hardwareMap.get(Servo.class, "capper");
 
         spinner = hardwareMap.get(Servo.class, "spinner");
         spinnerJoint = hardwareMap.get(Servo.class, "spinner_joint");
@@ -108,6 +111,7 @@ public class Drive {
 
         wrist.setPosition(1);
         claw.setPosition(clawTargetState);
+        capper.setPosition(capperTargetState);
         spinnerJoint.setPosition(0);
     }
 
@@ -171,6 +175,8 @@ public class Drive {
 
         claw.setPosition(clawTargetState);
 
+        capper.setPosition(capperTargetState);
+
         spinner.setPosition(spinnerSpeed);
         spinnerJoint.setPosition(spinnerJointPos);
     }
@@ -216,6 +222,9 @@ public class Drive {
 
         telemetry.addData("claw target", clawTargetState);
         telemetry.addData("claw pos", claw.getPosition());
+
+        telemetry.addData("capper target",capperTargetState);
+        telemetry.addData("capper pos",capper.getPosition());
 
         telemetry.addData("spinner target", spinnerSpeed);
         telemetry.addData("spinner speed", spinner.getPosition());
