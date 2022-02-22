@@ -35,7 +35,7 @@ public class Maquemer {
     }
 
     public void moveY (double y, int i) {
-        MotorTracker leftFrontTracker = new MotorTracker(leftFront, y + leftFront.getCurrentPosition(), 5);
+        MotorTracker leftFrontTracker = new MotorTracker(rightFront, y + leftFront.getCurrentPosition(), 5);
 
         while (!leftFrontTracker.done) {
             leftFrontTracker.iterate();

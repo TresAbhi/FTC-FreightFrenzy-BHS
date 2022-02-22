@@ -20,13 +20,16 @@ public class DriverControl extends LinearOpMode {
   // Constants
   public final float MOVEMENT_PRECISION = 2f;
 
-  public final int EXTENDER_MIN_POS = -3409;
-  public final int EXTENDER_MAX_POS = 0;
+  public final int EXTENDER_MIN_POS = 0;
+  public final int EXTENDER_MAX_POS = 3409;
 
-  public final int EXTENDER_INPUT_SPEED = -20;
+  public final int EXTENDER_INPUT_SPEED = 20;
   public final float WRIST_INPUT_SPEED = 0.01f;
-  public final float WRIST_MIN_ANGLE = 0.33f;
+  public final float WRIST_MIN_ANGLE = 0;
   public final float WRIST_MAX_ANGLE = 0.62f;
+  public final float WRIST_PULL_ANGLE = 0.32f;
+  public final float WRIST_PULL_UP_START = 800;
+  public final float WRIST_PULL_UP_END = 300;
 
   public final float TURN_COEFFICIENT = 0.8f;
 
@@ -111,13 +114,13 @@ public class DriverControl extends LinearOpMode {
         );
 
       // Tweak wrist joint target
-      if (player2.dpad_up) drive.wristTargetAngle =
-        Math.min(drive.wristTargetAngle + WRIST_INPUT_SPEED, 1);
-      if (player2.dpad_down) drive.wristTargetAngle =
-        Math.min(
-          Math.max(drive.wristTargetAngle - WRIST_INPUT_SPEED, WRIST_MIN_ANGLE),
-          WRIST_MAX_ANGLE
-        );
+      float progressToPullUpStart = Math.max(Math.min((drive.extenderTargetPos - WRIST_PULL_UP_END) / WRIST_PULL_UP_START, 1), 0);
+      float compensatedWristMinAngle = (1 - progressToPullUpStart) * WRIST_PULL_ANGLE;
+
+      if (player2.dpad_up) drive.wristTargetAngle += WRIST_INPUT_SPEED;
+      if (player2.dpad_down) drive.wristTargetAngle -= WRIST_INPUT_SPEED;
+
+      drive.wristTargetAngle = Math.min(Math.max(drive.wristTargetAngle, compensatedWristMinAngle), WRIST_MAX_ANGLE);
 
       // Apply states
       if (!player2.start) {
@@ -132,14 +135,14 @@ public class DriverControl extends LinearOpMode {
         }
       }
 
-      drive.clawTargetState = player2.right_bumper ? 0 : 1;
+      drive.clawTargetAngle = player2.right_bumper ? 0 : 1;
       if (player1.right_bumper) drive.spinnerSpeed = 1;
       if (player1.left_bumper) drive.spinnerSpeed = 0;
       if (!player1.right_bumper && !player1.left_bumper) drive.spinnerSpeed =
         0.49f;
 
       //control the capper
-      drive.capperTargetState = player2.left_bumper ? 1 : 0;
+      drive.capperTargetAngle = player2.left_bumper ? 1 : 0;
 
       drive.apply();
       drive.compensateForVoltage();

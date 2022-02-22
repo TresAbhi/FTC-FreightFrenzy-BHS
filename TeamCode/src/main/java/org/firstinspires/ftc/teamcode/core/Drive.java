@@ -58,10 +58,10 @@ public class Drive {
     // Mutables
     public int extenderTargetPos = EXTENDER_MIN_POS;
 
-    public float wristTargetAngle = 0.63f;
-    public float clawTargetState = 1;
+    public float wristTargetAngle = 0.62f;
+    public float clawTargetAngle = 0.62f;
 
-    public float capperTargetState = 0f;
+    public float capperTargetAngle = 0f;
 
     public float spinnerSpeed = 0.49f;
     public float spinnerJointPos = 0f;
@@ -105,13 +105,13 @@ public class Drive {
         rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         extender.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        extender.setTargetPosition(EXTENDER_MIN_POS);
+        extender.setTargetPosition(-EXTENDER_MIN_POS);
         extender.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         extender.setPower(EXTENDER_POWER);
 
-        wrist.setPosition(1);
-        claw.setPosition(clawTargetState);
-        capper.setPosition(capperTargetState);
+        wrist.setPosition(wristTargetAngle);
+        claw.setPosition(clawTargetAngle);
+        capper.setPosition(capperTargetAngle);
         spinnerJoint.setPosition(0);
     }
 
@@ -169,13 +169,13 @@ public class Drive {
         );
 
         // Apply all targets
-        extender.setTargetPosition(extenderTargetPos);
+        extender.setTargetPosition(-extenderTargetPos);
 
         wrist.setPosition(wristTargetAngle);
 
-        claw.setPosition(clawTargetState);
+        claw.setPosition(clawTargetAngle);
 
-        capper.setPosition(capperTargetState);
+        capper.setPosition(capperTargetAngle);
 
         spinner.setPosition(spinnerSpeed);
         spinnerJoint.setPosition(spinnerJointPos);
@@ -220,10 +220,10 @@ public class Drive {
         telemetry.addData("wrist target", wristTargetAngle);
         telemetry.addData("wrist pos", wrist.getPosition());
 
-        telemetry.addData("claw target", clawTargetState);
+        telemetry.addData("claw target", clawTargetAngle);
         telemetry.addData("claw pos", claw.getPosition());
 
-        telemetry.addData("capper target",capperTargetState);
+        telemetry.addData("capper target", capperTargetAngle);
         telemetry.addData("capper pos",capper.getPosition());
 
         telemetry.addData("spinner target", spinnerSpeed);

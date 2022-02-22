@@ -79,7 +79,7 @@ public class AutoBlueRightDuck extends LinearOpMode {
     sleep(500);
 
     // let go
-    drive.clawTargetState = 0;
+    drive.clawTargetAngle = 0;
     drive.apply();
     sleep(500);
 
