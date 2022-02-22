@@ -25,22 +25,22 @@ public class DriverControl extends LinearOpMode {
 
   public final int EXTENDER_INPUT_SPEED = 20;
   public final float WRIST_INPUT_SPEED = 0.01f;
-  public final float WRIST_MIN_ANGLE = 0;
   public final float WRIST_MAX_ANGLE = 0.62f;
   public final float WRIST_PULL_ANGLE = 0.32f;
   public final float WRIST_PULL_UP_START = 800;
   public final float WRIST_PULL_UP_END = 300;
 
-  public final float TURN_COEFFICIENT = 0.8f;
+  public final float TURN_COEFFICIENT = 0.75f;
 
   public enum DRIVE_MODE {
     NORMAL,
-    GOD
+    GOD,
   }
 
   // mutables
   DRIVE_MODE driveMode = DRIVE_MODE.NORMAL;
   boolean isModeSwitched = false;
+  boolean isLeftBumperAlreadyPressed = false;
 
   // @Override
   public void runOpMode() {
@@ -68,7 +68,8 @@ public class DriverControl extends LinearOpMode {
 
       // God mode toggler
       if ((player1.back || player2.back) && !isModeSwitched) {
-        driveMode = driveMode == DRIVE_MODE.NORMAL ? DRIVE_MODE.GOD : DRIVE_MODE.NORMAL;
+        driveMode =
+          driveMode == DRIVE_MODE.NORMAL ? DRIVE_MODE.GOD : DRIVE_MODE.NORMAL;
         isModeSwitched = true;
       }
       if (!(player1.back || player2.back)) isModeSwitched = false;
@@ -90,10 +91,10 @@ public class DriverControl extends LinearOpMode {
         Math.pow(player1.left_stick_y, MOVEMENT_PRECISION);
       double dampedRightJoystickX =
         Math.signum(player1.right_stick_x) *
-        Math.pow(player1.right_stick_x, MOVEMENT_PRECISION);
+        Math.pow(player1.right_stick_x, MOVEMENT_PRECISION * 2);
       double dampedRightJoystickY = // unused for now
         Math.signum(player1.right_stick_y) *
-        Math.pow(player1.right_stick_y, MOVEMENT_PRECISION);
+        Math.pow(player1.right_stick_y, MOVEMENT_PRECISION * 2);
 
       drive.moveX = (float) dampedLeftJoystickX;
       drive.moveY = (float) -dampedLeftJoystickY;
@@ -114,13 +115,24 @@ public class DriverControl extends LinearOpMode {
         );
 
       // Tweak wrist joint target
-      float progressToPullUpStart = Math.max(Math.min((drive.extenderTargetPos - WRIST_PULL_UP_END) / WRIST_PULL_UP_START, 1), 0);
-      float compensatedWristMinAngle = (1 - progressToPullUpStart) * WRIST_PULL_ANGLE;
+      float progressToPullUpStart = Math.max(
+        Math.min(
+          (drive.extenderTargetPos - WRIST_PULL_UP_END) / WRIST_PULL_UP_START,
+          1
+        ),
+        0
+      );
+      float compensatedWristMinAngle =
+        (1 - progressToPullUpStart) * WRIST_PULL_ANGLE;
 
       if (player2.dpad_up) drive.wristTargetAngle += WRIST_INPUT_SPEED;
       if (player2.dpad_down) drive.wristTargetAngle -= WRIST_INPUT_SPEED;
 
-      drive.wristTargetAngle = Math.min(Math.max(drive.wristTargetAngle, compensatedWristMinAngle), WRIST_MAX_ANGLE);
+      drive.wristTargetAngle =
+        Math.min(
+          Math.max(drive.wristTargetAngle, compensatedWristMinAngle),
+          WRIST_MAX_ANGLE
+        );
 
       // Apply states
       if (!player2.start) {
@@ -141,13 +153,20 @@ public class DriverControl extends LinearOpMode {
       if (!player1.right_bumper && !player1.left_bumper) drive.spinnerSpeed =
         0.49f;
 
-      //control the capper
-      drive.capperTargetAngle = player2.left_bumper ? 1 : 0;
+      // control the capper
+      if (player2.left_bumper) {
+        if (!isLeftBumperAlreadyPressed) {
+          isLeftBumperAlreadyPressed = true;
+          drive.capperTargetState = !drive.capperTargetState;
+        }
+      } else {
+        isLeftBumperAlreadyPressed = false;
+      }
 
       drive.apply();
       drive.compensateForVoltage();
 
-      // Update telemetry
+      // update telemetry
       telemetry.addData("Status", "Run Time: " + runtime.toString());
       telemetry.addData("Drive mode", driveMode);
       telemetry.addData("Battery Voltage", drive.getBatteryVoltage());
