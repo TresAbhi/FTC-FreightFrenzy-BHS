@@ -65,7 +65,7 @@ public class Drive {
   public int extenderTargetPos = EXTENDER_MIN_POS;
 
   public float wristTargetAngle = 0.62f;
-  public float clawTargetAngle = 0.62f;
+  public float clawTargetState = 1;
 
   public boolean capperTargetState = false;
 
@@ -128,7 +128,7 @@ public class Drive {
     extender.setPower(EXTENDER_POWER);
 
     wrist.setPosition(wristTargetAngle);
-    claw.setPosition(clawTargetAngle);
+    claw.setPosition(clawTargetState);
     capper.setPosition(capperTargetState ? 1 : 0);
     spinnerJoint.setPosition(0);
 
@@ -190,7 +190,7 @@ public class Drive {
 
     wrist.setPosition(wristTargetAngle);
 
-    claw.setPosition(clawTargetAngle);
+    claw.setPosition(clawTargetState);
 
     capper.setPosition(capperTargetState ? 1 : 0);
 
@@ -237,7 +237,7 @@ public class Drive {
     telemetry.addData("wrist target", wristTargetAngle);
     telemetry.addData("wrist pos", wrist.getPosition());
 
-    telemetry.addData("claw target", clawTargetAngle);
+    telemetry.addData("claw target", clawTargetState);
     telemetry.addData("claw pos", claw.getPosition());
 
     telemetry.addData("capper target", capperTargetState);

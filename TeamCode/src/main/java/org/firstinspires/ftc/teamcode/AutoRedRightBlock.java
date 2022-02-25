@@ -47,7 +47,7 @@ public class AutoRedRightBlock extends LinearOpMode {
     sleep(500);
 
     // drop block
-    drive.clawTargetAngle = 0;
+    drive.clawTargetState = 0;
     drive.apply();
     sleep(500);
 

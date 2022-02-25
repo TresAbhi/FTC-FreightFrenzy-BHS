@@ -1,9 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -154,7 +150,7 @@ public class DriverControlBase {
       }
     }
 
-    drive.clawTargetAngle = player2.right_bumper ? 0 : 1;
+    drive.clawTargetState = player2.right_bumper ? 0 : 1;
     if (player1.right_bumper) drive.spinnerSpeed = 1;
     if (player1.left_bumper) drive.spinnerSpeed = 0;
     if (!player1.right_bumper && !player1.left_bumper) drive.spinnerSpeed =
