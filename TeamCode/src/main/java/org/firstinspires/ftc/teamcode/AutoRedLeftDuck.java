@@ -14,7 +14,7 @@ public class AutoRedLeftDuck extends LinearOpMode {
 
   // @Override
   public void runOpMode() {
-    drive.init(hardwareMap);
+    drive.init(hardwareMap, telemetry);
     auto.init(hardwareMap, telemetry, drive);
 
     waitForStart();

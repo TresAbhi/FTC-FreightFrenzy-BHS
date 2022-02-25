@@ -1,12 +1,18 @@
 package org.firstinspires.ftc.teamcode.core;
 
 import android.os.SystemClock;
+
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 public class Drive {
 
@@ -17,6 +23,8 @@ public class Drive {
   public Servo wrist, claw, capper;
 
   public Servo spinner, spinnerJoint;
+
+  public BNO055IMU imu;
 
   // Constants
   public final float EXTENDER_POWER = 0.8f;
@@ -71,11 +79,24 @@ public class Drive {
   public float movementPower = 1f;
   public float voltageCompensatedPower = 1f;
 
+  public boolean useGyro = false;
+  public Orientation angles;
+  public double headingOffset = 0;
+
+  BNO055IMU.Parameters imuParameters = new BNO055IMU.Parameters();
+
   public HardwareMap hardwareMap;
   public Telemetry telemetry;
 
-  public void init(HardwareMap hm) {
-    hardwareMap = hm;
+  public Drive (boolean useGyro) {
+    this.useGyro = useGyro;
+  }
+
+  public Drive () {}
+
+  public void init(HardwareMap hardwareMap, Telemetry telemetry) {
+    this.hardwareMap = hardwareMap;
+    this.telemetry = telemetry;
 
     // Components
     leftFront = hardwareMap.get(DcMotor.class, "left_front"); // slot 0
@@ -90,6 +111,8 @@ public class Drive {
 
     spinner = hardwareMap.get(Servo.class, "spinner");
     spinnerJoint = hardwareMap.get(Servo.class, "spinner_joint");
+
+    imu = hardwareMap.get(BNO055IMU.class, "imu");
 
     // One time executions
     leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -108,11 +131,9 @@ public class Drive {
     claw.setPosition(clawTargetAngle);
     capper.setPosition(capperTargetState ? 1 : 0);
     spinnerJoint.setPosition(0);
-  }
 
-  public void init(HardwareMap hm, Telemetry tl) {
-    telemetry = tl;
-    init(hm);
+    imuParameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
+    imu.initialize(imuParameters);
   }
 
   public void setState(ARM_STATE state) {
@@ -140,10 +161,11 @@ public class Drive {
   }
 
   public void apply() {
-    // Trig to find out partial offsets in axes (plural of axis)
+    angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
+
     // Don't mess with this unless you know what you're doing!!!
     double vectorNormal = Math.hypot(moveX, -moveY);
-    double robotAngle = Math.atan2(-moveY, -moveX) - Math.PI / 4;
+    double robotAngle = Math.atan2(-moveY, -moveX) - Math.PI / 4 - (useGyro ? angles.firstAngle - headingOffset : 0);
     double vector1 = vectorNormal * Math.cos(robotAngle);
     double vector2 = vectorNormal * Math.sin(robotAngle);
     double vector3 = vectorNormal * Math.sin(robotAngle);
@@ -226,5 +248,8 @@ public class Drive {
 
     telemetry.addData("spinner joint target", spinnerJointPos);
     telemetry.addData("spinner joint pos", spinnerJoint.getPosition());
+
+    telemetry.addData("Heading", angles.firstAngle);
+    telemetry.addData("Heading offset", headingOffset);
   }
 }
