@@ -39,7 +39,7 @@ public class AutoBlueLeftBlock extends LinearOpMode {
     drive.moveX = 0;
     drive.moveY = 0.5;
     drive.apply();
-    sleep(1000);
+    sleep(1100);
 
     // stop moving
     drive.moveY = 0;
