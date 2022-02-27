@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.core;
 
 import android.os.SystemClock;
-
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -28,10 +27,10 @@ public class Drive {
   public BNO055IMU imu;
 
   // Constants
-  public final float EXTENDER_POWER = 0.8f;
+  public final double EXTENDER_POWER = 0.8;
   public final int EXTENDER_MIN_POS = 0;
 
-  public final float NORMAL_VOLTAGE = 13;
+  public final double NORMAL_VOLTAGE = 13;
 
   // Preset states
   public enum ARM_STATE {
@@ -44,41 +43,41 @@ public class Drive {
 
   // a: lower tower layer
   public final int EXTENDER_LOW_POS = EXTENDER_MIN_POS + 527;
-  public final float WRIST_LOW_ANGLE = 0.33f;
+  public final double WRIST_LOW_ANGLE = 0.33;
 
   // x: middle tower layer
   public final int EXTENDER_MIDDLE_POS = EXTENDER_MIN_POS + 1253;
-  public final float WRIST_MIDDLE_ANGLE = 0.33f;
+  public final double WRIST_MIDDLE_ANGLE = 0.33;
 
   // y: top tower layer
   public final int EXTENDER_HIGH_POS = EXTENDER_MIN_POS + 2080;
-  public final float WRIST_HIGH_ANGLE = 0.33f;
+  public final double WRIST_HIGH_ANGLE = 0.33;
 
   // b: ground
   public final int EXTENDER_GROUND_POS = EXTENDER_MIN_POS;
-  public final float WRIST_GROUND_ANGLE = 0.33f;
+  public final double WRIST_GROUND_ANGLE = 0.33;
 
   // NONE: back
   public final int EXTENDER_BACK_POS = EXTENDER_MIN_POS;
-  public final float WRIST_BACK_ANGLE = 1f;
+  public final double WRIST_BACK_ANGLE = 1;
 
   // Mutables
   public int extenderTargetPos = EXTENDER_MIN_POS;
 
-  public float wristTargetAngle = 0.62f;
-  public float clawTargetState = 1;
+  public double wristTargetAngle = 0.62;
+  public double clawTargetState = 1;
 
-  public float capperTargetAngle = 0.2f;
+  public double capperTargetAngle = 0.2;
 
-  public float spinnerSpeed = 0.49f;
-  public float spinnerJointPos = 0f;
+  public double spinnerSpeed = 0.49;
+  public double spinnerJointPos = 0;
 
-  public float moveX = 0;
-  public float moveY = 0;
-  public float rot = 0;
+  public double moveX = 0;
+  public double moveY = 0;
+  public double rot = 0;
 
-  public float movementPower = 1f;
-  public float voltageCompensatedPower = 1f;
+  public double movementPower = 1;
+  public double voltageCompensatedPower = 1;
 
   public boolean useGyro = false;
   private Orientation angles;
@@ -89,11 +88,11 @@ public class Drive {
   public HardwareMap hardwareMap;
   public Telemetry telemetry;
 
-  public Drive (boolean useGyro) {
+  public Drive(boolean useGyro) {
     this.useGyro = useGyro;
   }
 
-  public Drive () {}
+  public Drive() {}
 
   public void init(HardwareMap hardwareMap, Telemetry telemetry) {
     this.hardwareMap = hardwareMap;
@@ -162,11 +161,20 @@ public class Drive {
   }
 
   public void apply() {
-    angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
+    angles =
+      imu.getAngularOrientation(
+        AxesReference.INTRINSIC,
+        AxesOrder.ZYX,
+        AngleUnit.RADIANS
+      );
 
     // Don't mess with this unless you know what you're doing!!!
     double vectorNormal = Math.hypot(moveX, -moveY);
-    double robotAngle = Math.atan2(-moveY, -moveX) - Math.PI / 4 - (useGyro ? angles.firstAngle - headingOffset : 0);
+    double robotAngle =
+      Math.atan2(-moveY, -moveX) -
+      Math.PI /
+      4 -
+      (useGyro ? angles.firstAngle - headingOffset : 0);
     double vector1 = vectorNormal * Math.cos(robotAngle);
     double vector2 = vectorNormal * Math.sin(robotAngle);
     double vector3 = vectorNormal * Math.sin(robotAngle);
@@ -199,7 +207,7 @@ public class Drive {
     spinnerJoint.setPosition(spinnerJointPos);
   }
 
-  public float getBatteryVoltage() {
+  public double getBatteryVoltage() {
     double result = Double.POSITIVE_INFINITY;
 
     for (VoltageSensor sensor : hardwareMap.voltageSensor) {
@@ -210,11 +218,11 @@ public class Drive {
       }
     }
 
-    return (float) result;
+    return (double) result;
   }
 
-  public float compensateForVoltage(int sampleCount) {
-    float averageBatteryVoltage = getBatteryVoltage();
+  public double compensateForVoltage(int sampleCount) {
+    double averageBatteryVoltage = getBatteryVoltage();
 
     for (int i = 0; i < sampleCount - 1; i++) {
       averageBatteryVoltage += getBatteryVoltage();

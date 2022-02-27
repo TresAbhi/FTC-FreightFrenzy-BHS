@@ -21,13 +21,13 @@ public class AutoRedRightBlock extends LinearOpMode {
     auto.recordTeamScorePos();
 
     // go forward
-    drive.moveY = 0.5f;
+    drive.moveY = 0.5;
     drive.apply();
     sleep(300);
 
     // stop moving forward and move left
     drive.moveY = 0;
-    drive.moveX = -0.5f;
+    drive.moveX = -0.5;
     drive.apply();
     sleep(750);
 
@@ -37,7 +37,7 @@ public class AutoRedRightBlock extends LinearOpMode {
 
     // stop going left and go forward
     drive.moveX = 0;
-    drive.moveY = 0.5f;
+    drive.moveY = 0.5;
     drive.apply();
     sleep(750);
 
@@ -52,15 +52,15 @@ public class AutoRedRightBlock extends LinearOpMode {
     sleep(500);
 
     // go back
-    drive.moveY = -0.5f;
+    drive.moveY = -0.5;
     drive.apply();
     sleep(280);
 
     // stop moving, turn right, set to default state, and move the wrist up
     drive.moveY = 0;
-    drive.rot = 0.5f;
+    drive.rot = 0.5;
     drive.setState(Drive.ARM_STATE.MIDDLE);
-    drive.wristTargetAngle = 0.62f;
+    drive.wristTargetAngle = 0.62;
     sleep(900);
 
     // stop turning
@@ -75,7 +75,7 @@ public class AutoRedRightBlock extends LinearOpMode {
 
     // stop moving forward and move towards the wall
     drive.moveY = 0;
-    drive.moveX = 0.5f;
+    drive.moveX = 0.5;
     drive.apply();
     sleep(1300);
 

@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.core.Drive;
 
@@ -22,25 +21,25 @@ public class DriverControlBase {
   private Gamepad player2 = gamepad2;
 
   // Constants
-  public final float MOVEMENT_PRECISION = 2f;
+  public final double MOVEMENT_PRECISION = 2;
 
   public final int EXTENDER_MIN_POS = 0;
   public final int EXTENDER_MAX_POS = 3409;
 
   public final int EXTENDER_INPUT_SPEED = 20;
-  public final float WRIST_INPUT_SPEED = 0.01f;
-  public final float WRIST_MAX_ANGLE = 0.62f;
-  public final float WRIST_PULL_ANGLE = 0.32f;
-  public final float WRIST_PULL_UP_START = 800;
-  public final float WRIST_PULL_UP_END = 300;
+  public final double WRIST_INPUT_SPEED = 0.01;
+  public final double WRIST_MAX_ANGLE = 0.62;
+  public final double WRIST_PULL_ANGLE = 0.32;
+  public final double WRIST_PULL_UP_START = 800;
+  public final double WRIST_PULL_UP_END = 300;
 
-  public final float CAPPER_LOW_ANGLE = 1;
-  public final float CAPPER_TILT_ANGLE = 0.68f;
-  public final float CAPPER_HIGH_ANGLE = 0.2f;
+  public final double CAPPER_LOW_ANGLE = 1;
+  public final double CAPPER_TILT_ANGLE = 0.68;
+  public final double CAPPER_HIGH_ANGLE = 0.2;
 
   int capperState = 0;
 
-  public final float TURN_COEFFICIENT = 0.75f;
+  public final double TURN_COEFFICIENT = 0.75;
 
   public enum DRIVE_MODE {
     NORMAL,
@@ -52,7 +51,12 @@ public class DriverControlBase {
   boolean isModeSwitched = false;
   boolean isLeftBumperAlreadyPressed = false;
 
-  public void init (HardwareMap hardwareMap, Telemetry telemetry, Gamepad gamepad1, Gamepad gamepad2) {
+  public void init(
+    HardwareMap hardwareMap,
+    Telemetry telemetry,
+    Gamepad gamepad1,
+    Gamepad gamepad2
+  ) {
     this.hardwareMap = hardwareMap;
     this.telemetry = telemetry;
     this.gamepad1 = gamepad1;
@@ -62,7 +66,6 @@ public class DriverControlBase {
   }
 
   public void iterate() {
-
     // Switch between modes
     if (driveMode == DRIVE_MODE.NORMAL) {
       player1 = gamepad1;
@@ -105,9 +108,9 @@ public class DriverControlBase {
       Math.signum(player1.right_stick_y) *
       Math.pow(player1.right_stick_y, MOVEMENT_PRECISION * 2);
 
-    drive.moveX = (float) dampedLeftJoystickX;
-    drive.moveY = (float) -dampedLeftJoystickY;
-    drive.rot = (float) dampedRightJoystickX * TURN_COEFFICIENT;
+    drive.moveX = (double) dampedLeftJoystickX;
+    drive.moveY = (double) -dampedLeftJoystickY;
+    drive.rot = (double) dampedRightJoystickX * TURN_COEFFICIENT;
 
     // Tweak extender joint target
     drive.extenderTargetPos =
@@ -124,14 +127,14 @@ public class DriverControlBase {
       );
 
     // Tweak wrist joint target
-    float progressToPullUpStart = Math.max(
+    double progressToPullUpStart = Math.max(
       Math.min(
         (drive.extenderTargetPos - WRIST_PULL_UP_END) / WRIST_PULL_UP_START,
         1
       ),
       0
     );
-    float compensatedWristMinAngle =
+    double compensatedWristMinAngle =
       (1 - progressToPullUpStart) * WRIST_PULL_ANGLE;
 
     if (player2.dpad_up) drive.wristTargetAngle += WRIST_INPUT_SPEED;
@@ -160,7 +163,7 @@ public class DriverControlBase {
     if (player1.right_bumper) drive.spinnerSpeed = 1;
     if (player1.left_bumper) drive.spinnerSpeed = 0;
     if (!player1.right_bumper && !player1.left_bumper) drive.spinnerSpeed =
-      0.49f;
+      0.49;
 
     // control the capper
     if (player2.left_bumper) {
