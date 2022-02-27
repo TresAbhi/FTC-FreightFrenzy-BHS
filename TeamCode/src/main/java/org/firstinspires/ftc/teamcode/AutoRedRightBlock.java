@@ -60,7 +60,7 @@ public class AutoRedRightBlock extends LinearOpMode {
     drive.moveY = 0;
     drive.rot = 0.5f;
     drive.wristTargetAngle = 1;
-    drive.setState(Drive.ARM_STATE.DEFAULT);
+    drive.setState(Drive.ARM_STATE.MIDDLE);
     sleep(900);
 
     // stop turning
@@ -73,8 +73,14 @@ public class AutoRedRightBlock extends LinearOpMode {
     drive.apply();
     sleep(1900);
 
-    // stop moving forward
+    // stop moving forward and move towards the wall
     drive.moveY = 0;
+    drive.moveX = 0.5f;
+    drive.apply();
+    sleep(1300);
+
+    // stop moving
+    drive.moveX = 0;
     drive.apply();
     sleep(200);
   }

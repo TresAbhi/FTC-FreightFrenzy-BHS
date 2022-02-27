@@ -81,7 +81,7 @@ public class Drive {
   public float voltageCompensatedPower = 1f;
 
   public boolean useGyro = false;
-  public Orientation angles;
+  private Orientation angles;
   public double headingOffset = 0;
 
   BNO055IMU.Parameters imuParameters = new BNO055IMU.Parameters();
