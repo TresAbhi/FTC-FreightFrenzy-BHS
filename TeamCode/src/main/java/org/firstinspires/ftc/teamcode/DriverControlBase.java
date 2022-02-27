@@ -34,6 +34,12 @@ public class DriverControlBase {
   public final float WRIST_PULL_UP_START = 800;
   public final float WRIST_PULL_UP_END = 300;
 
+  public final float CAPPER_LOW_ANGLE = 1;
+  public final float CAPPER_TILT_ANGLE = 0.68f;
+  public final float CAPPER_HIGH_ANGLE = 0.2f;
+
+  int capperState = 0;
+
   public final float TURN_COEFFICIENT = 0.75f;
 
   public enum DRIVE_MODE {
@@ -160,10 +166,23 @@ public class DriverControlBase {
     if (player2.left_bumper) {
       if (!isLeftBumperAlreadyPressed) {
         isLeftBumperAlreadyPressed = true;
-        drive.capperTargetState = !drive.capperTargetState;
+
+        if (capperState == 3) {
+          capperState = 0;
+        } else {
+          capperState++;
+        }
       }
     } else {
       isLeftBumperAlreadyPressed = false;
+    }
+
+    if (capperState == 0) {
+      drive.capperTargetAngle = CAPPER_HIGH_ANGLE;
+    } else if (capperState == 1 || capperState == 3) {
+      drive.capperTargetAngle = CAPPER_TILT_ANGLE;
+    } else {
+      drive.capperTargetAngle = CAPPER_LOW_ANGLE;
     }
 
     drive.apply();

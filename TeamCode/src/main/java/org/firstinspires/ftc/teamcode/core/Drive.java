@@ -13,6 +13,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.teamcode.DriverControlBase;
 
 public class Drive {
 
@@ -67,7 +68,7 @@ public class Drive {
   public float wristTargetAngle = 0.62f;
   public float clawTargetState = 1;
 
-  public boolean capperTargetState = false;
+  public float capperTargetAngle = 0.2f;
 
   public float spinnerSpeed = 0.49f;
   public float spinnerJointPos = 0f;
@@ -129,7 +130,7 @@ public class Drive {
 
     wrist.setPosition(wristTargetAngle);
     claw.setPosition(clawTargetState);
-    capper.setPosition(capperTargetState ? 1 : 0);
+    capper.setPosition(capperTargetAngle);
     spinnerJoint.setPosition(0);
 
     imuParameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
@@ -192,7 +193,7 @@ public class Drive {
 
     claw.setPosition(clawTargetState);
 
-    capper.setPosition(capperTargetState ? 1 : 0);
+    capper.setPosition(capperTargetAngle);
 
     spinner.setPosition(spinnerSpeed);
     spinnerJoint.setPosition(spinnerJointPos);
@@ -240,7 +241,7 @@ public class Drive {
     telemetry.addData("claw target", clawTargetState);
     telemetry.addData("claw pos", claw.getPosition());
 
-    telemetry.addData("capper target", capperTargetState);
+    telemetry.addData("capper target", capperTargetAngle);
     telemetry.addData("capper pos", capper.getPosition());
 
     telemetry.addData("spinner target", spinnerSpeed);
