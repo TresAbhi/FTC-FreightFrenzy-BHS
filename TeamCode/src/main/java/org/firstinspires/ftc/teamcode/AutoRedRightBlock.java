@@ -59,8 +59,8 @@ public class AutoRedRightBlock extends LinearOpMode {
     // stop moving, turn right, set to default state, and move the wrist up
     drive.moveY = 0;
     drive.rot = 0.5f;
-    drive.wristTargetAngle = 1;
     drive.setState(Drive.ARM_STATE.MIDDLE);
+    drive.wristTargetAngle = 0.62f;
     sleep(900);
 
     // stop turning
