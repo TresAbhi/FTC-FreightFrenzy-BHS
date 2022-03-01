@@ -37,8 +37,8 @@ public class TeamScoreAlignmentChecker extends OpenCvPipeline {
   // the value that stores either LEFT, MIDDLE, RIGHT, or NONE
   public LOCATION location = LOCATION.UNKNOWN;
 
-//  static final int ORIGIN_X = 167;
-  static final int ORIGIN_X = 300;
+  //  static final int ORIGIN_X = 167;
+  static final int ORIGIN_X = 168;
   static final int ORIGIN_Y = 95;
 
   static final Rect MIDDLE_ROI = new Rect(
@@ -66,7 +66,7 @@ public class TeamScoreAlignmentChecker extends OpenCvPipeline {
    * this percentage or above of the box will have to be covered with yellow
    * in order to be considered `true`
    */
-  static final double THICK_COVERAGE = 0.1;
+  static final double THICK_COVERAGE = 0.2;
   static final double SLIM_COVERAGE = 0.5;
 
   // the whole screen's region/matrix
