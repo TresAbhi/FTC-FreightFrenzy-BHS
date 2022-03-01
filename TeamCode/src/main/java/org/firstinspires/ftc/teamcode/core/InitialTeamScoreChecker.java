@@ -8,7 +8,7 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 
-public class Cam extends OpenCvPipeline {
+public class InitialTeamScoreChecker extends OpenCvPipeline {
 
   // ROI: Region of intrest
   static final int ROI_WIDTH = 80;
@@ -89,19 +89,13 @@ public class Cam extends OpenCvPipeline {
      * left-most is preferred
      */
     if (leftCovered) {
-      // set the variable all the way up there
       location = LOCATION.LEFT;
-      // talk about it in the tele OP
-      // telemetry.addData("Skystone Location", "left");
     } else if (middleCovered) {
       location = LOCATION.MIDDLE;
-      // telemetry.addData("Skystone Location", "middle");
     } else if (rightCovered) {
       location = LOCATION.RIGHT;
-      // telemetry.addData("Skystone Location", "right");
     } else {
       location = LOCATION.NONE;
-      // telemetry.addData("Skystone Location", "none");
     }
 
     // convert back to RGB

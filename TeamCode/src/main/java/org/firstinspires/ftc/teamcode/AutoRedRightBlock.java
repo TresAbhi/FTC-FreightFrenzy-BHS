@@ -77,7 +77,7 @@ public class AutoRedRightBlock extends LinearOpMode {
     drive.moveY = 0;
     drive.moveX = 0.5;
     drive.apply();
-    sleep(1300);
+    sleep(1400);
 
     // stop moving
     drive.moveX = 0;

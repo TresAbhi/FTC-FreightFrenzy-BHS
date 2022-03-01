@@ -33,8 +33,8 @@ public class DriverControlBase {
   public final double WRIST_PULL_UP_START = 800;
   public final double WRIST_PULL_UP_END = 300;
 
-  public final double CAPPER_LOW_ANGLE = 1;
-  public final double CAPPER_TILT_ANGLE = 0.68;
+  public final double CAPPER_LOW_ANGLE = 0.705;
+  public final double CAPPER_TILT_ANGLE = 0.65;
   public final double CAPPER_HIGH_ANGLE = 0.2;
 
   int capperState = 0;

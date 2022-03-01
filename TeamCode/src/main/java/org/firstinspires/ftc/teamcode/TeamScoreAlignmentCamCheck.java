@@ -3,17 +3,18 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.core.Cam;
+import org.firstinspires.ftc.teamcode.core.InitialTeamScoreChecker;
+import org.firstinspires.ftc.teamcode.core.TeamScoreAlignmentChecker;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
-@TeleOp(name = "CamCheck", group = "Linear Opmode")
+@TeleOp(name = "AA-PROTO-TeamScoreAlignmentCamCheck", group = "Linear Opmode")
 // @Disabled
-public class CamCheck extends LinearOpMode {
+public class TeamScoreAlignmentCamCheck extends LinearOpMode {
 
   OpenCvWebcam webcam;
-  final Cam cam = new Cam();
+  final TeamScoreAlignmentChecker initialTeamScoreChecker = new TeamScoreAlignmentChecker();
 
   public void runOpMode() {
     int cameraMonitorViewId = hardwareMap.appContext
@@ -32,14 +33,14 @@ public class CamCheck extends LinearOpMode {
         );
 
     webcam.openCameraDevice();
-    webcam.setPipeline(cam);
+    webcam.setPipeline(initialTeamScoreChecker);
     webcam.startStreaming(432, 240, OpenCvCameraRotation.UPRIGHT);
 
-    while (opModeIsActive()) {
-      Cam.LOCATION camResult = cam.getAnalysis();
+    waitForStart();
 
+    while (opModeIsActive()) {
       telemetry.clearAll();
-      telemetry.addData("Location", camResult.toString());
+      telemetry.addData("Location", initialTeamScoreChecker.getAnalysis());
       telemetry.update();
     }
   }

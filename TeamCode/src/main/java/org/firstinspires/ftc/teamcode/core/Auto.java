@@ -14,9 +14,9 @@ public class Auto {
   Telemetry telemetry;
   HardwareMap hardwareMap;
 
-  final Cam cam = new Cam();
+  final InitialTeamScoreChecker initialTeamScoreChecker = new InitialTeamScoreChecker();
 
-  public Cam.LOCATION camResult;
+  public InitialTeamScoreChecker.LOCATION camResult;
 
   public void init(HardwareMap hm, Telemetry tl, Drive dr) {
     // get access to runtime APIs
@@ -46,7 +46,7 @@ public class Auto {
           cameraMonitorViewId
         );
     webcam.openCameraDevice();
-    webcam.setPipeline(cam);
+    webcam.setPipeline(initialTeamScoreChecker);
     webcam.startStreaming(432, 240, OpenCvCameraRotation.UPRIGHT);
 
     // at this point, it's ready
@@ -56,15 +56,15 @@ public class Auto {
   }
 
   public void recordTeamScorePos() {
-    camResult = cam.getAnalysis();
+    camResult = initialTeamScoreChecker.getAnalysis();
     telemetry.addData("Position", camResult);
     telemetry.update();
   }
 
   public void moveArmToCorrectPosition() {
-    if (camResult == Cam.LOCATION.RIGHT) {
+    if (camResult == InitialTeamScoreChecker.LOCATION.RIGHT) {
       drive.setState(Drive.ARM_STATE.TOP);
-    } else if (camResult == Cam.LOCATION.MIDDLE) {
+    } else if (camResult == InitialTeamScoreChecker.LOCATION.MIDDLE) {
       drive.setState(Drive.ARM_STATE.MIDDLE);
     } else {
       drive.setState(Drive.ARM_STATE.BOTTOM);
