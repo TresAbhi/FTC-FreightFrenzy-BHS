@@ -9,7 +9,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
-@TeleOp(name = "AA-PROTO-TeamScoreAlignmentCamCheck", group = "Linear Opmode")
+@TeleOp(name = "TeamScoreAlignmentCamCheck", group = "Linear Opmode")
 // @Disabled
 public class TeamScoreAlignmentCamCheck extends LinearOpMode {
 

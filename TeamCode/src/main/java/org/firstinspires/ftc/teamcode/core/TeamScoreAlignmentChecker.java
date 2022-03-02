@@ -14,7 +14,6 @@ public class TeamScoreAlignmentChecker extends OpenCvPipeline {
   static final int SLIM_ROI_WIDTH = 14;
   static final int SLIM_ROI_HEIGHT = 125;
   static final int THICK_ROI_WIDTH = 80;
-  static final int THICK_ROI_HEIGHT = SLIM_ROI_HEIGHT;
 
   // The minimum and maximum colors that we will accept
   final Scalar LOW_ACCEPTANCE_COLOR = new Scalar(20, 50, 70); // in HSV
@@ -38,8 +37,8 @@ public class TeamScoreAlignmentChecker extends OpenCvPipeline {
   public LOCATION location = LOCATION.UNKNOWN;
 
   //  static final int ORIGIN_X = 167;
-  static final int ORIGIN_X = 168;
-  static final int ORIGIN_Y = 95;
+  static final int ORIGIN_X = 175;
+  static final int ORIGIN_Y = 100;
 
   static final Rect MIDDLE_ROI = new Rect(
     new Point(ORIGIN_X, ORIGIN_Y),
@@ -66,8 +65,9 @@ public class TeamScoreAlignmentChecker extends OpenCvPipeline {
    * this percentage or above of the box will have to be covered with yellow
    * in order to be considered `true`
    */
-  static final double THICK_COVERAGE = 0.2;
-  static final double SLIM_COVERAGE = 0.5;
+  static final double TOO_FAR_COVERAGE = 0.2;
+  static final double FAR_COVERAGE = 0.1;
+  static final double MIDDLE_COVERAGE = 0.4;
 
   // the whole screen's region/matrix
   final Mat mat = new Mat();
@@ -102,18 +102,18 @@ public class TeamScoreAlignmentChecker extends OpenCvPipeline {
     tooLeft.release();
 
     // booleans to figure out which one is actually covered
-    boolean isMiddleCovered = middleCoverage >= SLIM_COVERAGE;
-    boolean isRightCovered = rightCoverage >= SLIM_COVERAGE;
-    boolean isLeftCovered = leftCoverage >= SLIM_COVERAGE;
-    boolean isTooRightCovered = tooRightCoverage >= THICK_COVERAGE;
-    boolean isTooLeftCovered = tooLeftCoverage >= THICK_COVERAGE;
+    boolean isMiddleCovered = middleCoverage >= MIDDLE_COVERAGE;
+    boolean isRightCovered = rightCoverage >= FAR_COVERAGE;
+    boolean isLeftCovered = leftCoverage >= FAR_COVERAGE;
+    boolean isTooRightCovered = tooRightCoverage >= TOO_FAR_COVERAGE;
+    boolean isTooLeftCovered = tooLeftCoverage >= TOO_FAR_COVERAGE;
 
-    if (isMiddleCovered) {
-      location = LOCATION.MIDDLE;
-    } else if (isLeftCovered) {
+    if (isLeftCovered) {
       location = LOCATION.LEFT;
     } else if (isRightCovered) {
       location = LOCATION.RIGHT;
+    } else if (isMiddleCovered) {
+      location = LOCATION.MIDDLE;
     } else if (isTooLeftCovered) {
       location = LOCATION.TOO_LEFT;
     } else if (isTooRightCovered) {
