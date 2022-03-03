@@ -15,7 +15,7 @@ public class AutoBlueRightDuck extends LinearOpMode {
   // @Override
   public void runOpMode() {
     drive.init(hardwareMap, telemetry);
-    auto.init(hardwareMap, telemetry, drive);
+    auto.init(hardwareMap, telemetry, drive, Auto.SIDE.BLUE);
 
     waitForStart();
     auto.recordTeamScorePos();

@@ -27,11 +27,11 @@ public class InitialTeamScoreChecker extends OpenCvPipeline {
     LEFT,
     MIDDLE,
     RIGHT,
-    NONE,
+    UNKNOWN,
   }
 
   // the value that stores either LEFT, MIDDLE, RIGHT, or NONE
-  public LOCATION location = LOCATION.NONE;
+  public LOCATION location = LOCATION.UNKNOWN;
 
   static final Rect LEFT_ROI = new Rect( // Left region of intrest
     new Point(55, 110),
@@ -95,7 +95,7 @@ public class InitialTeamScoreChecker extends OpenCvPipeline {
     } else if (rightCovered) {
       location = LOCATION.RIGHT;
     } else {
-      location = LOCATION.NONE;
+      location = LOCATION.UNKNOWN;
     }
 
     // convert back to RGB

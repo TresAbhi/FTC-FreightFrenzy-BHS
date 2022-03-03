@@ -13,7 +13,7 @@ public class TeamScoreAlignmentChecker extends OpenCvPipeline {
   // ROI: Region of intrest
   static final int SLIM_ROI_WIDTH = 14;
   static final int SLIM_ROI_HEIGHT = 125;
-  static final int THICK_ROI_WIDTH = 80;
+  static final int THICK_ROI_WIDTH = 150;
 
   // The minimum and maximum colors that we will accept
   final Scalar LOW_ACCEPTANCE_COLOR = new Scalar(20, 50, 70); // in HSV
@@ -54,11 +54,17 @@ public class TeamScoreAlignmentChecker extends OpenCvPipeline {
   );
   static final Rect TOO_RIGHT_ROI = new Rect(
     new Point(ORIGIN_X + SLIM_ROI_WIDTH * 2, ORIGIN_Y),
-    new Point(ORIGIN_X + SLIM_ROI_WIDTH * 2 + THICK_ROI_WIDTH, ORIGIN_Y + SLIM_ROI_HEIGHT)
+    new Point(
+      ORIGIN_X + SLIM_ROI_WIDTH * 2 + THICK_ROI_WIDTH,
+      ORIGIN_Y + SLIM_ROI_HEIGHT
+    )
   );
   static final Rect TOO_LEFT_ROI = new Rect(
     new Point(ORIGIN_X - SLIM_ROI_WIDTH, ORIGIN_Y),
-    new Point(ORIGIN_X - SLIM_ROI_WIDTH - THICK_ROI_WIDTH, ORIGIN_Y + SLIM_ROI_HEIGHT)
+    new Point(
+      ORIGIN_X - SLIM_ROI_WIDTH - THICK_ROI_WIDTH,
+      ORIGIN_Y + SLIM_ROI_HEIGHT
+    )
   );
 
   /**
@@ -88,11 +94,15 @@ public class TeamScoreAlignmentChecker extends OpenCvPipeline {
     Mat tooLeft = mat.submat(TOO_LEFT_ROI);
 
     // calculate coverage for cutouts (from 0 to 1)
-    double middleCoverage = Core.sumElems(middle).val[0] / MIDDLE_ROI.area() / 255;
-    double rightCoverage = Core.sumElems(right).val[0] / MIDDLE_ROI.area() / 255;
+    double middleCoverage =
+      Core.sumElems(middle).val[0] / MIDDLE_ROI.area() / 255;
+    double rightCoverage =
+      Core.sumElems(right).val[0] / MIDDLE_ROI.area() / 255;
     double leftCoverage = Core.sumElems(left).val[0] / MIDDLE_ROI.area() / 255;
-    double tooRightCoverage = Core.sumElems(tooRight).val[0] / MIDDLE_ROI.area() / 255;
-    double tooLeftCoverage = Core.sumElems(tooLeft).val[0] / MIDDLE_ROI.area() / 255;
+    double tooRightCoverage =
+      Core.sumElems(tooRight).val[0] / MIDDLE_ROI.area() / 255;
+    double tooLeftCoverage =
+      Core.sumElems(tooLeft).val[0] / MIDDLE_ROI.area() / 255;
 
     // release it back to the parent map
     middle.release();
@@ -112,12 +122,12 @@ public class TeamScoreAlignmentChecker extends OpenCvPipeline {
       location = LOCATION.LEFT;
     } else if (isRightCovered) {
       location = LOCATION.RIGHT;
-    } else if (isMiddleCovered) {
-      location = LOCATION.MIDDLE;
     } else if (isTooLeftCovered) {
       location = LOCATION.TOO_LEFT;
     } else if (isTooRightCovered) {
       location = LOCATION.TOO_RIGHT;
+    } else if (isMiddleCovered) {
+      location = LOCATION.MIDDLE;
     } else {
       location = LOCATION.UNKNOWN;
     }
@@ -131,16 +141,8 @@ public class TeamScoreAlignmentChecker extends OpenCvPipeline {
       MIDDLE_ROI,
       isMiddleCovered ? trueColor : falseColor
     );
-    Imgproc.rectangle(
-      mat,
-      RIGHT_ROI,
-      isRightCovered ? trueColor : falseColor
-    );
-    Imgproc.rectangle(
-      mat,
-      LEFT_ROI,
-      isLeftCovered ? trueColor : falseColor
-    );
+    Imgproc.rectangle(mat, RIGHT_ROI, isRightCovered ? trueColor : falseColor);
+    Imgproc.rectangle(mat, LEFT_ROI, isLeftCovered ? trueColor : falseColor);
     Imgproc.rectangle(
       mat,
       TOO_LEFT_ROI,
