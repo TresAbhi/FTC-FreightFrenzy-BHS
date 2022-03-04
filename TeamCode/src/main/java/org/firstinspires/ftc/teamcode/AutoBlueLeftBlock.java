@@ -74,14 +74,8 @@ public class AutoBlueLeftBlock extends LinearOpMode {
     drive.apply();
     sleep(1900);
 
-    // stop moving and move towards the left wall
-    drive.moveY = 0;
-    drive.moveX = -0.5;
-    drive.apply();
-    sleep(1400);
-
     // stop moving
-    drive.moveX = 0;
+    drive.moveY = 0;
     drive.apply();
     sleep(200);
   }
