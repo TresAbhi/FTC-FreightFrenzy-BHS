@@ -29,7 +29,7 @@ public class AutoRedRightBlock extends LinearOpMode {
     drive.moveY = 0;
     drive.moveX = -0.5;
     drive.apply();
-    sleep(750);
+    sleep(900);
 
     // move arm to position
     auto.moveArmToCorrectPosition();
@@ -54,7 +54,7 @@ public class AutoRedRightBlock extends LinearOpMode {
     // go back
     drive.moveY = -0.5;
     drive.apply();
-    sleep(260);
+    sleep(290);
 
     // stop moving, turn right, set to default state, and move the wrist up
     drive.moveY = 0;
@@ -73,14 +73,8 @@ public class AutoRedRightBlock extends LinearOpMode {
     drive.apply();
     sleep(1900);
 
-    // stop moving forward and move towards the wall
-    drive.moveY = 0;
-    drive.moveX = 0.5;
-    drive.apply();
-    sleep(1400);
-
     // stop moving
-    drive.moveX = 0;
+    drive.moveY = 0;
     drive.apply();
     sleep(200);
   }
