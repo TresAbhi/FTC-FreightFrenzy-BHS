@@ -61,7 +61,7 @@ public class Drive {
 
   // NONE: back
   public final int EXTENDER_BACK_POS = EXTENDER_MIN_POS;
-  public final double WRIST_BACK_ANGLE = 1;
+  public final double WRIST_BACK_ANGLE = 0.62;
 
   // Mutables
   public int extenderTargetPos = EXTENDER_MIN_POS;
@@ -79,7 +79,6 @@ public class Drive {
   public double rot = 0;
 
   public double movementPower = 1;
-  public double voltageCompensatedPower = 1;
 
   public boolean useGyro = false;
   private Orientation angles;
@@ -184,16 +183,16 @@ public class Drive {
 
     // Apply wheel motor powers
     leftFront.setPower(
-      (-vector1 + rot) * movementPower * voltageCompensatedPower
+      (-vector1 + rot) * movementPower
     );
     leftRear.setPower(
-      (-vector2 + rot) * movementPower * voltageCompensatedPower
+      (-vector2 + rot) * movementPower
     );
     rightFront.setPower(
-      (-vector3 - rot) * movementPower * voltageCompensatedPower
+      (-vector3 - rot) * movementPower
     );
     rightRear.setPower(
-      (-vector4 - rot) * movementPower * voltageCompensatedPower
+      (-vector4 - rot) * movementPower
     );
 
     // Apply all targets
@@ -221,24 +220,6 @@ public class Drive {
     }
 
     return (double) result;
-  }
-
-  public double compensateForVoltage(int sampleCount) {
-    double averageBatteryVoltage = getBatteryVoltage();
-
-    for (int i = 0; i < sampleCount - 1; i++) {
-      averageBatteryVoltage += getBatteryVoltage();
-      SystemClock.sleep(100);
-    }
-
-    averageBatteryVoltage = averageBatteryVoltage / sampleCount;
-    voltageCompensatedPower = NORMAL_VOLTAGE / averageBatteryVoltage;
-
-    return averageBatteryVoltage;
-  }
-
-  public void compensateForVoltage() {
-    compensateForVoltage(1);
   }
 
   public void logTargetsAndCurrents() {

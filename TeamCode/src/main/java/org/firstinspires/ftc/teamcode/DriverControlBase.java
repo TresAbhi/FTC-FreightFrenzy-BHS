@@ -189,7 +189,6 @@ public class DriverControlBase {
     }
 
     drive.apply();
-    drive.compensateForVoltage();
 
     // update telemetry
     telemetry.addData("Status", "Run Time: " + runtime.toString());
