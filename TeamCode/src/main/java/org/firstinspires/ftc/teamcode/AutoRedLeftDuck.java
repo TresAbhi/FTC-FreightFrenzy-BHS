@@ -6,7 +6,7 @@ import org.firstinspires.ftc.teamcode.core.Auto;
 import org.firstinspires.ftc.teamcode.core.Drive;
 
 //@Disabled
-@Autonomous(name = "AutoRedLeftDuck", group = "A")
+@Autonomous(name = "AA-AutoRedLeftDuck", group = "A")
 public class AutoRedLeftDuck extends LinearOpMode {
 
   final Auto auto = new Auto();
@@ -29,17 +29,17 @@ public class AutoRedLeftDuck extends LinearOpMode {
     drive.moveY = 0;
     drive.rot = 0.5;
     drive.apply();
-    sleep(800);
+    sleep(795);
 
     // stop rotating, go back, and pull out the spinner
     drive.rot = 0;
     drive.moveY = -0.5;
     drive.apply();
-    sleep(600);
+    sleep(750);
 
     // stop moving backwards
     drive.moveY = 0;
-    drive.spinnerJointPos = 0.75;
+    drive.spinnerJointPos = 1;
     sleep(500);
 
     // spin the spinner
@@ -52,7 +52,7 @@ public class AutoRedLeftDuck extends LinearOpMode {
     drive.spinnerSpeed = 0.49;
     drive.moveX = -0.5;
     drive.apply();
-    sleep(1900);
+    sleep(2150);
 
     // stop moving left, move forward, and stop pulling the spinner joint in
     drive.rot = 0;
@@ -61,34 +61,30 @@ public class AutoRedLeftDuck extends LinearOpMode {
     drive.moveY = 0.5;
     auto.moveArmToCorrectPosition();
     drive.apply();
-    sleep(1348);
+    sleep(1420);
 
     // stop moving forward
     drive.moveY = 0;
     drive.apply();
     sleep(550);
 
-    // let go of the block
+    // drop
     drive.clawTargetState = 0;
     drive.apply();
     sleep(500);
 
-    // move back a bit
+    // move back left a bit
     drive.moveY = -0.5;
+    drive.moveX = -0.5;
     drive.apply();
     sleep(250);
 
-    // stop moving back and move left
-    drive.moveY = 0;
-    drive.moveX = -0.5;
-    drive.apply();
-    sleep(200);
-
-    // stop moving left, turn left, and move arm to default
+    // stop moving back left, turn left, and move arm to default
     drive.moveX = 0;
+    drive.moveY = 0;
     drive.rot = -0.5;
     drive.setState(Drive.ARM_STATE.DEFAULT);
-    sleep(690);
+    sleep(750);
 
     // stop turning and move left
     drive.rot = 0;
@@ -100,9 +96,9 @@ public class AutoRedLeftDuck extends LinearOpMode {
     drive.moveX = 0;
     drive.moveY = -0.5;
     drive.apply();
-    sleep(830);
+    sleep(1020);
 
-    // stop moving forward and go left
+    // stop moving backwards and go left
     drive.moveY = 0;
     drive.moveX = -0.5;
     drive.apply();

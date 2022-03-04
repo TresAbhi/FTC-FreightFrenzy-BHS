@@ -50,7 +50,7 @@ public class InitialTeamScoreChecker extends OpenCvPipeline {
    * this percentage or above of the box will have to be covered with yellow
    * in order to be considered `true`
    */
-  static final double PERCENT_COLOR_COVERAGE_THRESHOLD = 0.1;
+  static final double PERCENT_COLOR_COVERAGE_THRESHOLD = 0.075;
 
   // the whole screen's region/matrix
   final Mat mat = new Mat();
