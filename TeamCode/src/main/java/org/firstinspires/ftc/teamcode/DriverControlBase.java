@@ -38,6 +38,7 @@ public class DriverControlBase {
   public final double CAPPER_HIGH_ANGLE = 0.2;
 
   int capperState = 0;
+  double maxMovementPower = 1;
 
   public final double TURN_COEFFICIENT = 0.75;
 
@@ -50,6 +51,7 @@ public class DriverControlBase {
   DRIVE_MODE driveMode = DRIVE_MODE.NORMAL;
   boolean isModeSwitched = false;
   boolean isLeftBumperAlreadyPressed = false;
+  boolean isYAlreadyPressed = false;
 
   public void init(
     HardwareMap hardwareMap,
@@ -76,7 +78,7 @@ public class DriverControlBase {
     }
 
     // Power modes for slow and fast robot speeds
-    drive.movementPower = 0.75f - (player1.left_trigger * 0.5f);
+    drive.movementPower = maxMovementPower - (player1.left_trigger * 0.5f);
 
     // God mode toggler
     if ((player1.back || player2.back) && !isModeSwitched) {
@@ -178,6 +180,12 @@ public class DriverControlBase {
       }
     } else {
       isLeftBumperAlreadyPressed = false;
+    }
+
+    if (player1.a) {
+      maxMovementPower = 1;
+    } else {
+      maxMovementPower = 0.75;
     }
 
     if (capperState == 0) {

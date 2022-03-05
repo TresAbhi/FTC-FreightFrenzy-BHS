@@ -1,10 +1,11 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 @TeleOp(name = "DriverControlRight", group = "Linear Opmode")
-// @Disabled
+@Disabled
 public class DriverControlRight extends LinearOpMode {
 
   DriverControlBase driverControlBase = new DriverControlBase();
