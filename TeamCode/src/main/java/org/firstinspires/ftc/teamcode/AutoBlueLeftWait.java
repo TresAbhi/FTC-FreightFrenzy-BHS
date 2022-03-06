@@ -42,7 +42,7 @@ public class AutoBlueLeftWait extends LinearOpMode {
     drive.moveX = 0;
     drive.moveY = 0.5;
     drive.apply();
-    sleep(1100);
+    sleep(1000);
 
     // stop moving
     drive.moveY = 0;
